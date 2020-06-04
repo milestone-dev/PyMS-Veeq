@@ -2,25 +2,25 @@
 PyMS is a cross platform BroodWar modding suite written using [Python](http://www.python.org). PyMS contains 15 programs to edit most of the file types you will encounter while modding. This modding suite was originally created by poiuy_qwert and has since been maintained by Neiv, iquare, Veeq7, DarkenedFantasies, and Pr0nogo. This repository is home to the final updates the suite will see from us before a new modding suite enters development.
 
 ## Table of Contents
-1. [Installation]()
-1. [Issues]()
-1. [Analytics]()
-1. [Programs]()
-   * [PyAI]()
-   * [PyBIN]()
-   * [PyDAT]()
-   * [PyFNT]()
-   * [PyGOT]()
-   * [PyGRP]()
-   * [PyICE]()
-   * [PyLO]()
-   * [PyMPQ]()
-   * [PyPAL]()
-   * [PyPCX]()
-   * [PySPK]()
-   * [PyTBL]()
-   * [PyTILE]()
-   * [PyTRG]()
+1. [Installation](#installation)
+1. [Issues](#issuesfeedback)
+1. [Analytics](#analytics)
+1. [Programs](#programs)
+   * [PyAI](#pyai)
+   * [PyBIN](#pybin)
+   * [PyDAT](#pydat)
+   * [PyFNT](#pyfnt)
+   * [PyGOT](#pygot)
+   * [PyGRP](#pygrp)
+   * [PyICE](#pyice)
+   * [PyLO](#pylo)
+   * [PyMPQ](#pympq)
+   * [PyPAL](#pypal)
+   * [PyPCX](#pypcx)
+   * [PySPK](#pyspk)
+   * [PyTBL](#pytbl)
+   * [PyTILE](#pytile)
+   * [PyTRG](#pytrg)
 
 
 ## Installation
@@ -62,7 +62,7 @@ At the moment PyMS only tracks the launch of PyMS programs, anonamously and with
 Even though the analytics is anonamous and has no sensitive information, you can still disable analytics by editing "Settings/PyMS.txt", and setting the "allow" key under "analytics" to be False.
 
 ## Programs
-PyMS contains 16 programs to edit most of the file types you will encounter while modding.
+PyMS contains 15 programs to edit most of the file types you will encounter while modding.
 
 ### PyAI
 PyAI is used for editing AI .bin files.

@@ -1173,8 +1173,31 @@ class CodeEditDialog(PyMSDialog):
 			WarningDialog(self, "Invalid Script Line: %s" % line)
 			return ""
 
-	def convertParanthesis(self, line):
-		pass
+	def convertParanthesis(self, line): # used to convert (X Y) -> (X,Y) for script calls
+		return re.sub(r"\(([0123456789]+) ([0123456789]+)\)", r"(\1,\2)", line)
+
+	def getTimeAliasRegex(self, alias):
+		return r"^([ \t]*)" + alias + r" ([0123456789]+)(.*)"
+
+	def matchesWaitAliasFormat(self, line, alias):
+		if re.match(self.getTimeAliasRegex(alias), line):
+			return True
+		return False
+
+	def isTimeAlias(self, line):
+		for alias in AIBIN.AIBIN.time_aliases:
+			if self.matchesWaitAliasFormat(line, alias):
+				return True
+		return False
+
+	def convertTimeAlias(self, line): # used to convert time aliases (aka waitmin 1 -> wait 1440)
+		for alias in AIBIN.AIBIN.time_aliases.items():
+			if self.matchesWaitAliasFormat(line, alias[0]):
+				regex = self.getTimeAliasRegex(alias[0])
+				time = int(re.sub(regex, r"\2", line), 10) * alias[1]
+
+				return re.sub(regex, r"\1wait %i\3" % time, line)
+		return line
 
 	def asc3topyai(self, e=None):
 		beforeheader = ''
@@ -1187,7 +1210,6 @@ class CodeEditDialog(PyMSDialog):
 				line = line[:len(line)-len(comment)]
 			else:
 				comment = ""
-
 			if line.lstrip().startswith(';'):
 				if not None in headerinfo:
 					data += line.replace(';','#',1) + '\n'
@@ -1195,8 +1217,13 @@ class CodeEditDialog(PyMSDialog):
 					beforeheader += line.replace(';','#',1) + '\n'
 			elif line.lstrip().startswith(':'):
 				data += '        --%s--\n' % line.split('#',1)[0].strip()[1:]
+			elif self.isTimeAlias(line):
+				data += self.convertTimeAlias(line)
+				data += " " + comment
+				data += "\n"
+				continue
 			elif self.isScript(line):
-				data += self.convertScriptLine(line)
+				data += self.convertParanthesis(self.convertScriptLine(line))
 				data += " " + comment
 				data += "\n"
 				continue

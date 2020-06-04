@@ -23,13 +23,13 @@ PyMS is a cross platform BroodWar modding suite written using [Python](http://ww
 
 
 ## Installation
-1. **Install Python.** You should get the latest Python 2.7.x, currently that is [Python 2.7.12](https://www.python.org/downloads/release/python-2712/)
-1. **Install PILLOW.** Use PIP, the Python package manager, to [install PILLOW](https://pillow.readthedocs.io/en/latest/installation.html#basic-installation) (PIL will also work)
-1. **Download PyMS.** Always get the most up to date PyMS from [gitlab](https://gitlab.com/Pr0nogo/pyms-ngs/-/tree/master). If you are updating PyMS, you can keep your settings files located in the Settings folder and any modifications you've made to unitdef.txt.
+1. **Install Python.** You will have to download and install [Python 2.7.12](https://www.python.org/downloads/release/python-2712/)
+1. **Install PILLOW.** Use PIP, the Python package manager, to install PILLOW 6.2.2, using `pip install pillow==6.2.2` command.
+1. **Download PyMS.** Always get the most up to date PyMS from [github](https://github.com/veeq7/PyMS-Veeq/archive/master.zip). If you are updating PyMS, you can keep your settings files located in the Settings folder and any modifications you've made to unitdef.asc3.
 
 ## Issues/Feedback
 If you run into any issues with the programs, or have any feedback to improve the programs, please do one of the following:
-1. Create an issue [here on gitlab](https://gitlab.com/Pr0nogo/pyms-ngs/-/issues)
+1. Create an issue [here on github](https://github.com/veeq7/PyMS-Veeq/issues)
 1. Contact us on [Discord](https://discordapp.com/invite/s5SKBmY)
 1. Email [Pr0nogo](mailto:pronogo@hotmail.com) or [Veeq7](mailto:veeq72@gmail.com)
 

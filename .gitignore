@@ -1,5 +1,6 @@
 Settings/
 Libs/Temp/
+Libs/Logs/
 .idea/
 venv/
 **.pyc

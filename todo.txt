@@ -4,6 +4,10 @@ PyTILE:
 - Reuse MiniTiles Duplicates Old/New and Null settings don't work when importing minitile graphics.
 <<<<<<< .merge_file_a17192
 - Crash when trying to Copy MegaTile Flags
+
+PyDAT:
+- upgrades.dat marked as unsaved any time the program opens
+- techdata.dat marked as unsaved after editing upgrades.dat
 =======
 >>>>>>> .merge_file_a10996
 

@@ -1,4 +1,6 @@
 Settings/
+Libs/Temp/
 .idea/
 venv/
-*.pyc
+**.pyc
+**.bak

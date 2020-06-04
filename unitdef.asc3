@@ -2,7 +2,15 @@
 # This is a PyAI version of UNITDEF.INI made by Gold Dragon, used by ScAIEdit III
 #
 # If you need to add, modify or delete entries so it can fit your needs, do not modify the
+<<<<<<< HEAD
 # original file. Make copies, then modify them, and load them with PyAI.
+=======
+# original file. Make copies, then modify them and put the same directory as your AI script.
+#
+# Remember: When you compile using External Definition files, the variables are not saved. To
+#           decompile with the variables intact, you must have your modified External Definition
+#           file too.
+>>>>>>> adb8cba452611c220eeb5b26d861313c7ee42e32
 #
 # This file has been modified by Pr0nogo. It now includes all unit, upgrade, and tech entries.
 
@@ -283,7 +291,11 @@ military h_siege_turret = 26
 military spider_mine = 13
 military scanner_sweep = 33
 military larva = 35
+<<<<<<< HEAD
 military egg = 36
+=======
+military larva_egg = 36
+>>>>>>> adb8cba452611c220eeb5b26d861313c7ee42e32
 military cocoon = 59
 military lurker_egg = 97
 military scarab = 85

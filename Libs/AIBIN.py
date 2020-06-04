@@ -160,8 +160,6 @@ class AIBIN:
 		'comparison',
 		'add_build',
 		'upgrade_queue',
-		'extqueue',
-		'extupgrade',
 		'queue_relative',
 		'clear_queues',
 		'idle_tactics',
@@ -176,7 +174,7 @@ class AIBIN:
         'build_new',
 	]
 
-	script_aliases = { # those will expand with script conversion
+	script_aliases = { # those will expand with script conversion to proper syntax
 		"extqueue": "queue",
 		"extupgrade": "upgrade",
 		"extbuild": "build_new",

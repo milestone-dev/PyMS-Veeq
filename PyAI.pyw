@@ -1217,16 +1217,6 @@ class CodeEditDialog(PyMSDialog):
 					beforeheader += line.replace(';','#',1) + '\n'
 			elif line.lstrip().startswith(':'):
 				data += '        --%s--\n' % line.split('#',1)[0].strip()[1:]
-			elif self.isTimeAlias(line):
-				data += self.convertTimeAlias(line)
-				data += " " + comment
-				data += "\n"
-				continue
-			elif self.isScript(line):
-				data += self.convertParanthesis(self.convertScriptLine(line))
-				data += " " + comment
-				data += "\n"
-				continue
 			elif line.lstrip().startswith('script_name ') and headerinfo[3] == None:
 				headerinfo[3] = line.lstrip()[12:]
 				if re.match('bw|brood ?war',headerinfo[3],re.I):
@@ -1241,9 +1231,23 @@ class CodeEditDialog(PyMSDialog):
 					headerinfo[1] = 0
 			elif line.lstrip().startswith('script_id ') and headerinfo[0] == None:
 				headerinfo[0] = line.lstrip()[10:]
+
+			elif self.isTimeAlias(line):
+				data += self.convertTimeAlias(line)
+				data += " " + comment
+				data += "\n"
+				continue
+			elif self.isScript(line):
+				data += self.convertParanthesis(self.convertScriptLine(line))
+				data += " " + comment
+				data += "\n"
+				continue
 			elif line.strip():
 				d = line.lstrip().split(';',1)[0].strip().split(' ')
-				if d[0] in AIBIN.AIBIN.short_labels:
+				if d[0] in AIBIN.AIBIN.short_labels or d[0] in AIBIN.AIBIN.command_aliases:
+					if d[0] in AIBIN.AIBIN.command_aliases:
+						for alias in AIBIN.AIBIN.command_aliases.items():
+							d[0] = re.sub(r"(^[ \t]*)(" + alias[0] + ")(.*)", r"\1" + alias[1] + r"\3", d[0])
 					data += '    %s(%s)' % (d[0], ', '.join(d[1:]))
 					if ';' in line:
 						data += ' # ' + line.split('#',1)[1]

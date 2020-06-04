@@ -154,7 +154,7 @@ aicontrol_names = {
 aicontrol_names_rev = dict((v.lower(), k) for k, v in aicontrol_names.iteritems())
 
 class AIBIN:
-	script_subcommands = [
+	script_subcommands = [ # those will be converted to proper script syntax
 		'attack_to_choose',
 		'attack_add_relative',
 		'comparison',
@@ -176,14 +176,46 @@ class AIBIN:
         'build_new',
 	]
 
-	script_aliases = {
+	script_aliases = { # those will expand with script conversion
 		"extqueue": "queue",
 		"extupgrade": "upgrade",
+		"extbuild": "build_new",
+		"layout": "newlayout",
 	}
 
-	time_aliases = {
+	time_aliases = { # those will expand to wait x (fe. waitmin 1 -> wait 1440, which is 1 * 1440)
 		"waitsec": 24,
 		"waitmin": 1440,
+	}
+
+	command_aliases = { # those will expand for non script commands, not compatible with script!
+		"attack_now": "quick_attack",
+		"attack_wait": "wait_finishattack",
+		"atk_add": "attack_add",
+		"atk_clr": "attack_clear",
+		"atk_prep": "attack_prepare",
+		"atk_do": "attack_do",
+		"atk_now": "quick_attack",
+		"atk_wait": "wait_finishattack",
+		"defb_gg": "defensebuild_gg",
+		"defb_ga": "defensebuild_ga",
+		"defb_aa": "defensebuild_aa",
+		"defb_ag": "defensebuild_ag",
+		"defu_gg": "defenseuse_gg",
+		"defu_ga": "defenseuse_ga",
+		"defu_aa": "defenseuse_aa",
+		"defu_ag": "defenseuse_ag",
+		"defc_gg": "defenseclear_gg",
+		"defc_ga": "defenseclear_ga",
+		"defc_aa": "defenseclear_aa",
+		"defc_ag": "defenseclear_ag",
+		"def_max": "define_max",
+		"def": "defense",
+		"build_need": "player_need",
+		"upg": "upgrade",
+		"wait_upg": "wait_upgrades",
+		"check_townpoint": "try_townpoint",
+		"expand_townpoint": "allies_watch",
 	}
 
 	labels = [

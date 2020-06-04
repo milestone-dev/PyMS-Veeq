@@ -181,6 +181,8 @@ class AIBIN:
 		"extupgrade": "upgrade",
 		"extbuild": "build_new",
 		"layout": "newlayout",
+		"queue_rel": "queue_relative",
+		"atk_rel": "attack_add_relative",
 	}
 
 	time_aliases = { # those will expand to wait x (fe. waitmin 1 -> wait 1440, which is 1 * 1440)

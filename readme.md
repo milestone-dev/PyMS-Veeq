@@ -23,7 +23,8 @@ PyMS is a cross platform BroodWar modding suite written using [Python](http://ww
 
 
 ## Installation
-1. **Install Python.** You will have to download and install [Python 2.7.12](https://www.python.org/downloads/release/python-2712/)
+
+1. **Install Python.** You should get the latest Python 2.7.x, currently that is [Python 2.7.12](https://www.python.org/downloads/release/python-2712/)
 1. **Install PILLOW.** Use PIP, the Python package manager, to install PILLOW 6.2.2, using `pip install pillow==6.2.2` command.
 1. **Download PyMS.** Always get the most up to date PyMS from [github](https://github.com/veeq7/PyMS-Veeq/archive/master.zip). If you are updating PyMS, you can keep your settings files located in the Settings folder and any modifications you've made to unitdef.asc3.
 

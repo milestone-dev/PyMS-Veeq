@@ -1,7 +1,0 @@
-Exception in Tkinter callback
-Traceback (most recent call last):
-  File "C:\Python27\lib\lib-tk\Tkinter.py", line 1537, in __call__
-    return self.func(*args)
-TypeError: dismiss() takes exactly 1 argument (2 given)
-Exception in Tkinter callbackTraceback (most recent call last):
-

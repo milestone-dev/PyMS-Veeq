@@ -4,7 +4,6 @@ PyMS is a cross platform BroodWar modding suite written using [Python](http://ww
 ## Table of Contents
 1. [Installation](#installation)
 1. [Issues](#issuesfeedback)
-1. [Analytics](#analytics)
 1. [Programs](#programs)
    * [PyAI](#pyai)
    * [PyBIN](#pybin)
@@ -25,8 +24,8 @@ PyMS is a cross platform BroodWar modding suite written using [Python](http://ww
 
 ## Installation
 1. **Install Python.** You should get the latest Python 2.7.x, currently that is [Python 2.7.12](https://www.python.org/downloads/release/python-2712/)
-2. **Install PILLOW.** Use PIP, the Python package manager, to [install PILLOW](https://pillow.readthedocs.io/en/latest/installation.html#basic-installation) (PIL will also work)
-3. **Download PyMS.** Always get the most up to date PyMS from [gitlab](https://gitlab.com/Pr0nogo/pyms-ngs/-/tree/master). If you are updating PyMS, you can keep your settings files located in the Settings folder and any modifications you've made to unitdef.txt.
+1. **Install PILLOW.** Use PIP, the Python package manager, to [install PILLOW](https://pillow.readthedocs.io/en/latest/installation.html#basic-installation) (PIL will also work)
+1. **Download PyMS.** Always get the most up to date PyMS from [gitlab](https://gitlab.com/Pr0nogo/pyms-ngs/-/tree/master). If you are updating PyMS, you can keep your settings files located in the Settings folder and any modifications you've made to unitdef.txt.
 
 ## Issues/Feedback
 If you run into any issues with the programs, or have any feedback to improve the programs, please do one of the following:
@@ -38,28 +37,6 @@ Please include as much information as possible. If you are reporting an issue, p
 * The version of the program you had issues with (you can check in Libs\versions.json)
 * The OS you are running on
 * The error message or crash logs. If the program crashed without an error dialog, you can check in the Libs\Logs\ folder for the program's log file
-
-## Analytics
-At the moment PyMS only tracks the launch of PyMS programs, anonamously and with no sensitive information sent. An example of the data sent in these analytics calls:
-
-```
-{
-  "an": "PyGRP",
-  "av": "4.0.0",
-  "cd": "PyGRP",
-  "cd1": "1.2.3",
-  "cd2": "2.7.10",
-  "cd3": "darwin",
-  "cd4": "10.12.6",
-  "cd5": 64,
-  "cid": "bd32dccd-13be-4027-86eb-8a3fc11c61e7",
-  "t": "screenview",
-  "tid": "UA-########-#",
-  "v": "1"
-}
-```
-
-Even though the analytics is anonamous and has no sensitive information, you can still disable analytics by editing "Settings/PyMS.txt", and setting the "allow" key under "analytics" to be False.
 
 ## Programs
 PyMS contains 15 programs to edit most of the file types you will encounter while modding.

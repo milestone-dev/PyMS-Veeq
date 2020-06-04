@@ -2354,6 +2354,7 @@ class PyAI(Tk):
 		self.settings = loadsettings('PyAI',
 			{
 				'stat_txt':os.path.join(BASE_DIR, 'Libs', 'MPQ', 'rez', 'stat_txt.tbl'),
+				'extdefs': [os.path.join(BASE_DIR, 'unitdef.asc3')],
 				'unitsdat':'MPQ:arr\\units.dat',
 				'upgradesdat':'MPQ:arr\\upgrades.dat',
 				'techdatadat':'MPQ:arr\\techdata.dat',

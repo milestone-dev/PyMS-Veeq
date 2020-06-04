@@ -1,0 +1,128 @@
+04.06.2020
+PyAI:
+- Added support for converting script subcommands build_new and new_layout.
+- Added support for script commands that were considered to have multiple parameters. (a bug-fix tbh)
+- Added support for set_var_local.
+
+24.05.2020
+PyDAT:
+- Ticking checkboxes should now properly mark file as edited.
+
+23.05.2020d
+PyTILE:
+- Copy Pasting flags now works.
+- Mask from copy-paste menu now also applies to mirroring.
+- Mask settings are now also enabled when tileset is not loaded.
+- Copy Group Settings is now disabled, so it does not cause new crashes, I will probably fix the error later on.
+- Fixed few crashes and few hotkeys.
+
+23.05.2020c
+PyTILE:
+- Fixed a weird typo in Buildable Tab.
+- Added Mirror all flags tab.
+- Expand hotkey no longer crashes.
+
+23.05.2020b
+PyTILE:
+- Fixed crash when using insert hotkey in group or megatile palettes.
+- Flag edit mode is now properly saved after program exit.
+- Done some initial work for incoming delete and clean functions for megatile and group editors.
+
+23.05.2020
+PyTILE:
+- Added flag generator which generates height flags based on tile's walkability flags.
+- Flag Style now also applies to megatile editor.
+- Tileset Settings Menu is now more tall than wide, to match the new tab better.
+
+22.05.2020
+PyDAT:
+- Copy Pasting now properly marks file as edited.
+- Copy Pasting shortcut is now working properly, hotkey adjusted.
+
+20.05.2020
+PyTILE:
+- Flag Painter is now more accurate.
+- Added new Flag Painter style (Dots and Boxes).
+- Tileset canvas is no longer obstructing left-most and top-most pixels.
+- Now there is always 1px gap (in all zoom scales) between each tile group in tileset view.
+- Flag Painter Boxes now have correct size.
+
+19.05.2020
+PyAI:
+- Added settings menu for suppressing warning types. (Suppress Interpreter Warnings, Overwrite Script Warnings, Open/Save Warnings)
+- Re-added some interpreter warnings, which might be useful for newbies. Experienced AI programmers will suppress interpreter warnings anyway.
+- Fixed crash that was caused by clicking ESC in settings menus (DAT and MPQ, PyAI Settings).
+- Added support for '_Multi' bringjump modifier, which allows to multirun blocks directly from bring_jump, extended aise.dll is needed for this to work.
+- Fixed a bug that made script smart conversion work on command arguments that were named like a script sub-command.
+- You can now add '.asc3' definition files more easly.
+- File dialog now has a default file name. ('aiscript.bin', 'bwscript.bin')
+- Fixed a bug that made opening AI bins with certain extended commands result in "Invalid Command" error.
+
+17.05.2020
+PyICE:
+- Selecting an entry without holding control will now deselect entries from other lists.
+
+16.05.2020
+PyAI:
+- Unused labels are no longer discarded.
+
+PyTILE:
+- Settings for tileset view can be now edited before opening a tileset.
+- Added a button for expanding opened tileset.
+- Settings for tileset view are now saved properly. They were also moved to other branch, because it wasn't named correctly.
+- Fixed an issue with Flip flag being painted in the main window.
+- Fixed a bug with not being able to scroll with mouse wheel after changing flag edit mode.
+
+15.05.2020
+PyAI:
+- Added support for converting set_escalation, reset_listening, listening_wait and send_transmission custom_script subcommands.
+
+14.05.2020
+PyTILE:
+- Apply flags to Megatiles in Group option now properly updates Minitile Flags painter
+
+13.05.2020
+PyTILE:
+- New zoom scale: 3x.
+- You can now quickly null a megatile by alt+clicking or a megatile group with Ctrl+Shift+N(ekron) shortcut.
+- Fixed bugs that were accidentally introduced when adding new flag painter option.
+
+pre 13.05.2020
+PyMS:
+- Added my contact info into the crash prompt.
+
+PyAI:
+- Now forces correct file name by default (to avoid crashes), for example: "aiscript.bin" instead of "*.bin".
+- Added support for inline comments.
+- Added advanced script command conversion (check sample asc3 code included with patch).
+- Removed some unnecessary warnings.
+- Removed prompt for overwriting scripts.
+
+PyAI and PyICE:
+- Scroll Y of the main window is now properly saved and restored on list updates (mostly for updates after saving script).
+
+PyICE:
+- Standardized entry selection, it's now consistent with the behavior of PyAI. Left clicking now only selects one entry, you can hold control to select many. 
+
+PyDAT:
+- Now you are able to choose sounds for unit ids greater than 105, it's an experimental change and wasn't yet tested.
+
+PyMPQ and PyDAT:
+- Fixed a crash when trying to extract/play a sound, unfortunately, you still have to use other software to perform those actions.
+
+PyMPQ:
+- Fixed crash when trying to perform extract, modify, or compress operation on a read-only or active file.
+- Add Directory option now also imports all files from subfolders (automatically adds mpq prefixes according to folder names).
+- Standardized slash character to be '\' (backslash), program will now automatically replace the other slash char.
+
+PyTILE:
+- Increased megatile id input width.
+- Fixed not working import of flags (thanks to DarkenedFantasies).
+- Added some of the code needed for .cv5ex support (WIP).
+- Fixed crash when scrolling tileset too much.
+- Minitile painter is now bound to a mouse button you click, meaning that click left button will toggle flag on and clicking right button will turn it off (low height left mouse button, mid height right mouse button, high height middle mouse button). If you hold Control while clicking, flag will be filled on every minitile.
+- You can now preview and edit minitile flags in tileset view. To do it you will have to toggle it on in Tileset View Settings Tab.
+- You can now Zoom In and check preferred minitile flag representation in Tileset View Settings Tab.
+- Fixed crash after opening megatile palette, clicking export text settings, and pressing escape.
+- Added .tblex format support. Save prompt will ask you for a file format, .tblex will be the default format after we make a firegraft plugin to it.
+

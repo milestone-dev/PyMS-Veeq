@@ -1,0 +1,13 @@
+Known Bugs:
+PyTILE:
+- Changing Zoom Scale does not save scrolling progress correctly.
+- Reuse MiniTiles Duplicates Old/New and Null settings don't work when importing minitile graphics.
+- Crash when trying to Copy MegaTile Flags
+
+Planned Functionality:
+PyTILE:
+- Option to delete megatiles that are not used by any tile groups.
+
+	Palette View:
+- Selecting multiple groups in the main window (mostly for shifting them all to null, applying megatile flags to all of them like walkable/low/med/high etc, and setting them to unbuildable
+- Allowing flags to be stored in clipboard and pasted over, ctrl+alt+a to copy all, ctrl+alt+w to copy walkable, ctrl+alt+h to copy height

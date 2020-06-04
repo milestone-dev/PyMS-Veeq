@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "D:\SCBW 1.16.1\maps\BroodWar\[Tools]\PyMS-aise\PyMAP.pyw", line 2755, in <module>
+    main()
+  File "D:\SCBW 1.16.1\maps\BroodWar\[Tools]\PyMS-aise\PyMAP.pyw", line 2735, in main
+    gui = PyMAP()
+  File "D:\SCBW 1.16.1\maps\BroodWar\[Tools]\PyMS-aise\PyMAP.pyw", line 2333, in __init__
+    self.file_settings(err=e)
+  File "D:\SCBW 1.16.1\maps\BroodWar\[Tools]\PyMS-aise\PyMAP.pyw", line 2411, in file_settings
+    SettingsDialog(self, data, (340,215), err)
+  File "D:\SCBW 1.16.1\maps\BroodWar\[Tools]\PyMS-aise\Libs\setutils.py", line 1024, in __init__
+    PyMSDialog.__init__(self, parent, 'Settings')
+  File "D:\SCBW 1.16.1\maps\BroodWar\[Tools]\PyMS-aise\Libs\utils.py", line 265, in __init__
+    focus = self.widgetize()
+  File "D:\SCBW 1.16.1\maps\BroodWar\[Tools]\PyMS-aise\Libs\setutils.py", line 1035, in widgetize
+    self.pages.append(SettingsPanel(self.tabs, d[1], self.settings, self.parent.mpqhandler))
+  File "D:\SCBW 1.16.1\maps\BroodWar\[Tools]\PyMS-aise\Libs\setutils.py", line 910, in __init__
+    if issubclass(settings, SettingDict):
+TypeError: issubclass() arg 1 must be a class

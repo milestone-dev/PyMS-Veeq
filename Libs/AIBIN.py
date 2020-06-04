@@ -181,6 +181,11 @@ class AIBIN:
 		"extupgrade": "upgrade",
 	}
 
+	time_aliases = {
+		"waitsec": 24,
+		"waitmin": 1440,
+	}
+
 	labels = [
 		'Goto',
 		'DoesntCommandGoto',

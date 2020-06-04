@@ -1,7 +1,8 @@
-Settings/
-Libs/Temp/
-Libs/Logs/
 .idea/
 venv/
+Settings/
+Testing/
+Libs/Temp/
+Libs/Logs/
 **.pyc
 **.bak

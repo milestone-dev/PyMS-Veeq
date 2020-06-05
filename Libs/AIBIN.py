@@ -255,7 +255,7 @@ class AIBIN:
 		"rand_j": "random_jump ",
 		"rand_jump": "random_jump ",
 		"multi": "multirun",
-		"dth": "death",
+		"dth": "deaths",
 		"res": "resources",
 		"m_force": "max_force",
 		"l_bunk": "load_bunkers",

@@ -216,6 +216,7 @@ class AIBIN:
 		"attack_now": "quick_attack",
 		"attack_wait": "wait_finishattack",
 		"atk_add": "attack_add",
+		"atk_rand": "attack_rand",
 		"atk_clr": "attack_clear",
 		"atk_c": "attack_clear",
 		"atk_prep": "attack_prepare",

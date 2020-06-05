@@ -60,11 +60,15 @@ for l in open(os.path.join(BASE_DIR,'Libs','Data','Hints.txt'),'r'):
 def tip(obj, tipname, hint):
 	obj.tooltip = Tooltip(obj, '%s:\n' % tipname + fit('  ', HINTS[hint], end=True)[:-1], mouse=True)
 
+def markEdited(editable):
+	if hasattr(editable, "edited"):
+		editable.edited = True
+
 def makeCheckbox(frame, var, txt, hint, parent=None):
 	c = Checkbutton(frame, text=txt, variable=var)
 	tip(c, txt, hint)
 	if parent != None:
-		parent.edited = True
+		var.trace_variable("w", lambda q, w, parent=parent: markEdited(parent))
 	return c
 
 class DATSettingsDialog(SettingsDialog):

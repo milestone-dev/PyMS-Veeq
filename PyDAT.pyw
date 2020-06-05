@@ -60,15 +60,16 @@ for l in open(os.path.join(BASE_DIR,'Libs','Data','Hints.txt'),'r'):
 def tip(obj, tipname, hint):
 	obj.tooltip = Tooltip(obj, '%s:\n' % tipname + fit('  ', HINTS[hint], end=True)[:-1], mouse=True)
 
-def markEdited(editable):
-	if hasattr(editable, "edited"):
-		editable.edited = True
+def markEdited(dattab):
+	if hasattr(dattab, "edited"):
+		dattab.edited = True
 
-def makeCheckbox(frame, var, txt, hint, parent=None):
-	c = Checkbutton(frame, text=txt, variable=var)
-	tip(c, txt, hint)
-	if parent != None:
-		var.trace_variable("w", lambda q, w, parent=parent: markEdited(parent))
+def makeCheckbox(frame=None, variable=None, text=None, hint=None, dattab=None, tiptext=None):
+	c = Checkbutton(frame, text=text, variable=variable)
+	if hint != None:
+		tip(c, tiptext if tiptext else text, hint)
+	if dattab != None:
+		variable.trace_variable("w", lambda q, w, dattab=dattab: markEdited(dattab))
 	return c
 
 class DATSettingsDialog(SettingsDialog):
@@ -721,7 +722,7 @@ class OrdersTab(DATTab):
 			cc = Frame(s, width=20)
 			for t,v,h in c:
 				f = Frame(cc)
-				Checkbutton(f, text=t, variable=v).pack(side=LEFT)
+				makeCheckbox(f, text=t, variable=v).pack(side=LEFT)
 				tip(f, t, h)
 				f.pack(fill=X)
 			cc.pack(side=LEFT, fill=Y)
@@ -1480,22 +1481,18 @@ class ImagesTab(DATTab):
 		s = Frame(l)
 		ls = Frame(s)
 		f = Frame(ls)
-		Checkbutton(f, text='Graphics Turns', variable=self.graphicsturns).pack(side=LEFT)
-		tip(f, 'Graphics Turns', 'ImgGfxTurns')
+		makeCheckbox(f, text='Graphics Turns', variable=self.graphicsturns, hint="ImgGfxTurns", dattab=self).pack(side=LEFT)
 		f.pack(fill=X)
 		f = Frame(ls)
-		Checkbutton(f, text='Draw If Cloaked', variable=self.drawifcloaked).pack(side=LEFT)
-		tip(f, 'Draw If Cloaked', 'ImgDrawCloaked')
+		makeCheckbox(f, text='Draw If Cloaked', variable=self.drawifcloaked, hint="ImgDrawCloaked", dattab=self).pack(side=LEFT)
 		f.pack(fill=X)
 		ls.pack(side=LEFT)
 		ls = Frame(s)
 		f = Frame(ls)
-		Checkbutton(f, text='Clickable', variable=self.clickable).pack(side=LEFT)
-		tip(f, 'Clickable', 'ImgClickable')
+		makeCheckbox(f, text='Clickable', variable=self.clickable, hint="ImgClickable", dattab=self).pack(side=LEFT)
 		f.pack(fill=X)
 		f = Frame(ls)
-		Checkbutton(f, text='Use Full Iscript', variable=self.usefulliscript).pack(side=LEFT)
-		tip(f, 'Use Full Iscript', 'ImgUseFullIscript')
+		makeCheckbox(f, text='Use Full Iscript', variable=self.usefulliscript, hint="ImgUseFullIscript", dattab=self).pack(side=LEFT)
 		f.pack(fill=X)
 		ls.pack(side=LEFT)
 		s.pack(fill=BOTH, padx=5, pady=5)
@@ -1665,11 +1662,9 @@ class SpritesTab(DATTab):
 		tip(f, 'Image', 'SpriteImage')
 		f.pack(fill=X)
 		f = Frame(s)
-		c = Checkbutton(f, text='Is Visible', variable=self.visible)
-		tip(c, 'Is Visible', 'SpriteVisible')
+		c = makeCheckbox(f, text='Is Visible', variable=self.visible, hint="SpriteVisible", dattab=self)
 		c.pack(side=LEFT)
-		c = Checkbutton(f, text='Unknown', variable=self.unknown)
-		tip(c, 'Unknown', 'SpriteUnk1')
+		c = makeCheckbox(f, text='Unknown', variable=self.unknown, hint="SpriteUnk1", dattab=self)
 		c.pack(side=LEFT)
 		f.pack()
 		f = Frame(s)
@@ -2174,8 +2169,7 @@ class WeaponsTab(DATTab):
 		]
 		for t,v,h in flags:
 			f = Frame(s)
-			Checkbutton(f, text=t, variable=v).pack(side=LEFT)
-			tip(f, t, 'WeapTarget' + h)
+			makeCheckbox(f, text=t, variable=v, hint='WeapTarget' + h, dattab=self).pack(side=LEFT)
 			f.pack(side=TOP, fill=X)
 		s.pack(fill=BOTH, padx=5, pady=5)
 		l.pack(fill=BOTH)
@@ -3205,8 +3199,7 @@ class AdvancedUnitsTab(DATUnitsTab):
 			cc = Frame(s, width=20)
 			for t,v,h in c:
 				f = Frame(cc)
-				Checkbutton(f, text=t, variable=v).pack(side=LEFT)
-				tip(f, t, h)
+				makeCheckbox(f, text=t, variable=v, hint=h, dattab=self).pack(side=LEFT)
 				f.pack(fill=X)
 			cc.pack(side=LEFT, fill=Y)
 		s.pack(fill=BOTH, padx=5, pady=5)
@@ -3403,8 +3396,7 @@ class BasicUnitsTab(DATUnitsTab):
 		tip(x, 'Shields', 'UnitSP')
 		x.pack(side=LEFT)
 		x = Frame(f)
-		Checkbutton(x, text='Enabled', variable=self.shieldsenabled).pack(side=LEFT)
-		tip(x, 'Shields Enabled', 'UnitShieldEnable')
+		makeCheckbox(x, text='Enabled', variable=self.shieldsenabled, hint='UnitShieldEnable', dattab=self).pack(side=LEFT)
 		x.pack(side=LEFT, fill=X)
 		f.pack(fill=X)
 		f = Frame(s)
@@ -3449,7 +3441,7 @@ class BasicUnitsTab(DATUnitsTab):
 		Label(f, text='secs.').pack(side=LEFT)
 		tip(f, 'Build Time', 'UnitTime')
 		f.pack(fill=X)
-		c = Checkbutton(s, text='BroodWar', variable=self.broodwar)
+		c = makeCheckbox(s, text='BroodWar', variable=self.broodwar, dattab=self)
 		tip(c, 'BroodWar', 'UnitIsBW')
 		c.pack()
 		s.pack(fill=BOTH, padx=5, pady=5)
@@ -3508,24 +3500,19 @@ class BasicUnitsTab(DATUnitsTab):
 		f = Frame(s)
 		Label(f, text='Required:', width=9, anchor=E).pack(side=LEFT)
 		Entry(f, textvariable=self.suprequired, font=couriernew, width=3).pack(side=LEFT)
-		Checkbutton(f, text='+0.5', variable=self.supreqhalf).pack(side=LEFT)
-		tip(f, 'Supply Required', 'UnitSupReq')
+		makeCheckbox(f, text='+0.5', variable=self.supreqhalf, hint='UnitSupReq', tiptext="Supply Required", dattab=self).pack(side=LEFT)
 		f.pack(fill=X)
 		f = Frame(s)
 		Label(f, text='Provided:', width=9, anchor=E).pack(side=LEFT)
 		Entry(f, textvariable=self.suprovided, font=couriernew, width=3).pack(side=LEFT)
-		Checkbutton(f, text='+0.5', variable=self.suprovhalf).pack(side=LEFT)
-		tip(f, 'Supply Provided', 'UnitSupProv')
+		makeCheckbox(f, text='+0.5', variable=self.suprovhalf, hint='UnitSupProv', tiptext="Supply Required", dattab=self).pack(side=LEFT)
 		f.pack(fill=X)
 		f = Frame(s)
-		c = Checkbutton(f, text='Zerg', variable=self.zerg)
-		tip(c, 'Zerg', 'UnitSEGroupZerg')
+		c = makeCheckbox(f, text='Zerg', variable=self.zerg, hint='UnitSEGroupZerg', dattab=self)
 		c.pack(side=LEFT)
-		c = Checkbutton(f, text='Terran', variable=self.terran)
-		tip(c, 'Terran', 'UnitSEGroupTerran')
+		c = makeCheckbox(f, text='Terran', variable=self.terran, hint='UnitSEGroupTerran', dattab=self)
 		c.pack(side=LEFT)
-		c = Checkbutton(f, text='Protoss', variable=self.protoss)
-		tip(c, 'Protoss', 'UnitSEGroupProtoss')
+		c = makeCheckbox(f, text='Protoss', variable=self.terran, hint='UnitSEGroupProtoss', dattab=self)
 		c.pack(side=LEFT)
 		f.pack()
 		s.pack(fill=BOTH, padx=5, pady=5)

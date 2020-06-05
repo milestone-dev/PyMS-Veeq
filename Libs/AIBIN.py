@@ -179,6 +179,7 @@ class AIBIN:
 		"extupgrade": "upgrade",
 		"extbuild": "build_new",
 		"layout": "newlayout",
+		"atk_rel": "attack_add_relative",
 		"queue_rel": "queue_relative",
 		"player_combat": "comparison player_combat",
 		"unit_check": "comparison unit_check",

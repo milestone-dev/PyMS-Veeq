@@ -1180,24 +1180,24 @@ class CodeEditDialog(PyMSDialog):
 	def getTimeAliasRegex(self, alias):
 		return r"^([ \t]*)" + alias + r" ([0123456789]+)(.*)"
 
-	def matchesWaitAliasFormat(self, line, alias):
+	def matchesTimeAliasFormat(self, line, alias):
 		if re.match(self.getTimeAliasRegex(alias), line):
 			return True
 		return False
 
 	def isTimeAlias(self, line):
 		for alias in AIBIN.AIBIN.time_aliases:
-			if self.matchesWaitAliasFormat(line, alias):
+			if self.matchesTimeAliasFormat(line, alias):
 				return True
 		return False
 
 	def convertTimeAlias(self, line): # used to convert time aliases (aka waitmin 1 -> wait 1440)
 		for alias in AIBIN.AIBIN.time_aliases.items():
-			if self.matchesWaitAliasFormat(line, alias[0]):
+			if self.matchesTimeAliasFormat(line, alias[0]):
 				regex = self.getTimeAliasRegex(alias[0])
 				time = int(re.sub(regex, r"\2", line), 10) * alias[1]
 
-				return re.sub(regex, r"\1wait %i\3" % time, line)
+				return re.sub(regex, r"\1wait(%i)\3" % time, line)
 		return line
 
 	def asc3topyai(self, e=None):

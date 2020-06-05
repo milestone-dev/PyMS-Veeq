@@ -1288,8 +1288,7 @@ class CodeEditDialog(PyMSDialog):
 
 					self.startBenchmark(5)
 					if d[0] in AIBIN.AIBIN.command_aliases:
-						for alias in AIBIN.AIBIN.command_aliases.items():
-							d[0] = re.sub(r"(^[ \t]*)(\b" + alias[0] + r"\b)(.*)", r"\1" + alias[1] + r"\3", d[0])
+						d[0] = AIBIN.AIBIN.command_aliases.get(d[0])
 					self.commandAliasesTime += self.stopBenchmark(5)
 
 

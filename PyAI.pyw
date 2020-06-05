@@ -1178,7 +1178,7 @@ class CodeEditDialog(PyMSDialog):
 		return re.sub(r"\(([0123456789]+) ([0123456789]+)\)", r"(\1,\2)", line)
 
 	def getTimeAliasRegex(self, alias):
-		return r"^([ \t]*)" + alias + r" ([0123456789]+)(.*)"
+		return r"^([ \t]*)" + alias + r" ([0123456789.]+)(.*)"
 
 	def matchesTimeAliasFormat(self, line, alias):
 		if re.match(self.getTimeAliasRegex(alias), line):
@@ -1195,7 +1195,9 @@ class CodeEditDialog(PyMSDialog):
 		for alias in AIBIN.AIBIN.time_aliases.items():
 			if self.matchesTimeAliasFormat(line, alias[0]):
 				regex = self.getTimeAliasRegex(alias[0])
-				time = int(re.sub(regex, r"\2", line), 10) * alias[1]
+				timeLiteral = re.sub(regex, r"\2", line)
+				timeLiteral = re.sub(r'(\..*)\.', r'\1', timeLiteral) # remove reapeating dots
+				time = int(round(float(timeLiteral) * alias[1]))
 
 				return re.sub(regex, r"\1wait(%i)\3" % time, line)
 		return line
@@ -1232,7 +1234,6 @@ class CodeEditDialog(PyMSDialog):
 					headerinfo[1] = 0
 			elif line.lstrip().startswith('script_id ') and headerinfo[0] == None:
 				headerinfo[0] = line.lstrip()[10:]
-
 			elif self.isTimeAlias(line):
 				data += self.convertTimeAlias(line)
 				data += " " + comment

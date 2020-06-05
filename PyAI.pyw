@@ -1118,10 +1118,16 @@ class CodeEditDialog(PyMSDialog):
 			self.parent.highlights = c.cont
 
 
+	def lineStartingWith(self, line, value):
+		return re.match(r"^[ \t]*\b" + value + r"\b", line)
+
 	def findScriptSubcommand(self, line):
 		for command in AIBIN.AIBIN.script_subcommands:
-			if line.lstrip().startswith(command + ' '):
+			if self.lineStartingWith(line, command):
 				return command
+		for alias in AIBIN.AIBIN.script_aliases.items():
+			if self.lineStartingWith(line, alias[0]):
+				return alias[1]
 		return None
 
 	def replaceScriptSubcommandWithAlias(self, command):
@@ -1129,20 +1135,18 @@ class CodeEditDialog(PyMSDialog):
 			return command
 		newcmd = command
 		for alias in AIBIN.AIBIN.script_aliases.items():
-			x = alias[0]
-			y = alias[1]
-			newcmd = re.sub(r"(.*)"+alias[0]+r"(.*)", r"\1"+alias[1]+r"\2", newcmd)
+			newcmd = re.sub(r"(^[ \t]*)\b"+alias[0]+r"\b(.*)", r"\1"+alias[1]+r"\2", newcmd)
 		return newcmd
 
 	def hasScriptSubcommand(self, line):
 		return self.findScriptSubcommand(line) != None
 
 	def getScriptSyntaxType(self, line):
-		if line.lstrip().startswith('script('):
+		if self.lineStartingWith(line, "script\("):
 			return 0
-		if line.lstrip().startswith('custom_script('):
+		if self.lineStartingWith(line, "custom_script\("):
 			return 1
-		if line.lstrip().startswith('script '):
+		if self.lineStartingWith(line, "script "):
 			return 2
 		if self.hasScriptSubcommand(line):
 			return 3
@@ -1159,15 +1163,12 @@ class CodeEditDialog(PyMSDialog):
 		if type == 0:
 			return line.rstrip()
 		elif type == 1:
-			# replace custom_script with script
 			return re.sub(r"(^[ \t]*)custom_script\((.*)\)", r"\1script(\2)", line).rstrip()
 		elif type == 2:
-			# add brackets after script
 			return re.sub(r"(^[ \t]*)script (.*)", r"\1script(\2)", line).rstrip()
 		elif type == 3:
-			command = self.replaceScriptSubcommandWithAlias(self.findScriptSubcommand(line))
+			command = self.findScriptSubcommand(line)
 			line = self.replaceScriptSubcommandWithAlias(line)
-			# add script()
 			return re.sub(r"(^[ \t]*)("+command+".*)", r"\1script(\2)", line).rstrip()
 		else:
 			WarningDialog(self, "Invalid Script Line: %s" % line)
@@ -1177,26 +1178,28 @@ class CodeEditDialog(PyMSDialog):
 		return re.sub(r"\(([0123456789]+) ([0123456789]+)\)", r"(\1,\2)", line)
 
 	def getTimeAliasRegex(self, alias):
-		return r"^([ \t]*)" + alias + r" ([0123456789]+)(.*)"
+		return r"^([ \t]*)" + alias + r" ([0123456789.]+)(.*)"
 
-	def matchesWaitAliasFormat(self, line, alias):
+	def matchesTimeAliasFormat(self, line, alias):
 		if re.match(self.getTimeAliasRegex(alias), line):
 			return True
 		return False
 
 	def isTimeAlias(self, line):
 		for alias in AIBIN.AIBIN.time_aliases:
-			if self.matchesWaitAliasFormat(line, alias):
+			if self.matchesTimeAliasFormat(line, alias):
 				return True
 		return False
 
 	def convertTimeAlias(self, line): # used to convert time aliases (aka waitmin 1 -> wait 1440)
 		for alias in AIBIN.AIBIN.time_aliases.items():
-			if self.matchesWaitAliasFormat(line, alias[0]):
+			if self.matchesTimeAliasFormat(line, alias[0]):
 				regex = self.getTimeAliasRegex(alias[0])
-				time = int(re.sub(regex, r"\2", line), 10) * alias[1]
+				timeLiteral = re.sub(regex, r"\2", line)
+				timeLiteral = re.sub(r'(\..*)\.', r'\1', timeLiteral) # remove reapeating dots
+				time = int(round(float(timeLiteral) * alias[1]))
 
-				return re.sub(regex, r"\1wait %i\3" % time, line)
+				return re.sub(regex, r"\1wait(%i)\3" % time, line)
 		return line
 
 	def asc3topyai(self, e=None):
@@ -1217,16 +1220,6 @@ class CodeEditDialog(PyMSDialog):
 					beforeheader += line.replace(';','#',1) + '\n'
 			elif line.lstrip().startswith(':'):
 				data += '        --%s--\n' % line.split('#',1)[0].strip()[1:]
-			elif self.isTimeAlias(line):
-				data += self.convertTimeAlias(line)
-				data += " " + comment
-				data += "\n"
-				continue
-			elif self.isScript(line):
-				data += self.convertParanthesis(self.convertScriptLine(line))
-				data += " " + comment
-				data += "\n"
-				continue
 			elif line.lstrip().startswith('script_name ') and headerinfo[3] == None:
 				headerinfo[3] = line.lstrip()[12:]
 				if re.match('bw|brood ?war',headerinfo[3],re.I):
@@ -1241,9 +1234,20 @@ class CodeEditDialog(PyMSDialog):
 					headerinfo[1] = 0
 			elif line.lstrip().startswith('script_id ') and headerinfo[0] == None:
 				headerinfo[0] = line.lstrip()[10:]
+			elif self.isTimeAlias(line):
+				data += self.convertTimeAlias(line)
+				data += " " + comment
+				data += "\n"
+			elif self.isScript(line):
+				data += self.convertParanthesis(self.convertScriptLine(line))
+				data += " " + comment
+				data += "\n"
 			elif line.strip():
 				d = line.lstrip().split(';',1)[0].strip().split(' ')
-				if d[0] in AIBIN.AIBIN.short_labels:
+				if d[0] in AIBIN.AIBIN.short_labels or d[0] in AIBIN.AIBIN.command_aliases:
+					if d[0] in AIBIN.AIBIN.command_aliases:
+						for alias in AIBIN.AIBIN.command_aliases.items():
+							d[0] = re.sub(r"(^[ \t]*)(\b" + alias[0] + r"\b)(.*)", r"\1" + alias[1] + r"\3", d[0])
 					data += '    %s(%s)' % (d[0], ', '.join(d[1:]))
 					if ';' in line:
 						data += ' # ' + line.split('#',1)[1]

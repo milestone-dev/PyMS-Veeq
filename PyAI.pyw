@@ -13,6 +13,8 @@ from thread import start_new_thread
 from shutil import copy
 import optparse, os, re, webbrowser, sys
 
+import time
+
 LONG_VERSION = 'v%s' % VERSIONS['PyAI']
 
 IMG_CACHE = {}
@@ -1125,17 +1127,22 @@ class CodeEditDialog(PyMSDialog):
 		for command in AIBIN.AIBIN.script_subcommands:
 			if self.lineStartingWith(line, command):
 				return command
+		self.startBenchmark(4)
 		for alias in AIBIN.AIBIN.script_aliases.items():
 			if self.lineStartingWith(line, alias[0]):
 				return alias[1]
+				self.scriptAliasesTime += self.stopBenchmark(4)
 		return None
 
 	def expandScriptAlias(self, command):
+		self.startBenchmark(3)
 		if command == "":
+			self.scriptAliasesTime += self.stopBenchmark(3)
 			return command
 		newcmd = command
 		for alias in AIBIN.AIBIN.script_aliases.items():
 			newcmd = re.sub(r"(^[ \t]*)\b"+alias[0]+r"\b(.*)", r"\1"+alias[1]+r"\2", newcmd)
+		self.scriptAliasesTime += self.stopBenchmark(3)
 		return newcmd
 
 	def hasScriptSubcommand(self, line):
@@ -1186,12 +1193,16 @@ class CodeEditDialog(PyMSDialog):
 		return False
 
 	def isTimeAlias(self, line):
+		self.startBenchmark(2)
 		for alias in AIBIN.AIBIN.time_macros:
 			if self.matchesTimeAliasFormat(line, alias):
+				self.timeMacrosTime += self.stopBenchmark(2)
 				return True
+		self.timeMacrosTime += self.stopBenchmark(2)
 		return False
 
 	def expandTimeAlias(self, line): # used to convert time aliases (aka waitmin 1 -> wait 1440)
+		self.startBenchmark(1)
 		for alias in AIBIN.AIBIN.time_macros.items():
 			if self.matchesTimeAliasFormat(line, alias[0]):
 				regex = self.getTimeAliasRegex(alias[0])
@@ -1199,13 +1210,27 @@ class CodeEditDialog(PyMSDialog):
 				timeLiteral = re.sub(r'(\..*)\.', r'\1', timeLiteral) # remove reapeating dots
 				time = int(round(float(timeLiteral) * alias[1]))
 
+				self.timeMacrosTime += self.stopBenchmark(1)
 				return re.sub(regex, r"\1wait(%i)\3" % time, line)
+		self.timeMacrosTime += self.stopBenchmark(1)
 		return line
 
 	def expandArgumentAliases(self, line):
+		self.startBenchmark(0)
 		for alias in AIBIN.AIBIN.argument_aliases.items():
 			line = re.sub(r"\b" + alias[0] + r"\b", alias[1], line)
+		self.argumentAliasesTime += self.stopBenchmark(0)
 		return line
+
+	def startBenchmark(self, id):
+		if not hasattr(self, "benchmark"):
+			self.benchmark = []
+		while len(self.benchmark) <= id:
+			self.benchmark.append(0.0)
+		self.benchmark[id] = time.time()
+
+	def stopBenchmark(self, id):
+		return time.time() - self.benchmark[id]
 
 
 	def asc3topyai(self, e=None):
@@ -1213,6 +1238,12 @@ class CodeEditDialog(PyMSDialog):
 		header = '### NOTE: There is no way to determine the scripts flags or if it is a BW script or not!\n###       please update the header below appropriately!\n%s(%s, 111, %s): # Script Name: %s'
 		headerinfo = [None,None,None,None]
 		data = ''
+
+		self.scriptAliasesTime = 0.0
+		self.commandAliasesTime = 0.0
+		self.argumentAliasesTime = 0.0
+		self.timeMacrosTime = 0.0
+
 		for line in self.text.text.get('1.0',END).split('\n'):
 			if re.search(r".*#.*", line):
 				comment = re.sub(r".*(#.*)", r"\1", line)
@@ -1254,9 +1285,14 @@ class CodeEditDialog(PyMSDialog):
 				line = self.expandArgumentAliases(line)
 				d = line.lstrip().split(';',1)[0].strip().split(' ')
 				if d[0] in AIBIN.AIBIN.short_labels or d[0] in AIBIN.AIBIN.command_aliases:
+
+					self.startBenchmark(5)
 					if d[0] in AIBIN.AIBIN.command_aliases:
 						for alias in AIBIN.AIBIN.command_aliases.items():
 							d[0] = re.sub(r"(^[ \t]*)(\b" + alias[0] + r"\b)(.*)", r"\1" + alias[1] + r"\3", d[0])
+					self.commandAliasesTime += self.stopBenchmark(5)
+
+
 					data += '    %s(%s)' % (d[0], ', '.join(d[1:]))
 					if ';' in line:
 						data += ' # ' + line.split('#',1)[1]
@@ -1274,6 +1310,12 @@ class CodeEditDialog(PyMSDialog):
 		if None in headerinfo:
 			askquestion(parent=self, title='Invalid Header', message='The script is either missing a script_name or a script_id.', type=OK)
 			return
+
+		beforeheader += "# Script Aliases Time: " + str(self.scriptAliasesTime) + "\n"
+		beforeheader += "# Command Aliases Time: " + str(self.commandAliasesTime) + "\n"
+		beforeheader += "# Argument Aliases Time: " + str(self.argumentAliasesTime) + "\n"
+		beforeheader += "# Time Macros Time: " + str(self.timeMacrosTime) + "\n"
+
 		self.text.delete('1.0', END)
 		self.text.insert(END, beforeheader + '\n' + header % tuple(headerinfo) + data)
 		self.text.edited = True

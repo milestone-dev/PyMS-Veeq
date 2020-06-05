@@ -1220,8 +1220,6 @@ class CodeEditDialog(PyMSDialog):
 			else:
 				comment = ""
 
-			line = self.expandArgumentAliases(line)
-
 			if line.lstrip().startswith(';'):
 				if not None in headerinfo:
 					data += line.replace(';','#',1) + '\n'
@@ -1248,10 +1246,12 @@ class CodeEditDialog(PyMSDialog):
 				data += " " + comment
 				data += "\n"
 			elif self.isScript(line):
+				line = self.expandArgumentAliases(line)
 				data += self.convertParanthesis(self.convertScriptLine(line))
 				data += " " + comment
 				data += "\n"
 			elif line.strip():
+				line = self.expandArgumentAliases(line)
 				d = line.lstrip().split(';',1)[0].strip().split(' ')
 				if d[0] in AIBIN.AIBIN.short_labels or d[0] in AIBIN.AIBIN.command_aliases:
 					if d[0] in AIBIN.AIBIN.command_aliases:

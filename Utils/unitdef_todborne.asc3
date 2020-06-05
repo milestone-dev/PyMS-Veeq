@@ -1,0 +1,361 @@
+# unitdef.txt file (External Definition)
+# This is a PyAI version of UNITDEF.INI made by Gold Dragon, used by ScAIEdit III
+#
+# If you need to add, modify or delete entries so it can fit your needs, do not modify the
+# original file. Make copies, then modify them, and load them with PyAI.
+#
+# This file has been modified by Pr0nogo. It now includes all unit, upgrade, and tech entries.
+# Modified to include Todborne (CB20 and beyond) definitions.
+
+# Police military units
+military officer = 0
+military bearblower = 1
+military bazookabike = 2
+military ackmech = 3
+military smashburger = 5
+military wraith = 8
+military science_vessel = 9
+@spellcaster(science_vessel)
+military ice_cream_truck = 11
+military battlecruiser = 12
+military barker = 27
+military swat_trooper = 32
+military paramedic = 34
+@spellcaster(paramedic)
+military lawhound = 58
+military ranger = 65
+military super_trooper = 77
+military halo = 95
+
+# Police special units
+military ackmech_turret = 4
+military halo_turret = 6
+military nuclear_missile = 14
+military officer_guard = 15
+military swat_trooper_guard = 16
+military super_trooper_guard = 21
+military t_siege_mode = 30
+military bazookabike_upg = 78
+
+# Police heroes
+military donut_officer = 10
+military h_goliath = 17
+military darion_superbike = 19
+military mom = 33
+military ackmed = 87
+military steve = 99
+military dad = 100
+
+# Cullen hero units
+military cullen_marine = 20
+military cullen_donut = 22
+military cullen_chicken = 23
+military cullen_dog = 25
+military cullen_pizza = 29
+military hiway = 54
+military cullen_crow = 98
+
+# Police buildings
+building engineer = 7
+building station = 106
+building infirmary = 107
+building swat_post = 108
+building donut_shop = 109
+building dispenser = 110
+building academy = 111
+building academy_old = 112
+building garage = 113
+building air_accessor = 114
+building choir_hall = 115
+building science_facility = 116
+building wuckery = 117
+building chicken_coop = 118
+building doghouse = 119
+building copywriter = 120
+building deep_office = 121
+building armory = 122
+building arms_racist = 123
+building warden = 124
+building bunker = 125
+building crashed_battle = 126
+building ion_cannon = 127
+building oritemple = 168
+building satellite_tower = 190
+building t_marker = 192
+building t_beacon = 195
+building t_flagbeacon = 198
+building power_generator = 200
+
+# Police upgrades
+upgrade p_kevlar = 0
+upgrade p_donut_steel = 1
+upgrade p_hull = 2
+upgrade p_donuts = 7
+upgrade p_munitions = 8
+upgrade p_ordnance = 9
+upgrade police_brutality = 16
+upgrade oppression_training = 17
+upgrade p_structure_padding = 18
+upgrade super_suit = 46
+upgrade kenyan_training = 50
+upgrade female_privilege = 51
+upgrade goliath_range = 54
+
+# Cullen upgrades
+upgrade barkmaster_aspect = 19
+upgrade donutmeister_aspect = 20
+upgrade chickenchucker_aspect = 21
+upgrade pizza_aspect = 22
+upgrade cawphet_aspect = 23
+upgrade pizza_quest = 44
+upgrade optional_training = 57
+upgrade football_gear = 58
+upgrade gatorade = 59
+
+# Police tech
+technology stim_packs = 0
+technology lockdown = 1
+technology emp_shockwave = 2
+technology spider_mines = 3
+technology siege_mode = 5
+technology defensive_matrix = 6
+technology irradiate = 7
+technology yamato_gun = 8
+technology cloaking_field = 9
+technology personnel_cloaking = 10
+technology restoration = 24
+technology optical_flare = 30
+technology emergency_chicken = 33
+
+# Cullen tech
+technology build_a_dog = 13
+technology rescue_program = 27
+technology boston_creme = 26
+technology morning_glory = 35
+technology kenyan_special = 36
+technology sugar_rush = 37
+technology dadwish = 38
+technology pepperoni_puncheroni = 39
+
+# Anime military units
+military fanboy = 28
+military r_subscriber = 37
+military fanfic_editor = 38
+military fanclub_owner = 39
+military r_spammer = 40
+military dragonball = 42
+military r_moderator = 43
+military fanfic_publisher = 44
+military edgelord = 45
+military fanfic_author = 46
+military r_patron = 47
+military activist = 50
+military furry = 57
+military smoochie_boy = 102
+
+# Anime heroes
+military kraak = 48
+military mongo_fursuit = 49
+military mongo = 51
+military torpedus = 52
+military hunter_killer = 53
+military kuk = 55
+military krushathrom = 56
+
+# Anime buildings
+building cosplayer = 41
+building infested_station = 130
+building facebook_page = 131
+building viewing_party = 132
+building convention_center = 133
+building fanfic_lounge = 135
+building dragonball_altar = 136
+building greater_spire = 137
+building queer_nest = 138
+building kissing_station = 139
+building fanclub = 140
+building r_public_relations = 141
+building r_subforum = 142
+building twitter_account = 143
+building spore_colony = 144
+building crafts_store = 145
+building sunken_colony = 146
+building overmind_shell = 147
+building overmind = 148
+building land_whale = 149
+building slack_group = 150
+building r_damage_controller = 151
+building daggoth = 152
+building z_marker = 191
+building z_beacon = 194
+building z_flagbeacon = 197
+building beholders_eye = 201
+
+# Anime upgrades
+upgrade a_incel_resistance = 3
+upgrade a_orbiter_resistance = 4
+upgrade a_meme_attacks = 10
+upgrade a_fanfic_attacks = 11
+upgrade a_orbiter_attacks = 12
+upgrade death_wish = 24
+upgrade unbiased_moderation = 25
+upgrade prime_delivery = 26
+upgrade alternate_account = 27
+upgrade expose_secret = 28
+upgrade nothing_personnel = 29
+upgrade contagious_kisses = 30
+upgrade feeling_the_bern = 31
+upgrade primal_urges = 32
+upgrade a_structure_resistance = 45
+upgrade bribery = 47
+upgrade no_standards = 48
+upgrade quarantine = 52
+upgrade free_at_last = 53
+
+# Anime tech
+technology burrowing = 11
+technology infestation = 12
+technology dark_swarm = 14
+technology plague = 15
+technology consume = 16
+technology ensnare = 17
+technology parasite = 18
+technology lurker_aspect = 32
+
+# Void military units
+military corsair = 60
+military dark_templar = 61
+military dark_archon = 63
+@spellcaster(dark_archon)
+military dragoon = 66
+military voidwucker = 67
+military archon = 68
+military shuttle = 69
+military voidseeker = 70
+military arbiter = 71
+military carrier = 72
+military reaver = 83
+military observer = 84
+military interceptor = 73
+military h_dark_templar = 74
+military h_zeratul = 75
+military h_archon = 76
+military h_tassadar = 79
+military h_artanis = 88
+military h_arbiter = 86
+military h_carrier = 82
+
+# Void buildings
+building voidcawer = 64
+building retcon_orifice = 134
+building nexus = 154
+building robotics_facility = 155
+building pylon = 156
+building assimilator = 157
+building observatory = 159
+building gateway = 160
+building photon_cannon = 162
+building citadel_of_adun = 163
+building cybernetics_core = 164
+building templar_archives = 165
+building forge = 166
+building stargate = 167
+building fleet_beacon = 169
+building arbiter_tribunal = 170
+building robotics_support_bay = 171
+building shield_battery = 172
+building khaydarin_formation = 173
+building temple = 174
+building xelnaga_temple = 175
+building warp_gate = 189
+building p_marker = 193
+building p_beacon = 196
+building p_flagbeacon = 199
+
+# Void upgrades
+upgrade p_armor = 5
+upgrade p_plating = 6
+upgrade p_ground_weapon = 13
+upgrade p_air_weapon = 14
+upgrade p_shields = 15
+upgrade dragoon_range = 33
+upgrade zealot_speed = 34
+upgrade reinforced_scarabs = 35
+upgrade reaver_capacity = 36
+upgrade shuttle_speed = 37
+upgrade observer_sight = 38
+upgrade observer_speed = 39
+upgrade templar_mana = 40
+upgrade scout_sight = 41
+upgrade scout_speed = 42
+upgrade carrier_capacity = 43
+upgrade corsair_mana = 47
+upgrade dark_archon_mana = 49
+
+# Void tech
+technology psionic_storm = 19
+technology hallucination = 20
+technology recall = 21
+technology stasis_field = 22
+technology disruption_web = 25
+technology feedback = 29
+technology maelstrom = 31
+
+# Misc units
+military h_goliath_turret = 18
+military t_siege_turret = 31
+military h_tank_turret = 24
+military h_siege_turret = 26
+military crow_egg = 13
+military larva = 35
+military larva_egg = 36
+military cocoon = 59
+military scarab = 85
+military rhynadon = 89
+military bengalaas = 90
+military cargo_ship = 91
+military scantid = 93
+military kakaru = 94
+military ursadon = 96
+military map_revealer = 101
+military disruption_web_unit = 105
+military dark_swarm_unit = 202
+military floor_missile_trap = 203
+military floor_hatch = 204
+military left_upper_door = 205
+military right_upper_door = 206
+military left_pit_door = 207
+military right_pit_door = 208
+military floor_gun_trap = 209
+military left_missile_trap = 210
+military left_flame_trap = 211
+military right_missile_trap = 212
+military right_flame_trap = 213
+
+# Neutral buildings
+building mineral_field1 = 176
+building mineral_field2 = 177
+building mineral_field3 = 178
+building vespene_geyser = 188
+building start_location = 214
+
+# Powerups
+military flag = 215
+military psi_emitter = 217
+military data_disc = 218
+military khaydarin_crystal = 219
+military vespene_pickup_p2 = 223
+military vespene_pickup_z1 = 224
+military vespene_pickup_z2 = 225
+military vespene_pickup_t1 = 226
+military vespene_pickup_t2 = 227
+
+# Unused upgrades
+upgrade unused_60 = 60
+
+# Unused tech
+technology unused_26 = 26
+technology unused_40 = 40
+technology unused_41 = 41
+technology unused_42 = 42
+technology unused_43 = 43

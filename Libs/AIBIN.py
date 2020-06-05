@@ -192,11 +192,14 @@ class AIBIN:
 		"i_tactics": "idle_tactics",
 		"add_bld": "add_build",
 		"c_queues": "clear_queues",
+		"atk_to_choose": "attack_to_choose",
+		"atk_to_dth": "attack_to_deaths",
+		"atk_to_deaths": "attack_to_deaths",
 	}
 
 	command_aliases = { # those will expand for non script commands, not compatible with script!
 		"aictrl": "aicontrol",
-		"set_free": "set_free_id",
+		"set_var": "set_pos_variable",
 		"i_orders": "idle_orders",
 		"help": "help_iftrouble",
 		"defb_gg": "defensebuild_gg",
@@ -215,12 +218,15 @@ class AIBIN:
 		"def": "defense",
 		"attack_now": "quick_attack",
 		"attack_wait": "wait_finishattack",
+		"attack_time": "attack_timeout",
+		"atk_time": "attack_timeout",
 		"atk_add": "attack_add",
 		"atk_rand": "attack_rand",
 		"atk_clr": "attack_clear",
 		"atk_c": "attack_clear",
 		"atk_prep": "attack_prepare",
 		"atk_do": "attack_do",
+		"atk_to": "attack_to",
 		"atk_now": "quick_attack",
 		"atk_wait": "wait_finishattack",
 		"p_need": "player_need",
@@ -252,6 +258,11 @@ class AIBIN:
 		"dth": "death",
 		"res": "resources",
 		"m_force": "max_force",
+		"l_bunk": "load_bunkers",
+		"bank": "bank_data",
+		"cont_j": "container_jump",
+		"rand_c": "random_call",
+		"w_rand": "wait_rand"
 	}
 
 	argument_aliases = { # those may expand for EVERY argument / command, those also expand first, before any others, so be careful with setting those

@@ -1149,31 +1149,31 @@ class CodeEditDialog(PyMSDialog):
 		return self.findScriptSubcommand(line) != None
 
 	def getScriptSyntaxType(self, line):
+		self.type = -1
 		if self.lineStartingWith(line, "script\("):
-			return 0
-		if self.lineStartingWith(line, "custom_script\("):
-			return 1
-		if self.lineStartingWith(line, "script "):
-			return 2
-		if self.hasScriptSubcommand(line):
-			return 3
+			self.type = 0
+		elif self.lineStartingWith(line, "custom_script\("):
+			self.type = 1
+		elif self.lineStartingWith(line, "script "):
+			self.type = 2
+		elif self.hasScriptSubcommand(line):
+			self.type = 3
 
-		return -1
+		return self.type
 
 	def isScript(self, line):
 		return self.getScriptSyntaxType(line) != -1
 
 	def convertScriptLine(self, line):
-		type = self.getScriptSyntaxType(line)
 		line = line.rstrip()
 
-		if type == 0:
+		if self.type == 0:
 			return line.rstrip()
-		elif type == 1:
+		elif self.type == 1:
 			return re.sub(r"(^[ \t]*)custom_script\((.*)\)", r"\1script(\2)", line).rstrip()
-		elif type == 2:
+		elif self.type == 2:
 			return re.sub(r"(^[ \t]*)script (.*)", r"\1script(\2)", line).rstrip()
-		elif type == 3:
+		elif self.type == 3:
 			command = self.findScriptSubcommand(line)
 			line = self.expandScriptAlias(line)
 			return re.sub(r"(^[ \t]*)("+command+".*)", r"\1script(\2)", line).rstrip()
@@ -1192,10 +1192,11 @@ class CodeEditDialog(PyMSDialog):
 			return True
 		return False
 
-	def isTimeAlias(self, line):
+	def getTimeAlias(self, line):
 		self.startBenchmark(2)
-		for alias in AIBIN.AIBIN.time_macros:
-			if self.matchesTimeAliasFormat(line, alias):
+		for alias in AIBIN.AIBIN.time_macros.items():
+			if self.matchesTimeAliasFormat(line, alias[0]):
+				self.alias = alias
 				self.timeMacrosTime += self.stopBenchmark(2)
 				return True
 		self.timeMacrosTime += self.stopBenchmark(2)
@@ -1203,22 +1204,21 @@ class CodeEditDialog(PyMSDialog):
 
 	def expandTimeAlias(self, line): # used to convert time aliases (aka waitmin 1 -> wait 1440)
 		self.startBenchmark(1)
-		for alias in AIBIN.AIBIN.time_macros.items():
-			if self.matchesTimeAliasFormat(line, alias[0]):
-				regex = self.getTimeAliasRegex(alias[0])
-				timeLiteral = re.sub(regex, r"\2", line)
-				timeLiteral = re.sub(r'(\..*)\.', r'\1', timeLiteral) # remove reapeating dots
-				time = int(round(float(timeLiteral) * alias[1]))
 
-				self.timeMacrosTime += self.stopBenchmark(1)
-				return re.sub(regex, r"\1wait(%i)\3" % time, line)
+		regex = self.getTimeAliasRegex(self.alias[0])
+		timeLiteral = re.sub(regex, r"\2", line)
+		timeLiteral = re.sub(r'(\..*)\.', r'\1', timeLiteral) # remove reapeating dots
+		time = int(round(float(timeLiteral) * self.alias[1]))
+
 		self.timeMacrosTime += self.stopBenchmark(1)
-		return line
+		return re.sub(regex, r"\1wait(%i)\3" % time, line)
 
 	def expandArgumentAliases(self, line):
 		self.startBenchmark(0)
+
 		for alias in AIBIN.AIBIN.argument_aliases.items():
 			line = re.sub(r"\b" + alias[0] + r"\b", alias[1], line)
+
 		self.argumentAliasesTime += self.stopBenchmark(0)
 		return line
 
@@ -1231,7 +1231,6 @@ class CodeEditDialog(PyMSDialog):
 
 	def stopBenchmark(self, id):
 		return time.time() - self.benchmark[id]
-
 
 	def asc3topyai(self, e=None):
 		beforeheader = ''
@@ -1272,7 +1271,7 @@ class CodeEditDialog(PyMSDialog):
 					headerinfo[1] = 0
 			elif line.lstrip().startswith('script_id ') and headerinfo[0] == None:
 				headerinfo[0] = line.lstrip()[10:]
-			elif self.isTimeAlias(line):
+			elif self.getTimeAlias(line):
 				data += self.expandTimeAlias(line)
 				data += " " + comment
 				data += "\n"

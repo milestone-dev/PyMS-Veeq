@@ -1130,7 +1130,7 @@ class CodeEditDialog(PyMSDialog):
 				return alias[1]
 		return None
 
-	def replaceScriptSubcommandWithAlias(self, command):
+	def expandScriptAlias(self, command):
 		if command == "":
 			return command
 		newcmd = command
@@ -1168,7 +1168,7 @@ class CodeEditDialog(PyMSDialog):
 			return re.sub(r"(^[ \t]*)script (.*)", r"\1script(\2)", line).rstrip()
 		elif type == 3:
 			command = self.findScriptSubcommand(line)
-			line = self.replaceScriptSubcommandWithAlias(line)
+			line = self.expandScriptAlias(line)
 			return re.sub(r"(^[ \t]*)("+command+".*)", r"\1script(\2)", line).rstrip()
 		else:
 			WarningDialog(self, "Invalid Script Line: %s" % line)
@@ -1186,13 +1186,13 @@ class CodeEditDialog(PyMSDialog):
 		return False
 
 	def isTimeAlias(self, line):
-		for alias in AIBIN.AIBIN.time_aliases:
+		for alias in AIBIN.AIBIN.time_macros:
 			if self.matchesTimeAliasFormat(line, alias):
 				return True
 		return False
 
-	def convertTimeAlias(self, line): # used to convert time aliases (aka waitmin 1 -> wait 1440)
-		for alias in AIBIN.AIBIN.time_aliases.items():
+	def expandTimeAlias(self, line): # used to convert time aliases (aka waitmin 1 -> wait 1440)
+		for alias in AIBIN.AIBIN.time_macros.items():
 			if self.matchesTimeAliasFormat(line, alias[0]):
 				regex = self.getTimeAliasRegex(alias[0])
 				timeLiteral = re.sub(regex, r"\2", line)
@@ -1201,6 +1201,12 @@ class CodeEditDialog(PyMSDialog):
 
 				return re.sub(regex, r"\1wait(%i)\3" % time, line)
 		return line
+
+	def expandArgumentAliases(self, line):
+		for alias in AIBIN.AIBIN.argument_aliases.items():
+			line = re.sub(r"\b" + alias[0] + r"\b", alias[1], line)
+		return line
+
 
 	def asc3topyai(self, e=None):
 		beforeheader = ''
@@ -1213,6 +1219,7 @@ class CodeEditDialog(PyMSDialog):
 				line = line[:len(line)-len(comment)]
 			else:
 				comment = ""
+
 			if line.lstrip().startswith(';'):
 				if not None in headerinfo:
 					data += line.replace(';','#',1) + '\n'
@@ -1235,7 +1242,7 @@ class CodeEditDialog(PyMSDialog):
 			elif line.lstrip().startswith('script_id ') and headerinfo[0] == None:
 				headerinfo[0] = line.lstrip()[10:]
 			elif self.isTimeAlias(line):
-				data += self.convertTimeAlias(line)
+				data += self.expandTimeAlias(line)
 				data += " " + comment
 				data += "\n"
 			elif self.isScript(line):

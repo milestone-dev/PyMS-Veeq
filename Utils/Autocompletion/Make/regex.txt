@@ -1,0 +1,5 @@
+Search:
+\<.*?\>
+
+Replace:
+\t\t<KeyWord name="$0" />\n

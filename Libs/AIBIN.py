@@ -180,7 +180,8 @@ class AIBIN:
 		"extbuild": "build_new",
 		"layout": "newlayout",
 		"queue_rel": "queue_relative",
-		"atk_rel": "attack_add_relative",
+		"player_combat": "comparison player_combat",
+		"unit_check": "comparison unit_check",
 	}
 
 	time_aliases = { # those will expand to wait x (fe. waitmin 1 -> wait 1440, which is 1 * 1440)

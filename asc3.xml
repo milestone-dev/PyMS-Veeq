@@ -1,0 +1,64 @@
+<NotepadPlus>
+    <UserLang name="ASC3" ext="asc3" udlVersion="2.1">
+        <Settings>
+            <Global caseIgnored="no" allowFoldOfComments="no" foldCompact="no" forcePureLC="0" decimalSeparator="0" />
+            <Prefix Keywords1="no" Keywords2="no" Keywords3="no" Keywords4="yes" Keywords5="no" Keywords6="no" Keywords7="no" Keywords8="no" />
+        </Settings>
+        <KeywordLists>
+            <Keywords name="Comments">00# 01 02 03 04</Keywords>
+            <Keywords name="Numbers, prefix1"></Keywords>
+            <Keywords name="Numbers, prefix2"></Keywords>
+            <Keywords name="Numbers, extras1"></Keywords>
+            <Keywords name="Numbers, extras2"></Keywords>
+            <Keywords name="Numbers, suffix1"></Keywords>
+            <Keywords name="Numbers, suffix2"></Keywords>
+            <Keywords name="Numbers, range"></Keywords>
+            <Keywords name="Operators1">( ) ~ . | [ ] / $ &gt; &lt; \ ^ -</Keywords>
+            <Keywords name="Operators2"></Keywords>
+            <Keywords name="Folders in code1, open"></Keywords>
+            <Keywords name="Folders in code1, middle"></Keywords>
+            <Keywords name="Folders in code1, close"></Keywords>
+            <Keywords name="Folders in code2, open"></Keywords>
+            <Keywords name="Folders in code2, middle"></Keywords>
+            <Keywords name="Folders in code2, close"></Keywords>
+            <Keywords name="Folders in comment, open"></Keywords>
+            <Keywords name="Folders in comment, middle"></Keywords>
+            <Keywords name="Folders in comment, close"></Keywords>
+            <Keywords name="Keywords1">return call multirun kill_thread random_jump random_call goto stop AtLeast_Multi Exactly_Multi AtMost_Multi</Keywords>
+            <Keywords name="Keywords2">bring_jump deaths kills resources player_jump supply time if_owned notowns_jump groundmap_jump race_jump resources_jump time_jump try_townpoint rush enemyowns_jump enemyresources_jump region_size expand allies_watch panic upgrade_jump tech_jump attacking unit_avail AtLeast AtLeast_Call Exactly Exactly_Call AtMost AtMost_Call create_script False True if_attacking container_jump local_jump resarea_jump Jump jump Greater Less Equal exactly atmost atleast greater less equal lessthan greaterthan GreaterThan LessThan</Keywords>
+            <Keywords name="Keywords3">build train queue do_morph upgrade tech defensebuild_gg defensebuild_aa defensebuild_ga defensebuild_ag guard place_guard build_turrets build_bunkers player_need remove_build guard_resources attack_add attack_rand attack_add_relative queue_relative clear_queues add_build upgrade_queue extupgrade extqueue queue_rel extbuild build_new build_need upg</Keywords>
+            <Keywords name="Keywords4">: --</Keywords>
+            <Keywords name="Keywords5">print debug script_name script_id set_id help_iftrouble max_workers max_build sharedvision_off sharedvision_on max_force define_max get_oldpeons remove_creep reveal_area idle_orders issue_order lift_land unit_name ping create_unit create_nuke fatal_error give_money nuke_pos fake_nuke send_suicide set_randomseed clear_combatdata disruption_web enter_bunker enter_transport exit_transport junkyard_dog make_patrol set_gencmd move_dt nuke_location player_ally player_enemy recall_location switch_rescue set_free_id script killable fn range idle_tactics set_pos_variable aise_debug action place_morphs comparison player_combat set_escalation custom_script town_state harass_add harass_add_transport nydus_placement_ai warp_relay_ai var set_var_local unit_check damage_dealt</Keywords>
+            <Keywords name="Keywords6">wait wait_rand wait_secure wait_turrets wait_bunkers wait_build wait_buildstart AtLeast_Wait Exactly_Wait AtMost_Wait wait_force wait_upgrades True_Wait False_Wait wait_train wait_finishattack Wait WaitFor waitsec waitmin wait_upg</Keywords>
+            <Keywords name="Keywords7">aicontrol under_attack defaultbuild_off default_min start_town start_areatown start_campaign unstart_campaign farms_timing farms_notiming transports_off check_transports base_layout Loc guard_all capt_expand creep nuke_rate implode value_area new_layout layout check_townpoint expand_townpoint</Keywords>
+            <Keywords name="Keywords8">attack_do attack_clear attack_prepare quick_attack attack_to_deaths attack_to defenseuse_gg defenseuse_ag defenseuse_aa defenseuse_ga defenseclear_gg defenseclear_aa defenseclear_ga defenseclear_ag load_bunkers Add Set Subtract Randomize attack_timeout defense replace_unit wait_force set_attacks target_expansion eval_harass harass_factor attack_to_choose set add subtract randomize attack_now attack_wait atk_add atk_clr atk_do atk_now atk_wait defb_gg defb_ga defb_aa defb_ag defu_gg defu_ga defu_aa defu_ag defc_gg defc_ga defc_aa defc_ag def</Keywords>
+            <Keywords name="Delimiters">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>
+        </KeywordLists>
+        <Styles>
+            <WordsStyle name="DEFAULT" fgColor="7E7EC0" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="COMMENTS" fgColor="008000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="LINE COMMENTS" fgColor="356A6A" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="NUMBERS" fgColor="008BCE" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS1" fgColor="F32305" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS2" fgColor="EA7500" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS3" fgColor="0D86FF" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS4" fgColor="D2D200" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS5" fgColor="3CC15E" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS6" fgColor="8D49FE" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS7" fgColor="008080" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS8" fgColor="4F4FFF" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="OPERATORS" fgColor="00DFDF" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE1" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE2" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN COMMENT" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS1" fgColor="0080FF" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS2" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS3" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS4" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS5" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS6" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS7" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS8" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+        </Styles>
+    </UserLang>
+</NotepadPlus>

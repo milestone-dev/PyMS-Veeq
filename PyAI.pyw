@@ -1220,6 +1220,8 @@ class CodeEditDialog(PyMSDialog):
 			else:
 				comment = ""
 
+			line = self.expandArgumentAliases(line)
+
 			if line.lstrip().startswith(';'):
 				if not None in headerinfo:
 					data += line.replace(';','#',1) + '\n'

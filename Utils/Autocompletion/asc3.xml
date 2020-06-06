@@ -302,6 +302,7 @@
  		<KeyWord name="attack_now" />
  		<KeyWord name="attack_wait" />
  		<KeyWord name="atk_c" />
+ 		<KeyWord name="atk_clr" />
  		<KeyWord name="atk_do" />
  		<KeyWord name="atk_now" />
  		<KeyWord name="atk_wait" />

@@ -1,8 +1,10 @@
 PyTILE:
 - Option to delete megatiles that are not used by any tile groups.
 - Selecting multiple groups in the main window (mostly for shifting them all to null, applying megatile flags to all of them like walkable/low/med/high etc, and setting them to unbuildable
+- Option to preview minitile flags in the same/similar way to SCMDraft's previews (e.g. darken unwalkable terrain, color code height)
 - Changing Zoom Scale does not save scrolling progress correctly.
 - Reuse MiniTiles Duplicates Old/New and Null settings don't work when importing minitile graphics
+- Crash when using 'copy group settings' feature
 
 PyMS:
 Warning on overwriting default files, just a luxury for the idiots among us who mod while half asleep (aka me). I actually think this is partially functional for some programs, but notably PyAI does not have any countermeasure in place.

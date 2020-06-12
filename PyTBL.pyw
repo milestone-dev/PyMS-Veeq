@@ -698,6 +698,8 @@ class PyTBL(Tk):
 		if self.file == None:
 			self.saveas(key)
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			warning = self.tbl.compile(self.file)
 			self.status.set('Save Successful!')

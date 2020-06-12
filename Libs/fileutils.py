@@ -1,4 +1,16 @@
 from utils import *
+from tkMessageBox import *
+
+def isDefaultFile(path):
+	path = path.replace("/", "\\")
+	base_path = os.path.join(BASE_DIR, 'Libs', 'MPQ')
+	return base_path in path
+
+def overwriteFile(parent, path):
+	if isDefaultFile(path):
+		filename = re.sub(r".*[\\/](.*)", r"\1", path);
+		return askquestion(parent=parent, title='Overwrite default file?', message="Do you want to overwrite default file '%s'?" % filename, default=OK, type=OKCANCEL) == "ok"
+	return True
 
 class BadFile:
 	def __init__(self, file):

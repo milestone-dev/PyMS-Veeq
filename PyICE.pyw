@@ -3007,6 +3007,8 @@ class PyICE(Tk):
 		if self.file == None:
 			self.saveas()
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			self.ibin.compile(self.file)
 		except PyMSError, e:

@@ -505,6 +505,8 @@ class DATTab(NotebookTab):
 		if self.file == None:
 			self.saveas()
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			self.dat.compile(self.file)
 		except PyMSError, e:

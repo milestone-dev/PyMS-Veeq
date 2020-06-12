@@ -2238,6 +2238,8 @@ class StringEditor(PyMSDialog):
 			return
 		if file == None:
 			file = self.parent.stattxt()
+		if not overwriteFile(self, file):
+			return
 		try:
 			self.tbl.compile(file)
 			self.parent.stattxt(file)
@@ -3008,11 +3010,15 @@ class PyAI(Tk):
 					ErrorDialog(self, e)
 					return
 				self.tbledited = False
+
+		if not overwriteFile(self, ai):
+			ai = None
+
+		if not overwriteFile(self, bw):
+			bw = None
+
 		try:
 			self.ai.compile(ai, bw)
-			self.aiscript = ai
-			if bw != None:
-				self.bwscript = bw
 			self.edited = False
 			self.editstatus['state'] = DISABLED
 			self.status.set('Save Successful!')

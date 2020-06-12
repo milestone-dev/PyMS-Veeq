@@ -911,6 +911,8 @@ class PyLO(Tk):
 		if self.file == None:
 			self.saveas()
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			self.lo.interpret(self.text)
 			self.lo.compile(self.file)

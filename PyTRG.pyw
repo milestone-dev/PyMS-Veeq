@@ -972,6 +972,8 @@ class PyTRG(Tk):
 		if self.file == None:
 			self.saveas()
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			self.trg.interpret(self.text)
 			self.trg.compile(self.file)

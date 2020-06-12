@@ -276,6 +276,8 @@ class PyPAL(Tk):
 		if self.file == None:
 			self.saveas()
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			[self.palette.save_riff_pal,self.palette.save_jasc_pal,self.palette.save_sc_pal,self.palette.save_sc_wpe][self.type](self.file)
 			self.status.set('Save Successful!')

@@ -2681,6 +2681,8 @@ class PyMAP(Tk):
 	def save(self, key=None):
 		if key and self.buttons['save']['state'] != NORMAL:
 			return
+		if not overwriteFile(self, self.file):
+			return
 		if self.file == None:
 			self.saveas()
 			return

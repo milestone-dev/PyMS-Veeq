@@ -1090,6 +1090,8 @@ class PySPK(Tk):
 		if self.file == None:
 			self.saveas()
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			self.spk.save_file(self.file)
 			self.status.set('Save Successful!')

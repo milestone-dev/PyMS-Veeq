@@ -720,6 +720,8 @@ BMP's must be imported with the same style they were exported as.""")
 		if self.file == None:
 			self.saveas()
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			self.grp.save_file(self.file)
 			self.status.set('Save Successful!')

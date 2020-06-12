@@ -341,6 +341,8 @@ class PyGOT(Tk):
 		if self.file == None:
 			self.saveas()
 			return
+		if not overwriteFile(self, self.file):
+			return
 		try:
 			for n,var in enumerate(self.values):
 				val = var.get()

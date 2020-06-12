@@ -207,7 +207,7 @@ class MegaEditorView(Frame):
 		if hasattr(self.parent, "style"):
 			style = self.parent.style.get()
 		if style == STYLE_BOXES or style == STYLE_BOXES_AND_DOTS:
-			self.canvas.create_rectangle(x,y, x+21,y+21, outline=color, tags='mode')
+			self.canvas.create_rectangle(x, y, x+21,y+21, outline=color, tags='mode')
 		if style == STYLE_DOTS or style == STYLE_BOXES_AND_DOTS:
 			self.canvas.create_rectangle(x+9,y+9, x+13,y+13, outline="", fill=color, tags='mode')
 
@@ -1139,28 +1139,50 @@ class TilePaletteView(Frame):
 			self.canvas.create_rectangle(minitile_x + 1 * self.scale, minitile_y + 1 * self.scale,
 										 minitile_x + 7 * self.scale - 1, minitile_y + 7 * self.scale - 1,
 										 outline=color, tags=tag)
+
 		if style == STYLE_DOTS or style == STYLE_BOXES_AND_DOTS:
 			self.canvas.create_rectangle(minitile_x + 3 * self.scale, minitile_y + 3 * self.scale,
 										 minitile_x + 5 * self.scale, minitile_y + 5 * self.scale,
 										 fill=color, outline="", tags=tag)
 
+	def get_buildable_flag(self, megatile_info):
+		return self.parent.tileset.cv5.groups[megatile_info.id/16][1]
+
+	def draw_buildable(self, megatile_info):
+		tile = self.get_buildable_flag(megatile_info)
+
+		if tile == 0:
+			return
+
+		# red for unbuildable, purple for creep
+		color = "#FF0000" if tile == 8 else "#800080"
+
+		x = megatile_info.x
+		y = megatile_info.y
+		tag = 'tile%s' % megatile_info.id
+
+		self.canvas.create_rectangle(x, y, x+32*self.scale, y+32*self.scale, outline="", fill=color, stipple="gray12", tags=tag);
 
 	def draw_flags(self, megatile_info):
 		if not hasattr(self, "parent"):
 			return
 
-		if megatile_info.megatile_id == 0 or not self.parent.show_minitiles.get() or not self.parent.tileset:
+		if megatile_info.megatile_id == 0 or not self.parent.tileset:
 			return
 
-		mode = self.parent.mega_editor.edit_mode.get()
-		if mode == MEGA_EDIT_MODE_HEIGHT:
-			self.draw_height(megatile_info)
-		elif mode == MEGA_EDIT_MODE_WALKABILITY:
-			self.draw_walkability(megatile_info)
-		elif mode == MEGA_EDIT_MODE_VIEW_BLOCKING:
-			self.draw_blocking(megatile_info)
-		elif mode == MEGA_EDIT_MODE_RAMP:
-			self.draw_ramp(megatile_info)
+		if self.parent.show_buildable.get():
+			self.draw_buildable(megatile_info)
+
+		if self.parent.show_minitiles.get():
+			mode = self.parent.mega_editor.edit_mode.get()
+			if mode == MEGA_EDIT_MODE_HEIGHT:
+				self.draw_height(megatile_info)
+			elif mode == MEGA_EDIT_MODE_WALKABILITY:
+				self.draw_walkability(megatile_info)
+			elif mode == MEGA_EDIT_MODE_VIEW_BLOCKING:
+				self.draw_blocking(megatile_info)
+			elif mode == MEGA_EDIT_MODE_RAMP:
+				self.draw_ramp(megatile_info)
 
 	def draw_height(self, megatile_info):
 		for n in xrange(16):
@@ -2148,10 +2170,16 @@ class PyTILE(Tk):
 		show_minitiles = Checkbutton(settings_group, text="Show Minitile Flags", variable=self.show_minitiles, command=updateFlags)
 		show_minitiles.grid(column=1,row=1,sticky=N+W)
 
+		self.show_buildable = BooleanVar()
+		self.show_buildable.set(PYTILE_SETTINGS['tileset_view'].get('show_buildable', False))
+
+		show_buildable = Checkbutton(settings_group, text="Show Buildable Flag", variable=self.show_buildable, command=updateFlags)
+		show_buildable.grid(column=1,row=2,sticky=N+W)
+
 		self.edit_minitiles = BooleanVar()
 		self.edit_minitiles.set(PYTILE_SETTINGS['tileset_view'].get('edit_minitiles', True))
 		edit_minitiles = Checkbutton(settings_group, text="Paint Minitile Flags", variable=self.edit_minitiles)
-		edit_minitiles.grid(column=1,row=2,sticky=N+W)
+		edit_minitiles.grid(column=1,row=3,sticky=N+W)
 
 		def setZoom(scale):
 			#TODO: Fix scroll restore after zooming in or out
@@ -2161,19 +2189,19 @@ class PyTILE(Tk):
 			#self.palette.canvas.yview_moveto(scroll)
 
 
-		Label(settings_group, text='Zoom:').grid(column=1,row=3,sticky=N+W)
+		Label(settings_group, text='Zoom:').grid(column=1, row=4, sticky=N+W)
 		self.zoom = IntegerVar(0, [1, 3], callback=lambda scale: setZoom(scale))
 		self.zoom.set(PYTILE_SETTINGS['tileset_view'].get('zoom', 1))
 		zoom = Entry(settings_group, textvariable=self.zoom, font=couriernew, width=17)
-		zoom.grid(column=1,row=4,sticky=N+W)
+		zoom.grid(column=1,row=5,sticky=N+W)
 		setZoom(self.zoom.get())
 
-		Label(settings_group, text='Style:').grid(column=1,row=5,sticky=N+W)
+		Label(settings_group, text='Style:').grid(column=1, row=6, sticky=N+W)
 		self.style = IntegerVar(0, [0, 2], callback=updateFlags)
 		self.style.set(PYTILE_SETTINGS['tileset_view'].get('style', STYLE_BOXES))
 		styles = ["Boxes", "Dots", "Dots and Boxes"]
 		style = DropDown(settings_group, self.style, styles, width=15)
-		style.grid(column=1, row=6, sticky=N+W)
+		style.grid(column=1, row=7, sticky=N+W)
 
 
 		flagGenerator = LabelFrame(self.flow_view.content_view, text='Flag Generator')
@@ -2652,6 +2680,11 @@ class PyTILE(Tk):
 			o = [self.buildable,self.flags,self.buildable2,self.groundheight,self.edgeleft,self.edgeup,self.edgeright,self.edgedown,self.unknown9,self.hasup,self.unknown11,self.hasdown]
 		for n,v in enumerate(o):
 			group[n+1] = v.get()
+
+		if self.show_buildable.get():
+			self.palette.draw_tiles(True)
+			self.mega_editor.draw()
+
 		self.mark_edited()
 
 	def choose(self, i):
@@ -2798,6 +2831,7 @@ class PyTILE(Tk):
 			PYTILE_SETTINGS['copy'].doodadgroup.group_string_id = not not self.copy_doodadgroup_group_string_id.get()
 			PYTILE_SETTINGS['mega_edit'].mode = self.mega_editor.edit_mode.get()
 			PYTILE_SETTINGS['tileset_view'].show_minitiles = self.show_minitiles.get()
+			PYTILE_SETTINGS['tileset_view'].show_buildable = self.show_buildable.get()
 			PYTILE_SETTINGS['tileset_view'].edit_minitiles = self.edit_minitiles.get()
 			PYTILE_SETTINGS['tileset_view'].style = self.style.get()
 			PYTILE_SETTINGS['tileset_view'].zoom = self.zoom.get()

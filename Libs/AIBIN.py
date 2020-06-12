@@ -183,7 +183,7 @@ class AIBIN:
 		"extbld": "build_new",
 		"extbring": "bring_jump",
 		"extbring_jump": "bring_jump",
-		"layout": "newlayout",
+		"layout": "new_layout",
 		"atk_rel": "attack_add_relative",
 		"queue_rel": "queue_relative",
 		"player_combat": "comparison player_combat",

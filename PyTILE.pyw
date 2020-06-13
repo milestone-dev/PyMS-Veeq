@@ -1255,11 +1255,13 @@ class TilePaletteView(Frame):
 							if self.tiletype == TILETYPE_GROUP:
 								group = int(id / 16.0)
 								megatile = tileset.cv5.groups[group][13][id % 16]
-								self.canvas.images[id] = self.gettile(megatile, cache=True)._PhotoImage__photo.zoom(self.scale)
+								self.canvas.images[id] = self.gettile(megatile, cache=(not force))
 							elif self.tiletype == TILETYPE_MEGA:
-								self.canvas.images[id] = self.gettile(id, cache=True)._PhotoImage__photo.zoom(self.scale)
+								self.canvas.images[id] = self.gettile(id, cache=(not force))
 							elif self.tiletype == TILETYPE_MINI:
-								self.canvas.images[id] = self.gettile((id, 0), cache=True)._PhotoImage__photo.zoom(self.scale)
+								self.canvas.images[id] = self.gettile((id, 0), cache=(not force))
+
+							self.canvas.images[id] = self.canvas.images[id]._PhotoImage__photo.zoom(self.scale)
 							tag = 'tile%s' % id
 							self.canvas.delete(tag)
 							self.canvas.create_image(x, y, image=self.canvas.images[id], tags=tag, anchor=NW)
@@ -1437,18 +1439,29 @@ class TilePalette(PyMSDialog):
 			buttons = [
 				('add', self.add, 'Add (Insert)', NORMAL, 'Insert'),
 			]
-			if self.tiletype == TILETYPE_GROUP:
-				buttons.extend([('remove', self.remove, 'Remove (Delete)', DISABLED, 'Delete'),])
-			elif self.tiletype == TILETYPE_MEGA:
+
+			tiletype = "Mega" if self.tiletype == TILETYPE_MEGA else "Mini"
+
+			buttons.extend([('remove', self.remove, 'Remove (Delete)', NORMAL, 'Delete'),])
+			if self.tiletype == TILETYPE_MEGA or self.tiletype == TILETYPE_MINI:
 				buttons.extend([
-					('remove', self.remove, 'Remove (Delete)', DISABLED, 'Delete'),
-					('asc3topyai', self.clean, 'Clean (Ctrl+Delete)', DISABLED, 'Ctrl+Delete')
+					('asc3topyai', self.clean, tiletype+'tile Cleanup (Ctrl+Delete)', NORMAL, 'Ctrl+Delete')
 				])
+
+			if self.tiletype == TILETYPE_GROUP:
+				buttons.extend([
+					('redo', self.swap, 'Swap groups (Ctrl+W)', DISABLED, 'Ctrl+W')
+				])
+
+			buttons.extend([
+					10,
+					('end', lambda *_: self.palette.draw_tiles(True), 'Force Redraw Palette (Ctrl+A)', NORMAL, 'Ctrl+A')
+			])
 
 			if self.tiletype != TILETYPE_MINI:
 				buttons.extend([
 					10,
-					('colors', self.select_smaller, 'Select %s (Ctrl+M)' % smallertype, NORMAL, 'Ctrl+M')
+					('colors', self.select_smaller, 'Select %s (Ctrl+M)' % smallertype, NORMAL, 'Ctrl+M'),
 				])
 			if self.tiletype != TILETYPE_GROUP:
 				buttons.extend([
@@ -1456,7 +1469,7 @@ class TilePalette(PyMSDialog):
 					('edit', self.edit, 'Edit %s (Enter)' % typename, NORMAL, 'Return')
 				])
 			buttons.extend([
-				20,
+				10,
 				('exportc', self.export_graphics, 'Export %s Graphics (Ctrl+E)' % typename, NORMAL, 'Ctrl+E'),
 				('importc', self.import_graphics, 'Import %s Graphics (Ctrl+I)' % typename, NORMAL, 'Ctrl+I'),
 			])
@@ -1526,7 +1539,7 @@ class TilePalette(PyMSDialog):
 		if len(self.start_selected):
 			self.after(100, self.palette.scroll_to_selection)
 
-	def select_smaller(self, e):
+	def select_smaller(self, *_):
 		ids = []
 		for id in self.palette.selected:
 			if self.tiletype == TILETYPE_GROUP:
@@ -1537,7 +1550,7 @@ class TilePalette(PyMSDialog):
 				for sid,_ in self.tileset.vx4.graphics[id]:
 					if not sid in ids:
 						ids.append(sid)
-		TilePalette(self, TILETYPE_MEGA if self.tiletype == TILETYPE_GROUP else TILETYPE_MINI, ids, editing=True)
+		TilePalette(self.parent, TILETYPE_MEGA if self.tiletype == TILETYPE_GROUP else TILETYPE_MINI, ids, editing=True)
 
 	def mark_edited(self):
 		self.edited = True
@@ -1581,6 +1594,13 @@ class TilePalette(PyMSDialog):
 				status += '%s ' % id
 		else:
 			status += 'None'
+
+		if self.tiletype == TILETYPE_GROUP:
+			if len(self.palette.selected) == 2:
+				self.buttons['redo']['state'] = NORMAL
+			else:
+				self.buttons['redo']['state'] = DISABLED
+
 		self.status.set(status)
 
 	def add(self, *_):
@@ -1607,58 +1627,177 @@ class TilePalette(PyMSDialog):
 		self.parent.update_ranges()
 		self.mark_edited()
 
+	def refresh(self):
+		self.update_title()
+		self.update_state()
+		self.palette.update_size()
+		self.palette.draw_tiles(True)
+		self.parent.update_ranges()
+		self.mark_edited()
+
 	def remove(self, *_):
 		if self.buttons['remove']['state'] != NORMAL:
 			return
 
 		if self.tiletype == TILETYPE_GROUP:
-			current_id = self.delegate.palette.selected[0]
-			self.remove_megatile(current_id)
-		elif self.tiletype == TILETYPE_MEGA:
-			current_id = self.delegate.palette.sub_selection
-			self.remove_group(current_id)
-		self.update_title()
-		self.update_state()
-		self.palette.update_size()
-		self.parent.update_ranges()
-		self.mark_edited()
+			current_ids = self.palette.selected
+			self.remove_groups(current_ids)
+		else:
+			current_ids = self.palette.selected
+			self.remove_tiles(current_ids)
 
-	def remove_megatile(self, id):
-		# create copies of megatile arrays
-		# remove megatile
-		# move all megatiles past the one removed 1 back
-		# remove references to the one removed (change to id 0)
-		# reevaluate references
-		pass
+		self.refresh()
 
-	def remove_megatiles(self, ids):
-		# create copies of megatile arrays
-		# remove megatiles
-		# move all megatiles past the ones removed
-		# remove references to ones removed (change to id 0)
-		# reevaluate references
-		pass
+	def swap(self, *_):
+		if self.buttons['redo']['state'] != NORMAL or self.tiletype != TILETYPE_GROUP:
+			return
+		selected = self.palette.selected
+		if len(selected) != 2:
+			return
 
-	def remove_group(self, id):
-		pass
+		self.swap_groups(selected[0], selected[1])
+		self.refresh()
+
+	def remove_tiles(self, ids):
+		if len(ids) == 0:
+			return
+		if self.tiletype == TILETYPE_MEGA:
+			graphics = []
+			lookup = {}
+			flags = []
+
+			i = 0
+			for id, graphic in enumerate(self.tileset.vx4.graphics):
+				if id not in ids:
+					graphics.append(graphic)
+					tile_hash = hash(graphic)
+					lookup[tile_hash] = i
+					i += 1
+
+			for id, flag in enumerate(self.tileset.vf4.flags):
+				if id not in ids:
+					flags.append(flag)
+
+			self.tileset.vx4.graphics = graphics
+			self.tileset.vx4.lookup = lookup
+			self.tileset.vf4.flags = flags
+
+			self.reevaluate_references(ids)
+		elif self.tiletype == TILETYPE_MINI:
+			images = []
+			lookup = {}
+
+			i = 0
+			for id, image in enumerate(self.tileset.vr4.images):
+				if id not in ids:
+					images.append(image)
+					tile_hash = hash(image)
+					lookup[tile_hash] = i
+					i += 1
+
+			self.tileset.vr4.images = images
+			self.tileset.vr4.lookup = lookup
+
+			self.reevaluate_references(ids)
+
+	def get_decrease_value(self, ids, id): # TODO: Optimize this, it takes the most time in entire tile cleanup process
+		decrease = 0
+		for i in ids:
+			if id > i:
+				decrease += 1
+
+		return decrease
+
+	def reevaluate_references(self, ids):
+		if len(ids) == 0:
+			return
+		#ids = sorted(ids) # binary search needs a sorted array
+		if self.tiletype == TILETYPE_MEGA:
+			for group in self.tileset.cv5.groups:
+				for i, id in enumerate(group[13]):
+					if id in ids:
+						group[13][i] = 0
+					else:
+						group[13][i] -= self.get_decrease_value(ids, id)
+		elif self.tiletype == TILETYPE_MINI:
+			megatiles_new = []
+			for megatile in self.tileset.vx4.graphics:
+				megatile_new = []
+				for i, values in enumerate(megatile):
+					values_new = []
+					if values[0] in ids:
+						values_new.append(0)
+					else:
+						values_new.append(values[0] - self.get_decrease_value(ids, values[0]))
+					values_new.append(values[1])
+					megatile_new.append(tuple(values_new))
+				megatiles_new.append(tuple(megatile_new))
+			self.tileset.vx4.graphics = megatiles_new
+
+	def remove_groups(self, ids):
+		if len(ids) == 0:
+			return
+		groups = []
+
+		for id, group in enumerate(self.tileset.cv5.groups):
+			if id not in ids:
+				groups.append(group)
+
+		for doodad in self.tileset.dddata.doodads: # TODO: make sure this is proper
+			for id in doodad:
+				id -= self.get_decrease_value(ids, id)
+
+		self.tileset.cv5.groups = groups
+
+	def swap_groups(self, id1, id2):
+		temp = self.tileset.cv5.groups[id2]
+		self.tileset.cv5.groups[id2] = self.tileset.cv5.groups[id1]
+		self.tileset.cv5.groups[id1] = temp
+
+		for doodad in self.tileset.dddata.doodads: # TODO: make sure this is proper
+			for id in doodad:
+				if id == id1:
+					id = id2
+				if id == id2:
+					id = id1
 
 	def clean(self, *_):
-		if self.buttons['asc3topyai']['state'] != NORMAL:
+		if self.buttons['asc3topyai']['state'] != NORMAL or self.tiletype == TILETYPE_GROUP:
 			return
-		self.remove_megatiles(self.find_unused_megatiles())
 
-	def find_unused_megatiles(self):
-		pass
+		tiletype = "mega" if self.tiletype == TILETYPE_MEGA else "mini"
+		unused = self.find_unused_tiles()
 
-	def reevaluate_ids(self, ids, ids_removed):
-		i = 1
+		if len(unused) == 0:
+			askquestion("All good!", "There are no more unused " + tiletype + "tiles.", type=OK)
+			return
 
-		for id in ids:
-			id_removed = ids_removed[i]
-			if id < id_removed:
-				ids[i] -= i
-				continue
-			i += 1
+		if askquestion("Do you want to continue?", "There are " + str(len(unused)) + " unused " + tiletype + "tiles. Do you want to remove them? (This may take a while.)", type=YESNO) == "yes":
+			self.remove_tiles(unused)
+			self.refresh()
+			askquestion("Removing " + tiletype + "tiles completed.", "Removed " + str(len(unused)) + " " + tiletype + "tiles.", type=OK)
+
+	def find_unused_tiles(self):
+		ids = []
+		if self.tiletype == TILETYPE_MEGA:
+			used_ids = set()
+			for group in self.tileset.cv5.groups:
+				for id in group[13]:
+					used_ids.add(id)
+
+			for id, mega in enumerate(self.tileset.vx4.graphics):
+				if id not in used_ids:
+					ids.append(id)
+
+		elif self.tiletype == TILETYPE_MINI:
+			used_ids = set()
+			for graphic in self.tileset.vx4.graphics:
+				for values in graphic:
+					used_ids.add(values[0])
+
+			for id, mini in enumerate(self.tileset.vr4.images):
+				if id not in used_ids:
+					ids.append(id)
 
 		return ids
 
@@ -1768,6 +1907,7 @@ class PyTILE(Tk):
 			('close', self.close, 'Close (Ctrl+W)', DISABLED, 'Ctrl+W'),
 			10,
 			('up', self.expand, 'Expand the Tileset (Ctrl+E)', DISABLED, 'Ctrl+E'),
+			('end', lambda *_: self.palette.draw_tiles(True), 'Force Redraw Palette (Ctrl+A)', NORMAL, 'Ctrl+A'),
 			10,
 			('find', lambda *_: self.choose(TILETYPE_GROUP), 'MegaTile Group Palette (Ctrl+P)', DISABLED, 'Ctrl+P'),
 			10,

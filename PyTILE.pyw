@@ -1700,7 +1700,51 @@ class TilePalette(PyMSDialog):
 
 			self.reevaluate_references(ids)
 
+	def binarySearchCount(self, arr, val):
+		n = len(arr)
+		left = 0
+		right = n
+
+		mid = 0
+		while (left < right):
+
+			mid = (right + left) // 2
+
+			# Check if key is present in array
+			if (arr[mid] == val):
+
+				# If duplicates are
+				# present it returns
+				# the position of last element
+				while (mid + 1 < n and arr[mid + 1] == val):
+					mid += 1
+				break
+
+
+			# If key is smaller,
+			# ignore right half
+			elif (arr[mid] > val):
+				right = mid
+
+			# If key is greater,
+			# ignore left half
+			else:
+				left = mid + 1
+
+		# If key is not found in
+		# array then it will be
+		# before mid
+		while (mid > -1 and arr[mid] > val):
+			mid -= 1
+
+		# Return mid + 1 because
+		# of 0-based indexing
+		# of array
+		return mid + 1
+
 	def get_decrease_value(self, ids, id): # TODO: Optimize this, it takes the most time in entire tile cleanup process, use customized binary search
+		return self.binarySearchCount(ids, id)
+
 		decrease = 0
 		for i in ids:
 			if id > i:

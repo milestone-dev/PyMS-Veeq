@@ -1684,10 +1684,11 @@ class TilePalette(PyMSDialog):
 		for i in range(id+1, len(groups)):
 			groups_new.append(groups[i])
 
-		for doodad in self.tileset.dddata.doodads:  # TODO: make sure this is proper
-			for did in doodad:
+
+		for i, doodad in enumerate(self.tileset.dddata.doodads):
+			for j, did in enumerate(doodad):
 				if did > id+1:
-					did += 1
+					self.tileset.dddata.doodads[i][j] += 1
 
 		self.tileset.cv5.groups = groups_new
 
@@ -1856,9 +1857,9 @@ class TilePalette(PyMSDialog):
 			if id not in ids:
 				groups.append(group)
 
-		for doodad in self.tileset.dddata.doodads: # TODO: make sure this is proper
-			for id in doodad:
-				id -= self.get_decrease_value(ids, id)
+		for i, doodad in enumerate(self.tileset.dddata.doodads):
+			for j, id in enumerate(doodad):
+				self.tileset.dddata.doodads[i][j] -= self.get_decrease_value(ids, id)
 
 		self.tileset.cv5.groups = groups
 
@@ -1867,12 +1868,12 @@ class TilePalette(PyMSDialog):
 		self.tileset.cv5.groups[id2] = self.tileset.cv5.groups[id1]
 		self.tileset.cv5.groups[id1] = temp
 
-		for doodad in self.tileset.dddata.doodads: # TODO: make sure this is proper
-			for id in doodad:
+		for i, doodad in enumerate(self.tileset.dddata.doodads):
+			for j, id in enumerate(doodad):
 				if id == id1:
-					id = id2
+					self.tileset.dddata.doodads[i][j] = id2
 				if id == id2:
-					id = id1
+					self.tileset.dddata.doodads[i][j] = id1
 
 	def clean(self, *_):
 		if self.buttons['asc3topyai']['state'] != NORMAL or self.tiletype == TILETYPE_GROUP:
@@ -2435,7 +2436,7 @@ class PyTILE(Tk):
 		edit_minitiles.grid(column=1,row=3,sticky=N+W)
 
 		def setZoom(scale):
-			#TODO: Fix scroll restore after zooming in or out
+			# TODO: Fix scroll restore after zooming in or out
 			#scroll = self.palette.canvas.yview()[0]
 			self.palette.setScale(scale)
 			self.palette.draw_tiles(force=True)

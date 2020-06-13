@@ -1421,7 +1421,7 @@ class TilePalette(PyMSDialog):
 		self.gettile = parent.gettile
 		self.editing = editing
 		self.edited = False
-		PyMSDialog.__init__(self, parent, self.get_title(), resizable=(tiletype != TILETYPE_GROUP,True), set_min_size=(True,True))
+		PyMSDialog.__init__(self, parent, self.get_title(), resizable=(False, False))
 
 	def widgetize(self):
 		typename = ''
@@ -1700,7 +1700,7 @@ class TilePalette(PyMSDialog):
 
 			self.reevaluate_references(ids)
 
-	def get_decrease_value(self, ids, id): # TODO: Optimize this, it takes the most time in entire tile cleanup process
+	def get_decrease_value(self, ids, id): # TODO: Optimize this, it takes the most time in entire tile cleanup process, use customized binary search
 		decrease = 0
 		for i in ids:
 			if id > i:

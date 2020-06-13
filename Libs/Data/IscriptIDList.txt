@@ -50,19 +50,19 @@ Greater Spire
 Defiler Mound
 Queen Nest
 Nydus Canal
-Overmind(with Shell)
+Overmind (with Shell)
 Overmind Remnants
-Overmind(without Shell)
+Overmind (without Shell)
 Ultralisk Cavern
 Extractor
 Hydralisk Den
 Spire
 Spore Colony
 Infested Command Center Overlay
-Zerg Construction(Small)
-Zerg Construction(Medium)
+Zerg Construction (Small)
+Zerg Construction (Medium)
 Zerg Building Morph
-Zerg Construction(Large)
+Zerg Construction (Large)
 Zerg Building Spawn
 Battlecruiser
 Civilian
@@ -73,8 +73,8 @@ Ghost Remnants
 Ghost Death
 Nuke Beam
 Nuke Target Dot
-Goliath(Base)
-Goliath(Turret)
+Goliath (Base)
+Goliath (Turret)
 Sarah Kerrigan
 Marine
 Marine Remnants
@@ -88,10 +88,10 @@ Vulture
 Spider Mine
 Science Vessel(Base)
 Science Vessel(Turret)
-Siege Tank(Tank) Base
-Siege Tank(Tank) Turret
-Siege Tank(Siege) Base
-Siege Tank(Siege) Turret
+Siege Tank (Tank) Base
+Siege Tank (Tank) Turret
+Siege Tank (Siege) Base
+Siege Tank (Siege) Turret
 Academy
 Academy Overlay
 Barracks
@@ -117,8 +117,8 @@ Covert Ops Overlay
 Ion Cannon
 Machine Shop
 Machine Shop Connector
-Missile Turret(Base)
-Missile Turret(Turret)
+Missile Turret (Base)
+Missile Turret (Turret)
 Physics Lab
 Physics Lab Connector
 Bunker
@@ -136,13 +136,13 @@ Starport
 Starport Overlay
 Engineering Bay
 Engineering Bay Overlay
-Terran Construction(Large)
-Terran Construction(Medium)
-Terran Construction(Small)
+Terran Construction (Large)
+Terran Construction (Medium)
+Terran Construction (Small)
 Addon Construction
-Explosion(Small)
-Explosion(Medium)
-Explosion(Large)
+Explosion (Small)
+Explosion (Medium)
+Explosion (Large)
 Building Rubble Header
 Arbiter
 Archon Energy
@@ -196,9 +196,9 @@ Unknown194
 Unknown195
 Unknown196
 Unknown197
-Ragnasaur(Ashworld Critter)
-Rhynadon(Badlands Critter)
-Bengalaas(Jungle Critter)
+Ragnasaur (Ashworld Critter)
+Rhynadon (Badlands Critter)
+Bengalaas (Jungle Critter)
 Vespene Geyser
 Vespene Geyser2
 Vespene Geyser Shadow
@@ -248,8 +248,8 @@ Arclite Shock Cannon Hit
 Yamato Gun
 Yamato Gun Trail
 Lockdown/EMP Shockwave Missile
-Siege Tank(Tank) Turret Overlay
-Siege Tank(Siege) Turret Overlay
+Siege Tank (Tank) Turret Overlay
+Siege Tank (Siege) Turret Overlay
 Science Vessel Overlay
 Hallucination Hit
 Unknown254
@@ -272,7 +272,7 @@ Seeker Spores Overlay
 Acid Spray
 Unknown272
 Longbolt\Halo\Gemini Missiles Trail
-Burowing Dust
+Burrowing Dust
 Shadow Header
 Shield Overlay
 Unknown277
@@ -306,8 +306,8 @@ Irradiate
 Recall Field
 Stasis Field Overlay
 Stasis Field Hit
-Recharge Shields(Large)
-Recharge Shields(Small)
+Recharge Shields (Large)
+Recharge Shields (Small)
 High Templar Glow
 Needle Spines Overlay
 Flamethrower
@@ -317,17 +317,17 @@ Yamato Gun Hit
 Unknown316
 Psionic Storm Part Variant1
 Psionic Storm Part Variant2
-EMP Shockwave Hit(Part1)
-EMP Shockwave Hit(Part2)
+EMP Shockwave Hit (Part1)
+EMP Shockwave Hit (Part2)
 Hallucination Death
-Flames(Small)
+Flames (Small)
 Unknown323
-Bleeding(Small) Variant1
-Bleeding(Small) Variant2
-Flames(Large)
+Bleeding (Small) Variant1
+Bleeding (Small) Variant2
+Flames (Large)
 Unknown327
-Bleeding(Large) Variant1
-Bleeding(Large) Variant2
+Bleeding (Large) Variant1
+Bleeding (Large) Variant2
 Dust Variant1
 Dust Variant2
 Confirm Circle
@@ -335,7 +335,7 @@ Psi Field Type1
 Psi Field Type2
 Start Location
 Doodad Header
-Doodad Header(secondary)
+Doodad Header (secondary)
 Space Platform Doodad
 Space Platform Doodad2
 Installation Doodad
@@ -370,12 +370,12 @@ Dark Archon Death
 Corsair
 Corsair Engines
 Unknown371
-Dark Templar(Unit)
+Dark Templar (Unit)
 Neutron Flare
 Disruption Web
-Scantid(Desert Critter)
-Kakaru(Twilight Critter)
-Ursadon(Ice Critter)
+Scantid (Desert Critter)
+Kakaru (Twilight Critter)
+Ursadon (Ice Critter)
 Halo Rocket
 Optical Flare
 Subterranean Spines
@@ -391,7 +391,7 @@ Restoration Hit
 Mind Control Hit
 Optical Flare Hit
 Feedback
-Maelstorm Overlay
+Maelstrom Overlay
 Unknown394
 Unknown395
 Desert Doodad

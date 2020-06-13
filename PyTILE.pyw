@@ -1438,6 +1438,7 @@ class TilePalette(PyMSDialog):
 		if self.editing:
 			buttons = [
 				('add', self.add, 'Add (Insert)', NORMAL, 'Insert'),
+				('arrow', self.insert, 'Insert (Ctrl+Insert)', DISABLED, 'Ctrl+Insert'),
 			]
 
 			tiletype = "Mega" if self.tiletype == TILETYPE_MEGA else "Mini"
@@ -1450,7 +1451,10 @@ class TilePalette(PyMSDialog):
 
 			if self.tiletype == TILETYPE_GROUP:
 				buttons.extend([
-					('redo', self.swap, 'Swap groups (Ctrl+W)', DISABLED, 'Ctrl+W')
+					10,
+					('up', self.up, 'Move Up (Shift+W)', DISABLED, 'Shift+W'),
+					('down', self.down, 'Move Down (Shift+S)', DISABLED, 'Shift+S'),
+					('redo', self.swap, 'Swap groups (Ctrl+W)', DISABLED, 'Ctrl+S')
 				])
 
 			buttons.extend([
@@ -1596,6 +1600,18 @@ class TilePalette(PyMSDialog):
 			status += 'None'
 
 		if self.tiletype == TILETYPE_GROUP:
+			if len(self.palette.selected) == 1:
+				self.buttons['arrow']['state'] = NORMAL
+			else:
+				self.buttons['arrow']['state'] = DISABLED
+
+			if len(self.palette.selected) > 0:
+				self.buttons['up']['state'] = NORMAL
+				self.buttons['down']['state'] = NORMAL
+			else:
+				self.buttons['up']['state'] = DISABLED
+				self.buttons['down']['state'] = DISABLED
+
 			if len(self.palette.selected) == 2:
 				self.buttons['redo']['state'] = NORMAL
 			else:
@@ -1645,6 +1661,59 @@ class TilePalette(PyMSDialog):
 		else:
 			current_ids = self.palette.selected
 			self.remove_tiles(current_ids)
+
+		self.refresh()
+
+	def insert(self, *_):
+		if self.buttons['arrow']['state'] != NORMAL or self.tiletype != TILETYPE_GROUP:
+			return
+		selected = self.palette.selected[0]
+		self.insert_group(selected)
+		self.palette.select(selected+1, scroll_to=True)
+		self.refresh()
+
+	def insert_group(self, id):
+		groups = self.tileset.cv5.groups
+		groups_new = []
+
+		for i in range(id+1):
+			groups_new.append(groups[i])
+
+		groups_new.append([0] * 13 + [[0] * 16])
+
+		for i in range(id+1, len(groups)):
+			groups_new.append(groups[i])
+
+		for doodad in self.tileset.dddata.doodads:  # TODO: make sure this is proper
+			for did in doodad:
+				if did > id+1:
+					did += 1
+
+		self.tileset.cv5.groups = groups_new
+
+	def up(self, *_):
+		if self.buttons['up']['state'] != NORMAL or self.tiletype != TILETYPE_GROUP:
+			return
+		selected = sorted(self.palette.selected)
+
+		for group in selected:
+			self.swap_groups(group, group - 1)
+
+		for i in range(len(self.palette.selected)):
+			self.palette.selected[i] -= 1
+
+		self.refresh()
+
+	def down(self, *_):
+		if self.buttons['down']['state'] != NORMAL or self.tiletype != TILETYPE_GROUP:
+			return
+		selected = sorted(self.palette.selected, reverse=True)
+
+		for group in selected:
+			self.swap_groups(group, group + 1)
+
+		for i in range(len(self.palette.selected)):
+			self.palette.selected[i] += 1
 
 		self.refresh()
 

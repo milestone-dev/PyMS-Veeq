@@ -1,6 +1,5 @@
 PyTILE:
 - Selecting multiple groups in the main window (mostly for shifting them all to null, applying megatile flags to all of them like walkable/low/med/high etc, and setting them to unbuildable
-- Changing Zoom Scale does not save scrolling progress correctly.
 - Reuse MiniTiles Duplicates Old/New and Null settings don't work when importing minitile graphics
 - Crash when using 'copy group settings' feature
 - Crash when using 'Apply to Megas' option when using minitile editor

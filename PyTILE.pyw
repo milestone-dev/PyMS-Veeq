@@ -1032,8 +1032,10 @@ class TilePaletteView(Frame):
 		scrollbar = Scrollbar(self, command=self.canvas.yview)
 		scrollbar.pack(side=LEFT, fill=Y)
 
+		self.resizeForceUpdate = False
 		def canvas_resized(e):
 			self.update_size()
+
 		self.canvas.bind('<Configure>', canvas_resized)
 		binding_widget = self.delegate.tile_palette_binding_widget()
 		binding_widget.bind('<MouseWheel>', lambda e: self.canvas.yview('scroll', -(e.delta / abs(e.delta)) if e.delta else 0,'units'))
@@ -1048,6 +1050,7 @@ class TilePaletteView(Frame):
 		self.canvas.config(yscrollcommand=lambda l,h,s=scrollbar: update_scrollbar(l,h,s))
 
 	def setScale(self, scale):
+		self.resizeForceUpdate = True
 		self.scale = scale
 		self.canvas.config(width=self.originalWidth * self.scale)
 
@@ -1056,7 +1059,7 @@ class TilePaletteView(Frame):
 		if tiletype == TILETYPE_GROUP:
 			return [32.0*self.scale * (16 if group else 1),32.0*self.scale + 1]
 		elif tiletype == TILETYPE_MEGA:
-			return [32.0*self.scale + (0 if self.tiletype == TILETYPE_GROUP else 1*self.scale),32.0*self.scale + (0 if self.tiletype == TILETYPE_GROUP else 1*self.scale)]
+			return [32.0*self.scale + (0 if self.tiletype == TILETYPE_GROUP else 1*self.scale), 32.0*self.scale + (0 if self.tiletype == TILETYPE_GROUP else 1*self.scale)]
 		elif tiletype == TILETYPE_MINI:
 			return [25.0*self.scale,25.0*self.scale]
 	def get_tile_count(self):
@@ -1079,10 +1082,11 @@ class TilePaletteView(Frame):
 			total_size = [width,int(ceil(tile_count / columns)) * tile_size[1] + 1]
 		return total_size
 
-	def update_size(self):
+	def update_size(self, force_draw=False):
 		total_size = self.get_total_size()
 		self.canvas.config(scrollregion=(0,0,total_size[0],total_size[1]))
-		self.draw_tiles()
+		self.draw_tiles(force=force_draw or self.resizeForceUpdate)
+		self.resizeForceUpdate = False
 
 	def draw_selections(self):
 		self.canvas.delete('selection')
@@ -1646,8 +1650,7 @@ class TilePalette(PyMSDialog):
 	def refresh(self):
 		self.update_title()
 		self.update_state()
-		self.palette.update_size()
-		self.palette.draw_tiles(True)
+		self.palette.update_size(True)
 		self.parent.update_ranges()
 		self.mark_edited()
 
@@ -1812,7 +1815,7 @@ class TilePalette(PyMSDialog):
 		# of array
 		return mid + 1
 
-	def get_decrease_value(self, ids, id): # TODO: Optimize this, it takes the most time in entire tile cleanup process, use customized binary search
+	def get_decrease_value(self, ids, id):
 		return self.binarySearchCount(ids, id)
 
 		decrease = 0
@@ -2436,11 +2439,9 @@ class PyTILE(Tk):
 		edit_minitiles.grid(column=1,row=3,sticky=N+W)
 
 		def setZoom(scale):
-			# TODO: Fix scroll restore after zooming in or out
-			#scroll = self.palette.canvas.yview()[0]
+			scroll = self.palette.canvas.yview()[0]
 			self.palette.setScale(scale)
-			self.palette.draw_tiles(force=True)
-			#self.palette.canvas.yview_moveto(scroll)
+			self.palette.canvas.yview_moveto(scroll)
 
 
 		Label(settings_group, text='Zoom:').grid(column=1, row=4, sticky=N+W)
@@ -2681,7 +2682,7 @@ class PyTILE(Tk):
 
 	def update_palette_null(self):
 		self.palette.draw_tiles(force=True)
-		self.mega_editor.set_megatile(0) # TODO: there's something wrong with this
+		self.palette.select(self.palette.selected)
 		self.mark_edited()
 
 	def megatile_null(self, group, tile):
@@ -2965,8 +2966,7 @@ class PyTILE(Tk):
 	def update_ranges(self):
 		self.megatilee.setrange([0,len(self.tileset.vf4.flags)-1])
 		self.mega_editor.update_mini_range()
-		self.palette.update_size()
-		self.palette.draw_tiles(force=True)
+		self.palette.update_size(True)
 
 	def open(self, key=None, file=None):
 		if not self.unsaved():

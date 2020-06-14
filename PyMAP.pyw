@@ -18,7 +18,7 @@ from thread import start_new_thread
 from math import ceil
 import optparse, os, webbrowser, sys, time, random
 
-LONG_VERSION = 'v%s-DEV' % VERSIONS['PyMAP']
+LONG_VERSION = 'v%s' % VERSIONS['PyMAP']
 
 FRAME_DELAY = 42
 

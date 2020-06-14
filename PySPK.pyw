@@ -15,7 +15,7 @@ except:
 from thread import start_new_thread
 import optparse, os, webbrowser, sys, time
 
-LONG_VERSION = 'v%s-DEV' % VERSIONS['PySPK']
+LONG_VERSION = 'v%s' % VERSIONS['PySPK']
 
 MOUSE_DOWN = 0
 MOUSE_MOVE = 1

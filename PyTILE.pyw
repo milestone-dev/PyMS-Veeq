@@ -747,7 +747,7 @@ class GraphicsImporter(PyMSDialog):
 		}
 		ids = None
 		if self.replace_selections.get():
-			ids = self.ids
+			ids = sorted(self.ids)
 		try:
 			new_ids = self.tileset.import_graphics(self.tiletype, self.graphics_list.get(0,END), ids, options)
 		except PyMSError, e:
@@ -900,7 +900,7 @@ class MegaTileSettingsExporter(PyMSDialog):
 	def export(self):
 		path = PYTILE_SETTINGS.lastpath.settings.select_file('export', self, 'Export MegaTile Settings', '.txt', [('Text File','*.txt'),('All Files','*')], save=True)
 		if path:
-			self.tileset.export_settings(TILETYPE_MEGA, path, self.ids)
+			self.tileset.export_settings(TILETYPE_MEGA, path, sorted(self.ids))
 			self.ok()
 
 	def dismiss(self, e=None):
@@ -984,7 +984,7 @@ class SettingsImporter(PyMSDialog):
 
 	def iimport(self):
 		try:
-			self.tileset.import_settings(self.tiletype, self.settings_path.get(), self.ids, {'repeater': SettingsImporter.REPEATERS[self.repeater.get()][2]})
+			self.tileset.import_settings(self.tiletype, self.settings_path.get(), sorted(self.ids), {'repeater': SettingsImporter.REPEATERS[self.repeater.get()][2]})
 		except PyMSError, e:
 			ErrorDialog(self, e)
 		else:
@@ -1425,7 +1425,7 @@ class TilePalette(PyMSDialog):
 		self.gettile = parent.gettile
 		self.editing = editing
 		self.edited = False
-		PyMSDialog.__init__(self, parent, self.get_title(), resizable=(False, False))
+		PyMSDialog.__init__(self, parent, self.get_title(), resizable=(False, True), set_min_size=(True,True))
 
 	def widgetize(self):
 		typename = ''
@@ -1478,14 +1478,14 @@ class TilePalette(PyMSDialog):
 				])
 			buttons.extend([
 				10,
-				('exportc', self.export_graphics, 'Export %s Graphics (Ctrl+E)' % typename, NORMAL, 'Ctrl+E'),
 				('importc', self.import_graphics, 'Import %s Graphics (Ctrl+I)' % typename, NORMAL, 'Ctrl+I'),
+				('exportc', self.export_graphics, 'Export %s Graphics (Ctrl+E)' % typename, NORMAL, 'Ctrl+E'),
 			])
 			if self.tiletype != TILETYPE_MINI:
 				buttons.extend([
 					10,
+					('import', self.import_settings, 'Import %s Settings (Ctrl+Shift+I)' % typename, NORMAL, 'Ctrl+Shift+I'),
 					('export', self.export_settings, 'Export %s Settings (Ctrl+Shift+E)' % typename, NORMAL, 'Ctrl+Shift+E'),
-					('import', self.import_settings, 'Import %s Settings (Ctrl+Shift+I)' % typename, NORMAL, 'Ctrl+Shift+I')
 				])
 			self.buttons = {}
 			toolbar = Frame(self)
@@ -1928,7 +1928,7 @@ class TilePalette(PyMSDialog):
 			typename = 'MiniTile'
 		path = PYTILE_SETTINGS.lastpath.graphics.select_file('export', self, 'Export %s Graphics' % typename, '.bmp', [('256 Color BMP','*.bmp'),('All Files','*')], save=True)
 		if path:
-			self.tileset.export_graphics(self.tiletype, path, self.palette.selected)
+			self.tileset.export_graphics(self.tiletype, path, sorted(self.palette.selected))
 	def import_graphics(self, e=None):
 		GraphicsImporter(self, self.tiletype, self.palette.selected)
 	def imported_graphics(self, new_ids):

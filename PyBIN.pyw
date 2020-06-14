@@ -15,7 +15,7 @@ except:
 from thread import start_new_thread
 import optparse, os, webbrowser, sys, time
 
-LONG_VERSION = 'v%s-DEV' % VERSIONS['PyBIN']
+LONG_VERSION = 'v%s' % VERSIONS['PyBIN']
 PYBIN_SETTINGS = Settings('PyBIN', '1')
 
 FRAME_DELAY = 67

@@ -3012,7 +3012,8 @@ class PyAI(Tk):
 				self.tbledited = False
 
 		if not overwriteFile(self, ai):
-			ai = None
+			askquestion("Saving Interrupted", "You can't continue saving without aiscript.bin.", type=OK, icon=ERROR)
+			return
 
 		if not overwriteFile(self, bw):
 			bw = None

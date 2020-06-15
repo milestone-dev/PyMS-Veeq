@@ -1886,13 +1886,13 @@ class TilePalette(PyMSDialog):
 		unused = self.find_unused_tiles()
 
 		if len(unused) == 0:
-			askquestion("All good!", "There are no more unused " + tiletype + "tiles.", type=OK)
+			askquestion("All good!", "There are no more unused " + tiletype + "tiles.", type=OK, icon=INFO)
 			return
 
-		if askquestion("Do you want to continue?", "There are " + str(len(unused)) + " unused " + tiletype + "tiles. Do you want to remove them? (This may take a while.)", type=YESNO) == "yes":
+		if askquestion("Do you want to continue?", "There are " + str(len(unused)) + " unused " + tiletype + "tiles. Do you want to remove them? (This may take a while.)", type=YESNO, icon=QUESTION) == "yes":
 			self.remove_tiles(unused)
 			self.refresh()
-			askquestion("Removing " + tiletype + "tiles completed.", "Removed " + str(len(unused)) + " unused " + tiletype + "tiles.", type=OK)
+			askquestion("Removing " + tiletype + "tiles completed.", "Removed " + str(len(unused)) + " unused " + tiletype + "tiles.", type=OK, icon=INFO)
 
 	def find_unused_tiles(self):
 		ids = []

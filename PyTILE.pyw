@@ -1442,8 +1442,12 @@ class TilePalette(PyMSDialog):
 		if self.editing:
 			buttons = [
 				('add', self.add, 'Add (Insert)', NORMAL, 'Insert'),
-				('arrow', self.insert, 'Insert (Ctrl+Insert)', DISABLED, 'Ctrl+Insert'),
 			]
+
+			if self.tiletype == TILETYPE_GROUP:
+				buttons.extend([
+					('arrow', self.insert, 'Insert (Ctrl+Insert)', DISABLED, 'Ctrl+Insert'),
+				])
 
 			tiletype = "Mega" if self.tiletype == TILETYPE_MEGA else "Mini"
 

@@ -287,11 +287,7 @@ military h_siege_turret = 26
 military spider_mine = 13
 military scanner_sweep = 33
 military larva = 35
-<<<<<<< HEAD
 military egg = 36
-=======
-military larva_egg = 36
->>>>>>> adb8cba452611c220eeb5b26d861313c7ee42e32
 military cocoon = 59
 military lurker_egg = 97
 military scarab = 85

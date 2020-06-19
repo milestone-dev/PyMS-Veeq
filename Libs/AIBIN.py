@@ -172,7 +172,6 @@ class AIBIN:
         'send_transmission',
         'new_layout',
         'build_new',
-        'bring_jump',
 	]
 
 	script_aliases = { # those will expand with script conversion to proper syntax

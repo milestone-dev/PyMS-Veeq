@@ -110,7 +110,7 @@ upgrade overcharge = 48
 # Terran tech
 technology stim_packs = 0
 technology lockdown = 1
-technology emp_shockwave = 2
+technology reverse_thrust = 2
 technology spider_mines = 3
 technology siege_mode = 5
 technology defensive_matrix = 6

@@ -237,7 +237,6 @@ technology spawn_broodling = 13
 technology dark_swarm = 14
 technology plague = 15
 technology consume = 16
-technology ensnare = 17
 technology parasite = 18
 technology lurker_aspect = 32
 
@@ -453,6 +452,7 @@ technology unused_43 = 43
 #upgrade_ext vital_encephalon = 75
 #upgrade_ext ravening_mandible = 76
 #upgrade_ext metastasis = 77
+#upgrade_ext ensnaring_brood = 84
 #upgrade_ext tectonic_claws = 90
 #upgrade_ext saber_siphon = 91
 #upgrade_ext kaiser_rampage = 92

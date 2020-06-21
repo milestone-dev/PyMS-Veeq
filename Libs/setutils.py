@@ -5,6 +5,7 @@ from Libs import PCX,FNT,GRP,PAL,TBL,AIBIN,DAT,IScriptBIN
 
 from Tkinter import *
 from tkMessageBox import *
+from Libs.stylized import *
 
 import re, os, json, copy
 

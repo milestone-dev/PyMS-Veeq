@@ -5,22 +5,35 @@ import Tkinter
 # After importing Tkinter with  `from Tkinter import *`
 # Import using                  `from Libs.stylized import *`
 
-def configure(widget, hasText=False, hasHighlight=False, isButton=False, isScrollbar=False):
-    widget.config(bg="#222222", borderwidth=1)
+def configure(widget, hasText=False, hasHighlight=False):
+    wClass = widget.__class__
 
+    defaultBackground = "#222428"
+    defaultForeground = "#ffffff"
+    highlightForeground = "#ffffff"
+    highlightBackground = "#323438"
+    disabledBackground = "#66687c"
+    activeBackground = "#44464a"
+    selectedTextBackground = "#2244ff"
+
+    widget.config(bg=defaultBackground)
     if hasText:
-        widget.config(fg="#ffffff")
+        widget.config(fg=defaultForeground)
 
     if hasHighlight:
-        widget.config(highlightthickness=0, highlightcolor="#333333", highlightbackground="#333333")
+        widget.config(highlightthickness=0, highlightcolor=highlightForeground, highlightbackground=highlightBackground)
 
-    if isButton:
-        widget.config(fg="#ffffff")
-        #widget.config(activebackground="#444444", activeforeground="#fffffff")
-        pass
+    if wClass == Button or wClass == Checkbutton or wClass == Radiobutton:
+        widget.config(activebackground=activeBackground, activeforeground=highlightBackground, disabledforeground=disabledBackground, padx=3, pady=2)
 
-    if isScrollbar:
-        widget.config(troughcolor="#333333")
+        if wClass == Checkbutton or wClass == Radiobutton:
+            widget.config(selectcolor=activeBackground)
+
+    if wClass == Entry:
+        widget.config(selectbackground=selectedTextBackground)
+
+    if wClass == Scrollbar:
+        widget.config(troughcolor=defaultBackground)
 
 
 class Tk(Tkinter.Tk):
@@ -44,19 +57,19 @@ class Frame(Tkinter.Frame):
 class Button(Tkinter.Button):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Button.__init__(self, master, cnf, **kw)
-        configure(self, hasText=True, hasHighlight=True, isButton=True)
+        configure(self, hasText=True, hasHighlight=True)
 
 
 class Checkbutton(Tkinter.Checkbutton):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Checkbutton.__init__(self, master, cnf, **kw)
-        configure(self, hasText=True, hasHighlight=True, isButton=True)
+        configure(self, hasText=True, hasHighlight=True)
 
 
 class Radiobutton(Tkinter.Radiobutton):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Radiobutton.__init__(self, master, cnf, **kw)
-        configure(self, hasText=True, hasHighlight=True, isButton=True)
+        configure(self, hasText=True, hasHighlight=True)
 
 
 class Label(Tkinter.Label):
@@ -77,10 +90,10 @@ class Entry(Tkinter.Entry):
         configure(self, hasText=True, hasHighlight=True)
 
 
-class Scale(Tkinter.Scale):
+class Scale(Tkinter.Scale): # TODO: Check if it has Highlight
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Scale.__init__(self, master, cnf, **kw)
-        configure(self, hasHighlight=True)
+        configure(self)
 
 
 class Canvas(Tkinter.Canvas):
@@ -92,19 +105,19 @@ class Canvas(Tkinter.Canvas):
 class Listbox(Tkinter.Listbox):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Listbox.__init__(self, master, cnf, **kw)
-        configure(self, hasHighlight=True)
+        configure(self, hasText=True, hasHighlight=True)
 
 
 class Menu(Tkinter.Menu):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Menu.__init__(self, master, cnf, **kw)
-        configure(self)
+        configure(self, hasText=True)
 
 
 class OptionMenu(Tkinter.OptionMenu):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.OptionMenu.__init__(self, master, cnf, **kw)
-        configure(self, hasHighlight=True)
+        configure(self, hasText=True, hasHighlight=True)
 
 
 class Listbox(Tkinter.Listbox):
@@ -116,7 +129,7 @@ class Listbox(Tkinter.Listbox):
 class Scrollbar(Tkinter.Scrollbar):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Scrollbar.__init__(self, master, cnf, **kw)
-        configure(self, isScrollbar=True, hasHighlight=True)
+        configure(self, hasHighlight=True)
 
 
 class LabelFrame(Tkinter.LabelFrame):

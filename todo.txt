@@ -16,3 +16,16 @@ PyAI:
 
 PyGRP:
 - Fix artifacts that happen after saving
+
+PyBIN:
+= Main window:
+- Add: cut, copy, paste features for Dialogs
+- Add: option to rename Dialogs (only for user convenience, shouldn't affect compiled bin file)
+- Add: insert below button
+- Add: tooltips on hover for add dialog, remove dialog, edit dialog, move dialog up, move dialog down
+- Add: option for more accurate ingame preview where possible (e.g. glucustm.bin, which shows 'play custom' menu)
+- Fix: arrow keys don't scroll up or down
+= Settings:
+- Fix: settings dialog starts too small to see all options
+= Investigate:
+- Bug: after deleting Campaign Editor button in glumain.bin, Starcraft closes on startup with a file not found error

@@ -12,7 +12,7 @@ PyMPQ:
 
 PyAI:
 - Inline blocks
-- Automatic set_pos_local declarations
+- Automatic set_var_local declarations
 
 PyGRP:
 - Fix artifacts that happen after saving

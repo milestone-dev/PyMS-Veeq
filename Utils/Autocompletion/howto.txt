@@ -1,0 +1,1 @@
+To install simply copy asc3.xml to notepad++/autoCompletion/

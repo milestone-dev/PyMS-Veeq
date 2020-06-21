@@ -9,3 +9,10 @@ General:
 
 PyMPQ:
 - Rename/edit prefix for selected files
+
+PyAI:
+- Inline blocks
+- Automatic set_pos_local declarations
+
+PyGRP:
+- Fix artifacts that happen after saving

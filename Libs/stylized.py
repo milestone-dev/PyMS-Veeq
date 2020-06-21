@@ -69,7 +69,7 @@ class Frame(Tkinter.Frame):
 class Button(Tkinter.Button):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Button.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True)
+        _configure(self, hasText=True, hasHighlight=True, hasImage=kw.has_key("image"))
 
 
 class Checkbutton(Tkinter.Checkbutton):

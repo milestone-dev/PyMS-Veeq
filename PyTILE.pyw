@@ -1027,7 +1027,7 @@ class TilePaletteView(Frame):
 
 		tile_size = self.get_tile_size()
 		self.originalWidth = 2 + tile_size[0] * 16
-		self.canvas = Canvas(self, width=self.originalWidth, height=2 + tile_size[1] * 8, background='#000000', highlightthickness=0)
+		self.canvas = Tkinter.Canvas(self, width=self.originalWidth, height=2 + tile_size[1] * 8, background='#000000', highlightthickness=0)
 		self.canvas.images = {}
 		self.canvas.pack(side=LEFT, fill=BOTH, expand=1, padx=(3,0))
 		scrollbar = Scrollbar(self, command=self.canvas.yview)

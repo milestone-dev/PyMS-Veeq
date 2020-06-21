@@ -45,6 +45,8 @@ def startup(toplevel):
 		app.activateWithOptions_(NSApplicationActivateIgnoringOtherApps)
 	except:
 		pass
+
+	initStylized()
 	toplevel.mainloop()
 
 # Decorator

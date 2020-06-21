@@ -11,7 +11,9 @@ defaultBackground = "#222428"
 defaultForeground = "#ffffff"
 highlightForeground = "#ffffff"
 highlightBackground = "#323438"
-disabledBackground = "#66687c"
+disabledForeground = "#181a1e"
+disabledBackground = "#181a1e"
+activeForeground = "#ffffff"
 activeBackground = "#44464a"
 selectedTextBackground = "#2244ff"
 
@@ -29,16 +31,20 @@ def _configure(widget, hasText=False, hasHighlight=False, hasImage=False):
         widget.config(highlightthickness=0, highlightcolor=highlightForeground, highlightbackground=highlightBackground)
 
     wClass = widget.__class__
-    if wClass == Button or wClass == Checkbutton or wClass == Radiobutton:
-        widget.config(activebackground=activeBackground, activeforeground=highlightBackground, disabledforeground=disabledBackground,
+    if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
+        widget.config(activebackground=activeBackground, activeforeground=activeForeground, disabledforeground=disabledForeground,
                       padx=3, pady=2)
-        if wClass == Checkbutton or wClass == Radiobutton:
+        if issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
             widget.config(selectcolor=activeBackground)
         elif hasImage:
             widget.config(relief = Tkinter.FLAT, borderwidth = 0)
-    elif wClass == Entry or wClass == Listbox:
+    elif issubclass(wClass, Listbox):
         widget.config(selectbackground=selectedTextBackground)
-    elif wClass == Frame:
+        widget.config(borderwidth=1)
+    elif issubclass(wClass, Entry):
+        widget.config(selectbackground=selectedTextBackground)
+        widget.config(disabledbackground=disabledBackground)
+    elif issubclass(wClass, Frame):
         widget.config(borderwidth=0)
 
 

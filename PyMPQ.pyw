@@ -10,6 +10,7 @@ from Libs.analytics import *
 from Tkinter import *
 # from tkMessageBox import *
 # import tkFileDialog,tkColorChooser
+from Libs.stylized import *
 
 from thread import start_new_thread
 from operator import itemgetter

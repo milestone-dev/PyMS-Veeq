@@ -12,6 +12,7 @@ from Libs.analytics import *
 from Tkinter import *
 from tkMessageBox import *
 import tkFileDialog,tkColorChooser
+from Libs.stylized import *
 
 from PIL import Image
 from PIL import ImageTk

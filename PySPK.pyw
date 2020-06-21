@@ -6,6 +6,7 @@ from Libs.analytics import *
 from Tkinter import *
 from tkMessageBox import *
 from PIL import Image as PILImage
+from Libs.stylized import *
 
 try:
 	from PIL import ImageTk

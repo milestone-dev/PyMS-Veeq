@@ -4,10 +4,12 @@ from Libs.trace import setup_trace
 from Libs.SFmpq import *
 from Libs import AIBIN, TBL, DAT
 from Libs.analytics import *
+from Libs import stylized
 
 from Tkinter import *
 from tkMessageBox import *
 import tkFileDialog,tkColorChooser
+from Libs.stylized import *
 
 from thread import start_new_thread
 from shutil import copy
@@ -256,9 +258,9 @@ class FindReplaceDialog(PyMSDialog):
 		self.updown = IntVar()
 		self.updown.set(1)
 
-		l = Frame(self)
-		f = Frame(l)
-		s = Frame(f)
+		l = stylized.Frame(self)
+		f = stylized.Frame(l)
+		s = stylized.Frame(f)
 		Label(s, text='Find:', anchor=E, width=12).pack(side=LEFT)
 		self.findentry = TextDropDown(s, self.find, self.parent.parent.findhistory, 30)
 		self.findentry.c = self.findentry['bg']

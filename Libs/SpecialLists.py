@@ -3,6 +3,7 @@ from tkMessageBox import *
 from utils import isstr
 import re
 import os.path
+from Libs.stylized import *
 
 class RichList(Frame):
 	selregex = re.compile('\\bsel\\b')

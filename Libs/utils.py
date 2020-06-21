@@ -1,6 +1,7 @@
 # from SFmpq import *
 
 from Tkinter import *
+from Libs.stylized import *
 from tkMessageBox import askquestion,OK
 import tkFileDialog
 from textwrap import wrap

@@ -10,6 +10,7 @@ from Tkinter import *
 from tkMessageBox import *
 import tkFileDialog,tkColorChooser
 from Libs.SpecialLists import TreeList
+from Libs.stylized import *
 from PIL import Image as PILImage
 from PIL import ImageDraw as PILDraw
 from PIL import ImageTk

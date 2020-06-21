@@ -2,6 +2,7 @@
 from AutohideScrollbar import AutohideScrollbar
 
 from Tkinter import *
+from Libs.stylized import *
 
 
 SHOW_SCROLL_NEVER = 0

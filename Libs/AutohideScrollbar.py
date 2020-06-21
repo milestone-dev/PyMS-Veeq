@@ -1,5 +1,6 @@
 
 from Tkinter import *
+from Libs.stylized import *
 
 
 class AutohideScrollbar(Scrollbar):

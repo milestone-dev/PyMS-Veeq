@@ -586,23 +586,23 @@ class AICodeText(CodeText):
 			self.highlights = highlights
 		else:
 			self.highlights = {
-				'Block':{'foreground':'#FF00FF','background':None,'font':None},
-				'Keywords':{'foreground':'#0000FF','background':None,'font':self.boldfont},
-				'Types':{'foreground':'#0000FF','background':None,'font':self.boldfont},
-				'Commands':{'foreground':'#0000AA','background':None,'font':None},
-				'Number':{'foreground':'#FF0000','background':None,'font':None},
+				'Block':{'foreground':'#FF22FF','background':None,'font':None},
+				'Keywords':{'foreground':'#2244FF','background':None,'font':self.boldfont},
+				'Types':{'foreground':'#2244FF','background':None,'font':self.boldfont},
+				'Commands':{'foreground':'#2244AA','background':None,'font':None},
+				'Number':{'foreground':'#FF2222','background':None,'font':None},
 				'TBLFormat':{'foreground':None,'background':'#E6E6E6','font':None},
 				'InfoComment':{'foreground':'#FF963C','background':None,'font':None},
 				'MultiInfoComment':{'foreground':'#FF963C','background':None,'font':None},
-				'Comment':{'foreground':'#008000','background':None,'font':None},
-				'AIID':{'foreground':'#FF00FF','background':None,'font':self.boldfont},
-				'HeaderString':{'foreground':'#FF0000','background':None,'font':self.boldfont},
-				'HeaderFlags':{'foreground':'#8000FF','background':None,'font':self.boldfont},
-				'Operators':{'foreground':'#0000FF','background':None,'font':self.boldfont},
+				'Comment':{'foreground':'#228022','background':None,'font':None},
+				'AIID':{'foreground':'#FF22FF','background':None,'font':self.boldfont},
+				'HeaderString':{'foreground':'#FF2222','background':None,'font':self.boldfont},
+				'HeaderFlags':{'foreground':'#8022FF','background':None,'font':self.boldfont},
+				'Operators':{'foreground':'#2244FF','background':None,'font':self.boldfont},
 				'Newline':{'foreground':None,'background':None,'font':None},
 				'Error':{'foreground':None,'background':'#FF8C8C','font':None},
 				'Warning':{'foreground':None,'background':'#FFC8C8','font':None},
-				'Directives':{'foreground':'#0000FF','background':None,'font':self.boldfont}
+				'Directives':{'foreground':'#2244FF','background':None,'font':self.boldfont}
 			}
 		CodeText.__init__(self, parent, ecallback, icallback, scallback)
 		self.text.bind('<Control-q>', self.commentrange)

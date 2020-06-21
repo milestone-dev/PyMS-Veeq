@@ -19,20 +19,18 @@ def configure(widget, hasText=False, hasHighlight=False):
     widget.config(bg=defaultBackground)
     if hasText:
         widget.config(fg=defaultForeground)
-
     if hasHighlight:
         widget.config(highlightthickness=0, highlightcolor=highlightForeground, highlightbackground=highlightBackground)
 
     if wClass == Button or wClass == Checkbutton or wClass == Radiobutton:
         widget.config(activebackground=activeBackground, activeforeground=highlightBackground, disabledforeground=disabledBackground, padx=3, pady=2)
-
         if wClass == Checkbutton or wClass == Radiobutton:
             widget.config(selectcolor=activeBackground)
-
-    if wClass == Entry:
+    elif wClass == Entry or wClass == Listbox:
         widget.config(selectbackground=selectedTextBackground)
-
-    if wClass == Scrollbar:
+    elif wClass == Frame:
+        widget.config(borderwidth=0)
+    elif wClass == Scrollbar:
         widget.config(troughcolor=defaultBackground)
 
 
@@ -117,12 +115,6 @@ class Menu(Tkinter.Menu):
 class OptionMenu(Tkinter.OptionMenu):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.OptionMenu.__init__(self, master, cnf, **kw)
-        configure(self, hasText=True, hasHighlight=True)
-
-
-class Listbox(Tkinter.Listbox):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Listbox.__init__(self, master, cnf, **kw)
         configure(self, hasText=True, hasHighlight=True)
 
 

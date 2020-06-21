@@ -3,3 +3,6 @@ PyTILE:
 - Reuse MiniTiles Duplicates Old/New and Null settings don't work when importing minitile graphics
 - Crash when using 'copy group settings' feature
 - Crash when using 'Apply to Megas' option when using minitile editor
+
+General:
+- Dark theme for PyMS

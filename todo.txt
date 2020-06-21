@@ -6,3 +6,6 @@ PyTILE:
 
 General:
 - Dark theme for PyMS
+
+PyMPQ:
+- Rename/edit prefix for selected files

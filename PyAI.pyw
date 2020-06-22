@@ -1122,14 +1122,16 @@ class CodeEditDialog(PyMSDialog):
             self.parent.highlights = c.cont
 
     def findScriptSubcommand(self, line):
+        benchmark = self.startBenchmark()
         match = re.match(r"^[ \t]*\b(" + self.makeSearchPattern(AIBIN.AIBIN.script_subcommands) + r")\b.*", line)
         if match:
+            self.scriptExpandingTime += self.stopBenchmark(benchmark)
             return match.group(1)
 
-        benchmark = self.startBenchmark()
+        benchmark2 = self.startBenchmark()
         match = re.match(r"^[ \t]*\b(" + self.makeSearchPattern(AIBIN.AIBIN.script_aliases.keys()) + r")\b.*", line)
         if match:
-            self.scriptAliasesTime += self.stopBenchmark(benchmark)
+            self.scriptAliasesTime += self.stopBenchmark(benchmark2)
             return AIBIN.AIBIN.script_aliases[match.group(1)]
 
         return None
@@ -1152,6 +1154,7 @@ class CodeEditDialog(PyMSDialog):
         return re.match(r"^[ \t]*\b" + re.escape(value) + r"\b", line)
 
     def getScriptSyntaxType(self, line):
+        benchmark = self.startBenchmark()
         self.type = -1
         if self.lineStartingWith(line, "script("):
             self.type = 0
@@ -1162,25 +1165,34 @@ class CodeEditDialog(PyMSDialog):
         elif self.hasScriptSubcommand(line):
             self.type = 3
 
+        self.scriptExpandingTime += self.stopBenchmark(benchmark)
         return self.type
 
     def isScript(self, line):
         return self.getScriptSyntaxType(line) != -1
 
     def convertScriptLine(self, line, blockSearch=None):
+        benchmark = self.startBenchmark()
         line = line.rstrip()
 
         if self.type == 0:
             ret = line.rstrip()
+            self.scriptExpandingTime += self.stopBenchmark(benchmark)
         elif self.type == 1:
             ret = re.sub(r"(^[ \t]*)custom_script\((.*)\)", r"\1script(\2)", line).rstrip()
+            self.scriptExpandingTime += self.stopBenchmark(benchmark)
         elif self.type == 2:
             ret = re.sub(r"(^[ \t]*)script (.*)", r"\1script(\2)", line).rstrip()
+            self.scriptExpandingTime += self.stopBenchmark(benchmark)
         elif self.type == 3:
+            self.scriptExpandingTime += self.stopBenchmark(benchmark)
             command = self.findScriptSubcommand(line)
             line = self.expandScriptAlias(line)
+            benchmark = self.startBenchmark()
             ret = re.sub(r"(^[ \t]*)("+command+".*)", r"\1script(\2)", line).rstrip()
+            self.scriptExpandingTime += self.stopBenchmark(benchmark)
         else:
+            self.scriptExpandingTime += self.stopBenchmark(benchmark)
             WarningDialog(self, "Invalid Script Line: %s" % line)
             ret = ""
 
@@ -1272,6 +1284,7 @@ class CodeEditDialog(PyMSDialog):
         headerinfo = [None,None,None,None]
         data = ''
 
+        self.scriptExpandingTime = 0.0
         self.scriptAliasesTime = 0.0
         self.commandAliasesTime = 0.0
         self.argumentAliasesTime = 0.0
@@ -1356,6 +1369,7 @@ class CodeEditDialog(PyMSDialog):
             askquestion(parent=self, title='Invalid Header', message='The script is either missing a script_name or a script_id.', type=OK)
             return
 
+        beforeheader += "# Script Expanding Time: " + str(self.scriptExpandingTime) + "\n"
         beforeheader += "# Script Aliases Time: " + str(self.scriptAliasesTime) + "\n"
         beforeheader += "# Command Aliases Time: " + str(self.commandAliasesTime) + "\n"
         beforeheader += "# Argument Aliases Time: " + str(self.argumentAliasesTime) + "\n"

@@ -68,8 +68,8 @@ def __save_default_theme(): # Save and enable default theme
 __load_theme()
 __defaultBackground = __theme.get("defaultBackground")
 __defaultForeground = __theme.get("defaultForeground")
-__disabledForeground = __theme.get("disabledForeground")
 __disabledBackground = __theme.get("disabledBackground")
+__disabledForeground = __theme.get("disabledForeground")
 __enabledBackground = __theme.get("enabledBackground")
 __enabledForeground = __theme.get("enabledForeground")
 __activeForeground = __theme.get("activeForeground")
@@ -84,122 +84,143 @@ def init_ttk():
     style.configure("Vertical.TScrollbar", bg=__defaultBackground, troughcolor=__defaultBackground)
 
 
-def _configure(widget, hasText=False, hasHighlight=False, hasImage=False):
-    widget.config(bg=__defaultBackground)
-    if hasText:
+def _configure(widget, isBtnWithImage=False):
+    config = widget.config()
+
+    if config.has_key("bg"):
+        widget.config(bg=__defaultBackground)
+    if config.has_key("fg"):
         widget.config(fg=__defaultForeground)
-    if hasHighlight:
+    if config.has_key("activebackground"):
+        widget.config(activebackground=__activeBackground)
+    if config.has_key("activeforeground"):
+        widget.config(activeforeground=__activeForeground)
+    if config.has_key("disabledbackground"):
+        widget.config(disabledbackground=__disabledBackground)
+    if config.has_key("disabledforeground"):
+        widget.config(disabledforeground=__disabledForeground)
+    if config.has_key("selectbackground"):
+        widget.config(selectbackground=__selectedTextBackground)
+
+    if config.has_key("highlightthickness"):
         widget.config(highlightthickness=0)
+    if config.has_key("borderwidth"):
+        if widget.cget("borderwidth") > 1:
+            widget.config(borderwidth=1)
+
+    if config.has_key("relief"):
+        if widget.cget("relief") != Tkinter.FLAT:
+            widget.config(relief=Tkinter.GROOVE)
+    if config.has_key("offrelief"):
+        if widget.cget("offrelief") != Tkinter.FLAT:
+            widget.config(offrelief=Tkinter.GROOVE)
+    if config.has_key("overrelief"):
+        if widget.cget("overrelief") != Tkinter.FLAT:
+            widget.config(overrelief=Tkinter.GROOVE)
+
+    if config.has_key("padx"):
+        widget.config(padx=3, pady=3)
 
     wClass = widget.__class__
     if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
-        widget.config(activebackground=__activeBackground, activeforeground=__activeForeground,
-                      disabledforeground=__disabledForeground, padx=3, pady=2)
         if issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
             widget.config(selectcolor=__activeBackground)
-        elif hasImage:
-            widget.config(relief = Tkinter.FLAT, borderwidth = 0)
+        elif isBtnWithImage:
+            widget.config(relief=Tkinter.FLAT, borderwidth=0)
     elif issubclass(wClass, Entry) or issubclass(wClass, Listbox):
-        widget.config(foreground=__enabledForeground, background=__enabledBackground, selectbackground=__selectedTextBackground)
-        if issubclass(wClass, Entry):
-            widget.config(disabledforeground=__disabledForeground, disabledbackground=__disabledBackground)
-        if issubclass(wClass, Listbox):
-            widget.config(borderwidth=1)
-    elif issubclass(wClass, Frame):
-        widget.config(borderwidth=0)
-
+        widget.config(foreground=__enabledForeground, background=__enabledBackground)
 
 class Tk(Tkinter.Tk):
     def __init__(self, screenName=None, baseName=None, className='Tk', useTk=1, sync=0, use=None):
         Tkinter.Tk.__init__(self, screenName, baseName, className, useTk, sync, use)
-        _configure(self, hasHighlight=True)
+        _configure(self)
 
 
 class Toplevel(Tkinter.Toplevel):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Toplevel.__init__(self, master, cnf, **kw)
-        _configure(self, hasHighlight=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Toplevel.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Frame(Tkinter.Frame):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Frame.__init__(self, master, cnf, **kw)
-        _configure(self, hasHighlight=True)
+        _configure(self)
 
 
 class Button(Tkinter.Button):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Button.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True, hasImage=kw.has_key("image"))
+    def __init__(self, master=None, **kw):
+        Tkinter.Button.__init__(self, master, **kw)
+        _configure(self, isBtnWithImage=kw.has_key("image"))
 
 
 class Checkbutton(Tkinter.Checkbutton):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Checkbutton.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Checkbutton.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Radiobutton(Tkinter.Radiobutton):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Radiobutton.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Radiobutton.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Label(Tkinter.Label):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Label.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Label.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Text(Tkinter.Text):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Text.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Text.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Entry(Tkinter.Entry):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Entry.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Entry.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Canvas(Tkinter.Canvas):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Canvas.__init__(self, master, cnf, **kw)
-        _configure(self, hasHighlight=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Canvas.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Listbox(Tkinter.Listbox):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Listbox.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Listbox.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Menu(Tkinter.Menu):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Menu.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.Menu.__init__(self, master, **kw)
+        _configure(self)
 
 
 class Scrollbar(ttk.Scrollbar):
-    def __init__(self, master=None, cnf={}, **kw):
+    def __init__(self, master=None, **kw):
         ttk.Scrollbar.__init__(self, master, **kw)
 
 
 # # Non-ttk version, changing color of this is impossible
 # class Scrollbar(Tkinter.Scrollbar):
-#     def __init__(self, master=None, cnf={}, **kw):
-#         Tkinter.Scrollbar.__init__(self, master, cnf, **kw)
-#         _configure(self, hasHighlight=True)
+#     def __init__(self, master=None, **kw):
+#         Tkinter.Scrollbar.__init__(self, master, **kw)
+#         _configure(self)
 
 
 class LabelFrame(Tkinter.LabelFrame):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.LabelFrame.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True)
+    def __init__(self, master=None, **kw):
+        Tkinter.LabelFrame.__init__(self, master, **kw)
+        _configure(self)
 
 
 class PanedWindow(Tkinter.PanedWindow):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.PanedWindow.__init__(self, master, cnf, **kw)
+    def __init__(self, master=None, **kw):
+        Tkinter.PanedWindow.__init__(self, master, **kw)
         _configure(self)

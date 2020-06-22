@@ -15,17 +15,18 @@ def __get_theme_file_path():
 
 
 __theme_file_path = __get_theme_file_path()
-__theme = {
+__default_theme = {
     "defaultBackground": "#222428",
-    "defaultForeground": "#ffffff",
-    "highlightForeground": "#ffffff",
-    "highlightBackground": "#323438",
-    "disabledForeground": "#181a1e",
-    "disabledBackground": "#181a1e",
-    "activeForeground": "#ffffff",
+    "defaultForeground": "#cccccc",
+    "activeForeground": "#cccccc",
     "activeBackground": "#44464a",
-    "selectedTextBackground": "#2244ff"
+    "disabledForeground": "#686a6e",
+    "disabledBackground": "#282a2e",
+    "selectedBackground": "#2244ff",
+    "isCustomized": False
 }
+
+__theme = {}
 
 
 def __theme_file_exists():
@@ -34,28 +35,36 @@ def __theme_file_exists():
 
 def __load_theme():
     global __theme
-    try:
+    try: # Load theme from file
         with file(__theme_file_path, 'r') as f:
             __theme = json.load(f)
-    except ValueError, e:
+    except ValueError, e: # If there is a JSON error then inform the user
         if __theme_file_exists():
             tkMessageBox.askquestion("Theme File Exception", "Your theme definition file is invalid. Error Message:\n\"" + e.message + "\"", type="ok", icon="error")
             exit(-1)
-    except IOError, e:
+    except IOError, e: # If there is no file, then save default theme
         if not __theme_file_exists():
             __save_default_theme()
 
+    # If loaded successfully then..
+    if __theme_file_exists() and __theme != __default_theme: # If theme is different than default and was not customized then overwrite the theme with default one
+        if __theme.has_key("isCustomized"):
+            if not __theme.get("isCustomized"):
+                __save_default_theme()
+        else:
+            __save_default_theme()
 
-def __save_default_theme():
+
+def __save_default_theme(): # Save and enable default theme
+    global __theme
+    __theme = __default_theme
     with file(__theme_file_path, 'w') as f:
-        json.dump(__theme, f, indent=4)
+        json.dump(__default_theme, f, indent=4, sort_keys=True)
 
 
 __load_theme()
 __defaultBackground = __theme.get("defaultBackground")
 __defaultForeground = __theme.get("defaultForeground")
-__highlightForeground = __theme.get("highlightForeground")
-__highlightBackground = __theme.get("highlightBackground")
 __disabledForeground = __theme.get("disabledForeground")
 __disabledBackground = __theme.get("disabledBackground")
 __activeForeground = __theme.get("activeForeground")
@@ -75,12 +84,11 @@ def _configure(widget, hasText=False, hasHighlight=False, hasImage=False):
     if hasText:
         widget.config(fg=__defaultForeground)
     if hasHighlight:
-        widget.config(highlightthickness=0, highlightcolor=__highlightForeground, highlightbackground=__highlightBackground)
+        widget.config(highlightthickness=0)
 
     wClass = widget.__class__
     if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
-        widget.config(activebackground=__activeBackground, activeforeground=__activeForeground, disabledforeground=__disabledForeground,
-                      padx=3, pady=2)
+        widget.config(activebackground=__activeBackground, padx=3, pady=2)
         if issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
             widget.config(selectcolor=__activeBackground)
         elif hasImage:

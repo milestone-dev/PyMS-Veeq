@@ -105,7 +105,7 @@ def _configure(widget, isBtnWithImage=False):
     if config.has_key("highlightthickness"):
         widget.config(highlightthickness=0)
     if config.has_key("borderwidth"):
-        if widget.cget("borderwidth") > 1:
+        if widget.cget("borderwidth") > 0:
             widget.config(borderwidth=1)
 
     if config.has_key("relief"):
@@ -125,8 +125,13 @@ def _configure(widget, isBtnWithImage=False):
     if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
         if issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
             widget.config(selectcolor=__activeBackground)
-        elif isBtnWithImage:
-            widget.config(relief=Tkinter.FLAT, borderwidth=0)
+            if widget.cget("indicatoron") == 0:
+                widget.config(foreground=__enabledForeground, background=__enabledBackground)
+        elif issubclass(wClass, Button):
+            if isBtnWithImage:
+                widget.config(relief=Tkinter.FLAT, borderwidth=0)
+            elif widget.cget("relief") != Tkinter.FLAT and widget.cget("borderwidth") > 0:
+                widget.config(foreground=__enabledForeground, background=__enabledBackground)
     elif issubclass(wClass, Entry) or issubclass(wClass, Listbox) or issubclass(wClass, Text):
         widget.config(foreground=__enabledForeground, background=__enabledBackground)
 

@@ -1137,7 +1137,7 @@ class CodeEditDialog(PyMSDialog):
     def expandScriptAlias(self, command):
         benchmark = self.startBenchmark()
         if command == "":
-            self.scriptAliasesTime += self.stopBenchmark(3)
+            self.scriptAliasesTime += self.stopBenchmark(benchmark)
             return command
         newcmd = command
         newcmd = re.sub(r"(^[ \t]*)\b"+self.makeSearchPattern(AIBIN.AIBIN.script_aliases.keys())+r"\b(.*)",
@@ -1208,7 +1208,7 @@ class CodeEditDialog(PyMSDialog):
         for alias in AIBIN.AIBIN.time_macros.items():
             if self.matchesTimeAliasFormat(line, alias[0]):
                 self.alias = alias
-                self.timeMacrosTime += self.stopBenchmark(2)
+                self.timeMacrosTime += self.stopBenchmark(benchmark)
                 return True
         self.timeMacrosTime += self.stopBenchmark(benchmark)
         return False

@@ -46,7 +46,7 @@ def startup(toplevel):
 	except:
 		pass
 
-	initStylized()
+	init_ttk()
 	toplevel.mainloop()
 
 # Decorator

@@ -1,27 +1,64 @@
 import Tkinter
 import ttk
+import json
 
 # Set of wrappers that allows to easily configure Tkinter's widgets globally
 # Made by Veeq7 for PyMS-Veeq
 # After importing Tkinter with  `from Tkinter import *`
 # Import using                  `from Libs.stylized import *`
 
-# Dark Theme Coloring
-defaultBackground = "#222428"
-defaultForeground = "#ffffff"
-highlightForeground = "#ffffff"
-highlightBackground = "#323438"
-disabledForeground = "#181a1e"
-disabledBackground = "#181a1e"
-activeForeground = "#ffffff"
-activeBackground = "#44464a"
-selectedTextBackground = "#2244ff"
+dir_path = __file__.replace("/", "\\")
+dir_path = dir_path[:dir_path.rfind("\\")]
+dir_path = dir_path[:dir_path.rfind("\\")]
+theme_file = dir_path + "\\Settings\\theme.txt"
+default_theme = {
+    "defaultBackground": "#222428",
+    "defaultForeground": "#ffffff",
+    "highlightForeground": "#ffffff",
+    "highlightBackground": "#323438",
+    "disabledForeground": "#181a1e",
+    "disabledBackground": "#181a1e",
+    "activeForeground": "#ffffff",
+    "activeBackground": "#44464a",
+    "selectedTextBackground": "#2244ff"
+}
 
-def initStylized():
+theme = {}
+
+def init_ttk():
     style = ttk.Style()
     style.theme_use("clam")
     style.configure("Horizontal.TScrollbar", bg=defaultBackground, troughcolor=defaultBackground)
     style.configure("Vertical.TScrollbar", bg=defaultBackground, troughcolor=defaultBackground)
+
+def __load_theme():
+    global theme
+    try:
+        with file(theme_file, 'r') as f:
+            theme = json.load(f)
+    except:
+        theme = default_theme
+        __save_default_theme()
+
+def __save_default_theme():
+    with file(theme_file, 'w') as f:
+        json.dump(default_theme, f, sort_keys=True, indent=4)
+
+def __get_color(name):
+    if theme.has_key(name):
+        return theme[name]
+    return default_theme[name]
+
+__load_theme()
+defaultBackground = __get_color("defaultBackground")
+defaultForeground = __get_color("defaultForeground")
+highlightForeground = __get_color("highlightForeground")
+highlightBackground = __get_color("highlightBackground")
+disabledForeground = __get_color("disabledForeground")
+disabledBackground = __get_color("disabledBackground")
+activeForeground = __get_color("activeForeground")
+activeBackground = __get_color("activeBackground")
+selectedTextBackground = __get_color("selectedTextBackground")
 
 def _configure(widget, hasText=False, hasHighlight=False, hasImage=False):
     widget.config(bg=defaultBackground)

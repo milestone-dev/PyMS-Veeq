@@ -7,10 +7,14 @@ import os.path, json
 # After importing Tkinter with  `from Tkinter import *`
 # Import using                  `from Libs.stylized import *`
 
-__dir_path = __file__.replace("/", "\\")
-__dir_path = __dir_path[:__dir_path.rfind("\\")]
-__dir_path = __dir_path[:__dir_path.rfind("\\")]
-__theme_file_path = __dir_path + "\\Settings\\theme.txt"
+def __get_theme_file_path():
+    __dir_path = __file__.replace("/", "\\")
+    __dir_path = __dir_path[:__dir_path.rfind("\\")]
+    __dir_path = __dir_path[:__dir_path.rfind("\\")]
+    return __dir_path + "\\Settings\\theme.txt"
+
+
+__theme_file_path = __get_theme_file_path()
 __theme = {
     "defaultBackground": "#222428",
     "defaultForeground": "#ffffff",
@@ -23,8 +27,10 @@ __theme = {
     "selectedTextBackground": "#2244ff"
 }
 
+
 def __theme_file_exists():
     return os.path.isfile(__theme_file_path)
+
 
 def __load_theme():
     global __theme
@@ -39,9 +45,11 @@ def __load_theme():
         if not __theme_file_exists():
             __save_default_theme()
 
+
 def __save_default_theme():
     with file(__theme_file_path, 'w') as f:
         json.dump(__theme, f, indent=4)
+
 
 __load_theme()
 __defaultBackground = __theme.get("defaultBackground")
@@ -54,11 +62,13 @@ __activeForeground = __theme.get("activeForeground")
 __activeBackground = __theme.get("activeBackground")
 __selectedTextBackground = __theme.get("selectedTextBackground")
 
+
 def init_ttk():
     style = ttk.Style()
     style.theme_use("clam")
     style.configure("Horizontal.TScrollbar", bg=__defaultBackground, troughcolor=__defaultBackground)
     style.configure("Vertical.TScrollbar", bg=__defaultBackground, troughcolor=__defaultBackground)
+
 
 def _configure(widget, hasText=False, hasHighlight=False, hasImage=False):
     widget.config(bg=__defaultBackground)

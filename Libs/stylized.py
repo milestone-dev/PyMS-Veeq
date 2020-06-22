@@ -93,7 +93,8 @@ def _configure(widget, hasText=False, hasHighlight=False, hasImage=False):
 
     wClass = widget.__class__
     if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
-        widget.config(activebackground=__activeBackground, padx=3, pady=2)
+        widget.config(activebackground=__activeBackground, activeforeground=__activeForeground,
+                      disabledforeground=__disabledForeground, padx=3, pady=2)
         if issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
             widget.config(selectcolor=__activeBackground)
         elif hasImage:

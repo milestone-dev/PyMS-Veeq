@@ -3515,7 +3515,7 @@ class BasicUnitsTab(DATUnitsTab):
 		c.pack(side=LEFT)
 		c = makeCheckbox(f, text='Terran', variable=self.terran, hint='UnitSEGroupTerran', dattab=self)
 		c.pack(side=LEFT)
-		c = makeCheckbox(f, text='Protoss', variable=self.terran, hint='UnitSEGroupProtoss', dattab=self)
+		c = makeCheckbox(f, text='Protoss', variable=self.protoss, hint='UnitSEGroupProtoss', dattab=self)
 		c.pack(side=LEFT)
 		f.pack()
 		s.pack(fill=BOTH, padx=5, pady=5)

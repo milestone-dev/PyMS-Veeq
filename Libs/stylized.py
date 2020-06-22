@@ -1,17 +1,17 @@
-import Tkinter
-import ttk
-import json
+import Tkinter, ttk
+import tkMessageBox
+import os.path, json
 
 # Set of wrappers that allows to easily configure Tkinter's widgets globally
 # Made by Veeq7 for PyMS-Veeq
 # After importing Tkinter with  `from Tkinter import *`
 # Import using                  `from Libs.stylized import *`
 
-dir_path = __file__.replace("/", "\\")
-dir_path = dir_path[:dir_path.rfind("\\")]
-dir_path = dir_path[:dir_path.rfind("\\")]
-theme_file = dir_path + "\\Settings\\theme.txt"
-default_theme = {
+__dir_path = __file__.replace("/", "\\")
+__dir_path = __dir_path[:__dir_path.rfind("\\")]
+__dir_path = __dir_path[:__dir_path.rfind("\\")]
+__theme_file_path = __dir_path + "\\Settings\\theme.txt"
+__theme = {
     "defaultBackground": "#222428",
     "defaultForeground": "#ffffff",
     "highlightForeground": "#ffffff",
@@ -23,64 +23,64 @@ default_theme = {
     "selectedTextBackground": "#2244ff"
 }
 
-theme = {}
+def __theme_file_exists():
+    return os.path.isfile(__theme_file_path)
+
+def __load_theme():
+    global __theme
+    try:
+        with file(__theme_file_path, 'r') as f:
+            __theme = json.load(f)
+    except ValueError, e:
+        if __theme_file_exists():
+            tkMessageBox.askquestion("Theme File Exception", "Your theme definition file is invalid. Error Message:\n\"" + e.message + "\"", type="ok", icon="error")
+            exit(-1)
+    except IOError, e:
+        if not __theme_file_exists():
+            __save_default_theme()
+
+def __save_default_theme():
+    with file(__theme_file_path, 'w') as f:
+        json.dump(__theme, f, indent=4)
+
+__load_theme()
+__defaultBackground = __theme.get("defaultBackground")
+__defaultForeground = __theme.get("defaultForeground")
+__highlightForeground = __theme.get("highlightForeground")
+__highlightBackground = __theme.get("highlightBackground")
+__disabledForeground = __theme.get("disabledForeground")
+__disabledBackground = __theme.get("disabledBackground")
+__activeForeground = __theme.get("activeForeground")
+__activeBackground = __theme.get("activeBackground")
+__selectedTextBackground = __theme.get("selectedTextBackground")
 
 def init_ttk():
     style = ttk.Style()
     style.theme_use("clam")
-    style.configure("Horizontal.TScrollbar", bg=defaultBackground, troughcolor=defaultBackground)
-    style.configure("Vertical.TScrollbar", bg=defaultBackground, troughcolor=defaultBackground)
-
-def __load_theme():
-    global theme
-    try:
-        with file(theme_file, 'r') as f:
-            theme = json.load(f)
-    except:
-        theme = default_theme
-        __save_default_theme()
-
-def __save_default_theme():
-    with file(theme_file, 'w') as f:
-        json.dump(default_theme, f, sort_keys=True, indent=4)
-
-def __get_color(name):
-    if theme.has_key(name):
-        return theme[name]
-    return default_theme[name]
-
-__load_theme()
-defaultBackground = __get_color("defaultBackground")
-defaultForeground = __get_color("defaultForeground")
-highlightForeground = __get_color("highlightForeground")
-highlightBackground = __get_color("highlightBackground")
-disabledForeground = __get_color("disabledForeground")
-disabledBackground = __get_color("disabledBackground")
-activeForeground = __get_color("activeForeground")
-activeBackground = __get_color("activeBackground")
-selectedTextBackground = __get_color("selectedTextBackground")
+    style.configure("Horizontal.TScrollbar", bg=__defaultBackground, troughcolor=__defaultBackground)
+    style.configure("Vertical.TScrollbar", bg=__defaultBackground, troughcolor=__defaultBackground)
 
 def _configure(widget, hasText=False, hasHighlight=False, hasImage=False):
-    widget.config(bg=defaultBackground)
+    widget.config(bg=__defaultBackground)
     if hasText:
-        widget.config(fg=defaultForeground)
+        widget.config(fg=__defaultForeground)
     if hasHighlight:
-        widget.config(highlightthickness=0, highlightcolor=highlightForeground, highlightbackground=highlightBackground)
+        widget.config(highlightthickness=0, highlightcolor=__highlightForeground, highlightbackground=__highlightBackground)
 
     wClass = widget.__class__
     if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
-        widget.config(activebackground=activeBackground, activeforeground=activeForeground, disabledforeground=disabledForeground,
+        widget.config(activebackground=__activeBackground, activeforeground=__activeForeground, disabledforeground=__disabledForeground,
                       padx=3, pady=2)
         if issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
-            widget.config(selectcolor=activeBackground)
+            widget.config(selectcolor=__activeBackground)
         elif hasImage:
             widget.config(relief = Tkinter.FLAT, borderwidth = 0)
     elif issubclass(wClass, Listbox):
-        widget.config(selectbackground=selectedTextBackground)
+        widget.config(selectbackground=__selectedTextBackground)
         widget.config(borderwidth=1)
     elif issubclass(wClass, Entry):
-        widget.config(selectbackground=selectedTextBackground)
-        widget.config(disabledbackground=disabledBackground)
+        widget.config(selectbackground=__selectedTextBackground)
+        widget.config(disabledbackground=__disabledBackground)
     elif issubclass(wClass, Frame):
         widget.config(borderwidth=0)
 

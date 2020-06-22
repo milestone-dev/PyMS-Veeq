@@ -1122,12 +1122,12 @@ class CodeEditDialog(PyMSDialog):
             self.parent.highlights = c.cont
 
     def findScriptSubcommand(self, line):
-        match = re.search(r"^[ \t]*\b(" + self.makeSearchPattern(AIBIN.AIBIN.script_subcommands) + r")\b.*", line)
+        match = re.match(r"^[ \t]*\b(" + self.makeSearchPattern(AIBIN.AIBIN.script_subcommands) + r")\b.*", line)
         if match:
             return match.group(1)
 
         benchmark = self.startBenchmark()
-        match = re.search(r"^[ \t]*\b(" + self.makeSearchPattern(AIBIN.AIBIN.script_aliases.keys()) + r")\b.*", line)
+        match = re.match(r"^[ \t]*\b(" + self.makeSearchPattern(AIBIN.AIBIN.script_aliases.keys()) + r")\b.*", line)
         if match:
             self.scriptAliasesTime += self.stopBenchmark(benchmark)
             return AIBIN.AIBIN.script_aliases[match.group(1)]
@@ -1167,7 +1167,7 @@ class CodeEditDialog(PyMSDialog):
     def isScript(self, line):
         return self.getScriptSyntaxType(line) != -1
 
-    def convertScriptLine(self, line, blockSearch):
+    def convertScriptLine(self, line, blockSearch=None):
         line = line.rstrip()
 
         if self.type == 0:
@@ -1186,8 +1186,9 @@ class CodeEditDialog(PyMSDialog):
 
         benchmark = self.startBenchmark()
         vars = set()
-        for var in blockSearch.findall(ret):
-            vars.add(var)
+        if blockSearch != None:
+            for var in blockSearch.findall(ret):
+                vars.add(var)
         self.scriptVarTime += self.stopBenchmark(benchmark)
 
         return (ret, vars)
@@ -1205,11 +1206,19 @@ class CodeEditDialog(PyMSDialog):
 
     def getTimeAlias(self, line):
         benchmark = self.startBenchmark()
-        for alias in AIBIN.AIBIN.time_macros.items():
-            if self.matchesTimeAliasFormat(line, alias[0]):
-                self.alias = alias
-                self.timeMacrosTime += self.stopBenchmark(benchmark)
-                return True
+        searchPattern =  "\b" + self.makeSearchPattern(AIBIN.AIBIN.time_macros.keys()) + "\b"
+        match = re.match(searchPattern, line)
+        if match:
+            self.alias = (match.group(1), AIBIN.AIBIN.time_macros[match.group(1)])
+            self.timeMacrosTime += self.stopBenchmark(benchmark)
+            return True
+
+
+        # for alias in AIBIN.AIBIN.time_macros.items():
+        #     if self.matchesTimeAliasFormat(line, alias[0]):
+        #         self.alias = alias
+        #         self.timeMacrosTime += self.stopBenchmark(benchmark)
+        #         return True
         self.timeMacrosTime += self.stopBenchmark(benchmark)
         return False
 
@@ -1279,14 +1288,14 @@ class CodeEditDialog(PyMSDialog):
         text = self.text.text.get('1.0',END)
         blockPattern = self.makeSearchPattern(self.findAllBlocks(text))
         if blockPattern != None:
-            blockSearch = re.compile("\b"+blockPattern+"\b")
+            blockSearch = re.compile(r"\b"+blockPattern+r"\b")
         else:
             blockSearch = None
         vars = set()
         self.scriptVarTime += self.stopBenchmark(benchmark)
 
         for line in text.split('\n'):
-            if re.search(r".*#.*", line):
+            if re.match(r".*#.*", line):
                 comment = re.sub(r".*(#.*)", r"\1", line)
                 line = line[:len(line)-len(comment)]
             else:

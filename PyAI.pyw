@@ -1206,19 +1206,13 @@ class CodeEditDialog(PyMSDialog):
 
     def getTimeAlias(self, line):
         benchmark = self.startBenchmark()
-        searchPattern =  "\b" + self.makeSearchPattern(AIBIN.AIBIN.time_macros.keys()) + "\b"
-        match = re.match(searchPattern, line)
+        searchPattern = r"\b" + self.makeSearchPattern(AIBIN.AIBIN.time_macros.keys()) + r"\b"
+        match = re.search(searchPattern, line)
         if match:
             self.alias = (match.group(1), AIBIN.AIBIN.time_macros[match.group(1)])
             self.timeMacrosTime += self.stopBenchmark(benchmark)
             return True
 
-
-        # for alias in AIBIN.AIBIN.time_macros.items():
-        #     if self.matchesTimeAliasFormat(line, alias[0]):
-        #         self.alias = alias
-        #         self.timeMacrosTime += self.stopBenchmark(benchmark)
-        #         return True
         self.timeMacrosTime += self.stopBenchmark(benchmark)
         return False
 

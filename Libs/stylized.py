@@ -119,7 +119,7 @@ def _configure(widget, isBtnWithImage=False):
             widget.config(overrelief=Tkinter.GROOVE)
 
     if config.has_key("padx"):
-        widget.config(padx=3, pady=3)
+        widget.config(padx=3, pady=2)
 
     wClass = widget.__class__
     if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
@@ -127,7 +127,7 @@ def _configure(widget, isBtnWithImage=False):
             widget.config(selectcolor=__activeBackground)
         elif isBtnWithImage:
             widget.config(relief=Tkinter.FLAT, borderwidth=0)
-    elif issubclass(wClass, Entry) or issubclass(wClass, Listbox):
+    elif issubclass(wClass, Entry) or issubclass(wClass, Listbox) or issubclass(wClass, Text):
         widget.config(foreground=__enabledForeground, background=__enabledBackground)
 
 class Tk(Tkinter.Tk):

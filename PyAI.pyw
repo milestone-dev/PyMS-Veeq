@@ -1186,7 +1186,7 @@ class CodeEditDialog(PyMSDialog):
 
         benchmark = self.startBenchmark()
         vars = set()
-        for var in blocksSearch.findall(ret):
+        for var in blockSearch.findall(ret):
             vars.add(var)
         self.scriptVarTime += self.stopBenchmark(benchmark)
 

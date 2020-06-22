@@ -7,6 +7,7 @@ import os.path, json
 # After importing Tkinter with  `from Tkinter import *`
 # Import using                  `from Libs.stylized import *`
 
+
 def __get_theme_file_path():
     __dir_path = __file__.replace("/", "\\")
     __dir_path = __dir_path[:__dir_path.rfind("\\")]

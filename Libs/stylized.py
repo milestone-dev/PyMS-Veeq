@@ -17,10 +17,12 @@ def __get_theme_file_path():
 
 __theme_file_path = __get_theme_file_path()
 __default_theme = {
-    "defaultBackground": "#222428",
+    "defaultBackground": "#181a1e",
     "defaultForeground": "#cccccc",
-    "activeForeground": "#cccccc",
     "activeBackground": "#44464a",
+    "activeForeground": "#cccccc",
+    "enabledBackground": "#222428",
+    "enabledForeground": "#cccccc",
     "disabledForeground": "#686a6e",
     "disabledBackground": "#282a2e",
     "selectedBackground": "#2244ff",
@@ -68,6 +70,8 @@ __defaultBackground = __theme.get("defaultBackground")
 __defaultForeground = __theme.get("defaultForeground")
 __disabledForeground = __theme.get("disabledForeground")
 __disabledBackground = __theme.get("disabledBackground")
+__enabledBackground = __theme.get("enabledBackground")
+__enabledForeground = __theme.get("enabledForeground")
 __activeForeground = __theme.get("activeForeground")
 __activeBackground = __theme.get("activeBackground")
 __selectedTextBackground = __theme.get("selectedTextBackground")
@@ -94,12 +98,12 @@ def _configure(widget, hasText=False, hasHighlight=False, hasImage=False):
             widget.config(selectcolor=__activeBackground)
         elif hasImage:
             widget.config(relief = Tkinter.FLAT, borderwidth = 0)
-    elif issubclass(wClass, Listbox):
-        widget.config(selectbackground=__selectedTextBackground)
-        widget.config(borderwidth=1)
-    elif issubclass(wClass, Entry):
-        widget.config(selectbackground=__selectedTextBackground)
-        widget.config(disabledbackground=__disabledBackground)
+    elif issubclass(wClass, Entry) or issubclass(wClass, Listbox):
+        widget.config(foreground=__enabledForeground, background=__enabledBackground, selectbackground=__selectedTextBackground)
+        if issubclass(wClass, Entry):
+            widget.config(disabledforeground=__disabledForeground, disabledbackground=__disabledBackground)
+        if issubclass(wClass, Listbox):
+            widget.config(borderwidth=1)
     elif issubclass(wClass, Frame):
         widget.config(borderwidth=0)
 
@@ -174,12 +178,6 @@ class Menu(Tkinter.Menu):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Menu.__init__(self, master, cnf, **kw)
         _configure(self, hasText=True)
-
-
-class OptionMenu(Tkinter.OptionMenu):
-    def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.OptionMenu.__init__(self, master, cnf, **kw)
-        _configure(self, hasText=True, hasHighlight=True)
 
 
 class Scrollbar(ttk.Scrollbar):

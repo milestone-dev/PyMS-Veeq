@@ -1167,7 +1167,7 @@ class CodeEditDialog(PyMSDialog):
     def isScript(self, line):
         return self.getScriptSyntaxType(line) != -1
 
-    def convertScriptLine(self, line, blocksSearch):
+    def convertScriptLine(self, line, blockSearch):
         line = line.rstrip()
 
         if self.type == 0:
@@ -1277,7 +1277,11 @@ class CodeEditDialog(PyMSDialog):
 
         benchmark = self.startBenchmark()
         text = self.text.text.get('1.0',END)
-        blockSearch = re.compile("\b"+self.makeSearchPattern(self.findAllBlocks(text))+"\b")
+        blockPattern = self.makeSearchPattern(self.findAllBlocks(text))
+        if blockPattern != None:
+            blockSearch = re.compile("\b"+blockPattern+"\b")
+        else:
+            blockSearch = None
         vars = set()
         self.scriptVarTime += self.stopBenchmark(benchmark)
 
@@ -1364,7 +1368,7 @@ class CodeEditDialog(PyMSDialog):
         self.text.edited = True
         self.editstatus['state'] = NORMAL
 
-    def debuggerize(self):
+    def debuggerize(self, *_):
         d = 0
         data = ''
         debug = {

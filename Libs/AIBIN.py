@@ -281,7 +281,7 @@ class AIBIN:
 		"AtL_W": "AtLeast_Wait",
 		"AtL_C": "AtLeast_Call",
 		"AtL_M": "AtLeast_Multi",
-		"WF\(": "WaitFor(",
+		"WF(": "WaitFor(",
 	}
 
 	time_macros = { # those will expand to wait x (fe. waitmin 1 -> wait 1440, which is 1 * 1440)

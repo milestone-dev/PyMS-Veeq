@@ -4,15 +4,11 @@ PyTILE:
 - Crash when using 'copy group settings' feature
 - Crash when using 'Apply to Megas' option when using minitile editor
 
-General:
-- Dark theme for PyMS
-
 PyMPQ:
 - Rename/edit prefix for selected files
 
 PyAI:
 - Inline blocks
-- Automatic set_var_local declarations
 
 PyGRP:
 - Fix artifacts that happen after saving

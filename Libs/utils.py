@@ -867,7 +867,7 @@ class CodeText(Frame):
 		Frame.__init__(self, parent, bd=2, relief=SUNKEN)
 		frame = Frame(self)
 		font = ('Courier New', -12, 'normal')
-		self.lines = Text(frame, height=1, font=font, bd=0, bg='#E4E4E4', fg='#808080', width=8, cursor='')
+		self.lines = Text(frame, height=1, font=font, bd=0, width=8, cursor='')
 		self.lines.pack(side=LEFT, fill=Y)
 		hscroll = Scrollbar(self, orient=HORIZONTAL)
 		self.vscroll = Scrollbar(self)

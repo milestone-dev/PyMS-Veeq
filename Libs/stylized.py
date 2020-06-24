@@ -109,13 +109,13 @@ def _configure(widget, isBtnWithImage=False):
             widget.config(borderwidth=1)
 
     if config.has_key("relief"):
-        if widget.cget("relief") != Tkinter.FLAT:
+        if "" != widget.cget("relief") != Tkinter.FLAT != "":
             widget.config(relief=Tkinter.GROOVE)
     if config.has_key("offrelief"):
-        if widget.cget("offrelief") != Tkinter.FLAT:
+        if "" != widget.cget("offrelief") != Tkinter.FLAT != "":
             widget.config(offrelief=Tkinter.GROOVE)
     if config.has_key("overrelief"):
-        if widget.cget("overrelief") != Tkinter.FLAT:
+        if "" != widget.cget("overrelief") != Tkinter.FLAT:
             widget.config(overrelief=Tkinter.GROOVE)
 
     if config.has_key("padx"):
@@ -142,90 +142,104 @@ class Tk(Tkinter.Tk):
 
 
 class Toplevel(Tkinter.Toplevel):
-    def __init__(self, master=None, **kw):
-        Tkinter.Toplevel.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Toplevel.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Frame(Tkinter.Frame):
     def __init__(self, master=None, cnf={}, **kw):
-        Tkinter.Frame.__init__(self, master, cnf, **kw)
+        Tkinter.Frame.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Button(Tkinter.Button):
-    def __init__(self, master=None, **kw):
-        Tkinter.Button.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Button.__init__(self, master, cnf)
         _configure(self, isBtnWithImage=kw.has_key("image"))
+        self.config(**kw)
 
 
 class Checkbutton(Tkinter.Checkbutton):
-    def __init__(self, master=None, **kw):
-        Tkinter.Checkbutton.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Checkbutton.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Radiobutton(Tkinter.Radiobutton):
-    def __init__(self, master=None, **kw):
-        Tkinter.Radiobutton.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Radiobutton.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Label(Tkinter.Label):
-    def __init__(self, master=None, **kw):
-        Tkinter.Label.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Label.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Text(Tkinter.Text):
-    def __init__(self, master=None, **kw):
-        Tkinter.Text.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Text.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Entry(Tkinter.Entry):
-    def __init__(self, master=None, **kw):
-        Tkinter.Entry.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Entry.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Canvas(Tkinter.Canvas):
-    def __init__(self, master=None, **kw):
-        Tkinter.Canvas.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Canvas.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Listbox(Tkinter.Listbox):
-    def __init__(self, master=None, **kw):
-        Tkinter.Listbox.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Listbox.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Menu(Tkinter.Menu):
-    def __init__(self, master=None, **kw):
-        Tkinter.Menu.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.Menu.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class Scrollbar(ttk.Scrollbar):
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=None, cnf={}, **kw):
         ttk.Scrollbar.__init__(self, master, **kw)
 
 
 # # Non-ttk version, changing color of this is impossible
 # class Scrollbar(Tkinter.Scrollbar):
-#     def __init__(self, master=None, **kw):
-#         Tkinter.Scrollbar.__init__(self, master, **kw)
+#     def __init__(self, master=None, cnf={}, **kw):
+#         Tkinter.Scrollbar.__init__(self, master, cnf)
 #         _configure(self)
+#         self.config(**kw)
 
 
 class LabelFrame(Tkinter.LabelFrame):
-    def __init__(self, master=None, **kw):
-        Tkinter.LabelFrame.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.LabelFrame.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)
 
 
 class PanedWindow(Tkinter.PanedWindow):
-    def __init__(self, master=None, **kw):
-        Tkinter.PanedWindow.__init__(self, master, **kw)
+    def __init__(self, master=None, cnf={}, **kw):
+        Tkinter.PanedWindow.__init__(self, master, cnf)
         _configure(self)
+        self.config(**kw)

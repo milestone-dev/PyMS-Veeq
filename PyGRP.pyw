@@ -215,7 +215,8 @@ class PyGRP(Tk):
 		ga.set_application('PyGRP', VERSIONS['PyGRP'])
 		ga.track(GAScreen('PyGRP'))
 		setup_trace(self, 'PyGRP')
-		self.resizable(False, False)
+		self.resizable(True, True)
+		self.minsize(450, 480)
 
 		self.frame = None
 		self.pal = None
@@ -280,7 +281,7 @@ class PyGRP(Tk):
 		#Listbox
 		s = Frame(leftframe)
 		Label(s, text='Frames:', anchor=W).pack(side=LEFT)
-		Checkbutton(s, text='Hex', variable=self.hex, command=self.update_list).pack(side=RIGHT)
+		Checkbutton(s, text='Hex', variable=self.hex, command=self.update_list).pack(side=LEFT)
 		s.pack(side=TOP, fill=X)
 		listframe = Frame(leftframe, bd=2, relief=SUNKEN)
 		scrollbar = Scrollbar(listframe)
@@ -303,7 +304,7 @@ class PyGRP(Tk):
 		scrollbar.config(command=self.listbox.yview)
 		scrollbar.pack(side=RIGHT, fill=Y)
 		self.listbox.pack(side=LEFT, fill=BOTH, expand=1)
-		listframe.pack(side=TOP, padx=1, pady=1)
+		listframe.pack(side=TOP, padx=1, pady=1, expand=1, fill=BOTH)
 		self.bind('<Control-a>', self.selectall)
 
 		#Palette
@@ -435,9 +436,9 @@ BMP's must be imported with the same style they were exported as.""")
 		Checkbutton(opts, text='Save Uncompressed', variable=self.uncompressed).grid(row=4, column=1, sticky=W)
 		opts.pack(pady=(0,3))
 
-		leftframe.pack(side=LEFT, padx=1, pady=1, fill=Y, expand=1)
+		leftframe.pack(side=LEFT, padx=1, pady=1, expand=1, fill=BOTH)
 		rightframe.pack(side=RIGHT, padx=1, pady=1)
-		frame.pack()
+		frame.pack(expand=1, fill=BOTH)
 
 		#Statusbar
 		self.status = StringVar()

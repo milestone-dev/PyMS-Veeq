@@ -2345,18 +2345,18 @@ class AIActionsUnitsTab(DATUnitsTab):
 		bold = ('Courier New', -12, 'bold')
 		self.force_value_text.tag_configure('force_type', underline=1)
 		values = (
-			('force_value', '#000000', '#E8E8E8', None, 'Used to calculate the strength of a force of units'),
-			('ground_range', '#911EB4', '#EBD6F1', view_ground_weapon, 'Ground Weapon Range'),
-			('air_range', '#911EB4', '#EBD6F1', view_air_weapon, 'Air Weapon Range'),
-			('ground_cooldown', '#F58231', '#FDE8DA', view_ground_weapon, 'Ground Weapon Cooldown'),
-			('air_cooldown', '#F58231', '#FDE8DA', view_air_weapon, 'Air Weapon Cooldown'),
-			('ground_factor', '#AA6E28', '#F0E5D8', view_ground_weapon, 'Ground Weapon Factor'),
-			('air_factor', '#AA6E28', '#F0E5D8', view_air_weapon, 'Air Weapon Factor'),
-			('ground_damage', '#E6194B', '#FAD5DE', view_ground_weapon, 'Ground Weapon Damage'),
-			('air_damage', '#E6194B', '#FAD5DE', view_air_weapon, 'Air Weapon Damage'),
-			('hp', '#3CB44B', '#DCF1DE', view_basic_unit, 'Health'),
-			('shields', '#0082C8', '#D1E8F5', view_basic_unit, 'Shields'),
-			('reduction', '#F032E6', '#FCDAFA', None, \
+			('force_value', '#000000', stylized_theme_active_background, None, 'Used to calculate the strength of a force of units'),
+			('ground_range', '#911EB4', stylized_theme_default_background, view_ground_weapon, 'Ground Weapon Range'),
+			('air_range', '#911EB4', stylized_theme_default_background, view_air_weapon, 'Air Weapon Range'),
+			('ground_cooldown', '#F58231', stylized_theme_default_background, view_ground_weapon, 'Ground Weapon Cooldown'),
+			('air_cooldown', '#F58231', stylized_theme_default_background, view_air_weapon, 'Air Weapon Cooldown'),
+			('ground_factor', '#AA6E28', stylized_theme_default_background, view_ground_weapon, 'Ground Weapon Factor'),
+			('air_factor', '#AA6E28', stylized_theme_default_background, view_air_weapon, 'Air Weapon Factor'),
+			('ground_damage', '#E6194B', stylized_theme_default_background, view_ground_weapon, 'Ground Weapon Damage'),
+			('air_damage', '#E6194B', stylized_theme_default_background, view_air_weapon, 'Air Weapon Damage'),
+			('hp', '#3CB44B', stylized_theme_default_background, view_basic_unit, 'Health'),
+			('shields', '#0082C8', stylized_theme_default_background, view_basic_unit, 'Shields'),
+			('reduction', '#F032E6', stylized_theme_default_background, None, \
 """Unit Specific Adjustments:
   - SCV/Drone/Probe: 0.25
   - Spider Mine/Interceptor/Scarab: 0

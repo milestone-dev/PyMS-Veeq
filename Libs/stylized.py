@@ -66,41 +66,41 @@ def __save_default_theme(): # Save and enable default theme
 
 
 __load_theme()
-__defaultBackground = __theme.get("defaultBackground")
-__defaultForeground = __theme.get("defaultForeground")
-__disabledBackground = __theme.get("disabledBackground")
-__disabledForeground = __theme.get("disabledForeground")
-__enabledBackground = __theme.get("enabledBackground")
-__enabledForeground = __theme.get("enabledForeground")
-__activeForeground = __theme.get("activeForeground")
-__activeBackground = __theme.get("activeBackground")
-__selectedTextBackground = __theme.get("selectedTextBackground")
+stylized_theme_default_background = __theme.get("defaultBackground")
+stylized_theme_default_foreground = __theme.get("defaultForeground")
+stylized_theme_disabled_background = __theme.get("disabledBackground")
+stylized_theme_disabled_foreground = __theme.get("disabledForeground")
+stylized_theme_enabled_background = __theme.get("enabledBackground")
+stylized_theme_enabled_foreground = __theme.get("enabledForeground")
+stylized_theme_active_foreground = __theme.get("activeForeground")
+stylized_theme_active_background = __theme.get("activeBackground")
+stylized_theme_selected_text_background = __theme.get("selectedTextBackground")
 
 
-def init_ttk():
+def stylized_ttk_init():
     style = ttk.Style()
     style.theme_use("clam")
-    style.configure("Horizontal.TScrollbar", bg=__defaultBackground, troughcolor=__defaultBackground)
-    style.configure("Vertical.TScrollbar", bg=__defaultBackground, troughcolor=__defaultBackground)
+    style.configure("Horizontal.TScrollbar", bg=stylized_theme_default_background, troughcolor=stylized_theme_default_background)
+    style.configure("Vertical.TScrollbar", bg=stylized_theme_default_background, troughcolor=stylized_theme_default_background)
 
 
-def _configure(widget, isBtnWithImage=False):
+def stylized_widget_configure(widget, is_button_with_image=False):
     config = widget.config()
 
     if config.has_key("bg"):
-        widget.config(bg=__defaultBackground)
+        widget.config(bg=stylized_theme_default_background)
     if config.has_key("fg"):
-        widget.config(fg=__defaultForeground)
+        widget.config(fg=stylized_theme_default_foreground)
     if config.has_key("activebackground"):
-        widget.config(activebackground=__activeBackground)
+        widget.config(activebackground=stylized_theme_active_background)
     if config.has_key("activeforeground"):
-        widget.config(activeforeground=__activeForeground)
+        widget.config(activeforeground=stylized_theme_active_foreground)
     if config.has_key("disabledbackground"):
-        widget.config(disabledbackground=__disabledBackground)
+        widget.config(disabledbackground=stylized_theme_disabled_background)
     if config.has_key("disabledforeground"):
-        widget.config(disabledforeground=__disabledForeground)
+        widget.config(disabledforeground=stylized_theme_disabled_foreground)
     if config.has_key("selectbackground"):
-        widget.config(selectbackground=__selectedTextBackground)
+        widget.config(selectbackground=stylized_theme_selected_text_background)
 
     if config.has_key("highlightthickness"):
         widget.config(highlightthickness=0)
@@ -124,97 +124,97 @@ def _configure(widget, isBtnWithImage=False):
     wClass = widget.__class__
     if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
         if issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
-            widget.config(selectcolor=__activeBackground)
+            widget.config(selectcolor=stylized_theme_active_background)
             if widget.cget("indicatoron") == 0:
-                widget.config(foreground=__enabledForeground, background=__enabledBackground)
+                widget.config(foreground=stylized_theme_enabled_foreground, background=stylized_theme_enabled_background)
         elif issubclass(wClass, Button):
-            if isBtnWithImage:
-                widget.config(relief=Tkinter.FLAT, borderwidth=0)
+            if is_button_with_image:
+                widget.config(relief=Tkinter.FLAT, borderwidth=0, overrelief=Tkinter.GROOVE)
             elif widget.cget("relief") != Tkinter.FLAT and widget.cget("borderwidth") > 0:
-                widget.config(foreground=__enabledForeground, background=__enabledBackground)
+                widget.config(foreground=stylized_theme_enabled_foreground, background=stylized_theme_enabled_background)
     elif issubclass(wClass, Entry) or issubclass(wClass, Listbox) or issubclass(wClass, Text):
-        widget.config(foreground=__enabledForeground, background=__enabledBackground)
+        widget.config(foreground=stylized_theme_enabled_foreground, background=stylized_theme_enabled_background)
 
 class Tk(Tkinter.Tk):
     def __init__(self, screenName=None, baseName=None, className='Tk', useTk=1, sync=0, use=None):
         Tkinter.Tk.__init__(self, screenName, baseName, className, useTk, sync, use)
-        _configure(self)
+        stylized_widget_configure(self)
 
 
 class Toplevel(Tkinter.Toplevel):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Toplevel.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Frame(Tkinter.Frame):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Frame.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Button(Tkinter.Button):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Button.__init__(self, master, cnf)
-        _configure(self, isBtnWithImage=kw.has_key("image"))
+        stylized_widget_configure(self, is_button_with_image=kw.has_key("image"))
         self.config(**kw)
 
 
 class Checkbutton(Tkinter.Checkbutton):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Checkbutton.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Radiobutton(Tkinter.Radiobutton):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Radiobutton.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Label(Tkinter.Label):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Label.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Text(Tkinter.Text):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Text.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Entry(Tkinter.Entry):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Entry.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Canvas(Tkinter.Canvas):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Canvas.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Listbox(Tkinter.Listbox):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Listbox.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class Menu(Tkinter.Menu):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.Menu.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
@@ -234,12 +234,12 @@ class Scrollbar(ttk.Scrollbar):
 class LabelFrame(Tkinter.LabelFrame):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.LabelFrame.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)
 
 
 class PanedWindow(Tkinter.PanedWindow):
     def __init__(self, master=None, cnf={}, **kw):
         Tkinter.PanedWindow.__init__(self, master, cnf)
-        _configure(self)
+        stylized_widget_configure(self)
         self.config(**kw)

@@ -46,7 +46,7 @@ def startup(toplevel):
 	except:
 		pass
 
-	init_ttk()
+	stylized_ttk_init()
 	toplevel.mainloop()
 
 # Decorator
@@ -1253,8 +1253,8 @@ class Tooltip:
 		self.tip.wm_overrideredirect(1)
 		if is_mac():
 			self.tip.wm_transient(self.widget.winfo_toplevel())
-		frame = Frame(self.tip, background='#FFFFC8', borderwidth=0)
-		Label(frame, text=self.text, justify=LEFT, font=self.font, background='#FFFFC8', relief=FLAT).pack(padx=1, pady=1)
+		frame = Frame(self.tip, background=stylized_theme_default_background, borderwidth=0)
+		Label(frame, text=self.text, justify=LEFT, font=self.font, background=stylized_theme_enabled_background, relief=FLAT).pack(padx=1, pady=1)
 		frame.pack()
 		pos = list(self.widget.winfo_pointerxy())
 		self.tip.wm_geometry('+%d+%d' % (pos[0],pos[1]+22))

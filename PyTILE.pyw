@@ -2477,11 +2477,12 @@ class PyTILE(Tk):
 		DropDown(flagGenerator, self.nontraversable, heights, width=15).grid(column=2, row=3, sticky=N+W, padx=3, pady=3)
 
 		def preset(offset):
-			self.traversable.set(0 + offset)
-			self.nontraversable.set(1 + offset)
+			self.traversable.set(min(0 + offset, 2))
+			self.nontraversable.set(min(1 + offset, 2))
 		presets = LabelFrame(flagGenerator, text="")
 		Button(presets, text='Preset 1', command=lambda: preset(0)).pack(side=LEFT)
 		Button(presets, text='Preset 2', command=lambda: preset(1)).pack(side=LEFT)
+		Button(presets, text='Preset 3', command=lambda: preset(2)).pack(side=LEFT)
 		presets.grid(column=2, row=1, sticky=N+W, padx=3, pady=3)
 
 		self.disable.append(Button(flagGenerator, text='Generate for Current Tile (Ctrl+G)', state=DISABLED, command=self.generate_height_current))

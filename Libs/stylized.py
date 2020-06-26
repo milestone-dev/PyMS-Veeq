@@ -129,7 +129,7 @@ def stylized_widget_configure(widget, is_button_with_image=False):
                 widget.config(foreground=stylized_theme_enabled_foreground, background=stylized_theme_enabled_background)
         elif issubclass(wClass, Button):
             if is_button_with_image:
-                widget.config(relief=Tkinter.FLAT, borderwidth=0, overrelief=Tkinter.GROOVE)
+                widget.config(overrelief=Tkinter.SUNKEN, background=stylized_theme_enabled_background)
             elif widget.cget("relief") != Tkinter.FLAT and widget.cget("borderwidth") > 0:
                 widget.config(foreground=stylized_theme_enabled_foreground, background=stylized_theme_enabled_background)
     elif issubclass(wClass, Entry) or issubclass(wClass, Listbox) or issubclass(wClass, Text):

@@ -690,7 +690,7 @@ class MpqSelect(PyMSDialog):
 			del history[0]
 		PyMSDialog.ok(self)
 
-	def dismiss(self):
+	def dismiss(self, *_):
 		if isinstance(self.settings, SettingDict):
 			self.settings.windows.settings.save_window_size('mpqselect', self)
 		else:

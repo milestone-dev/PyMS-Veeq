@@ -1348,7 +1348,7 @@ class GeneratorVariableEditor(PyMSDialog):
 		self.parent.update_list()
 		PyMSDialog.ok(self)
 
-	def dismiss(self):
+	def dismiss(self, *_):
 		if not 'generator' in self.parent.settings:
 			self.parent.settings['generator'] = {}
 		setting = '%s_editor_window' % self.variable.generator.TYPE
@@ -1987,7 +1987,7 @@ class CodeGeneratorDialog(PyMSDialog):
 			generated += variable_re.sub(lambda m: replace_variable(m, values), code)
 		return generated
 
-	def dismiss(self):
+	def dismiss(self, *_):
 		if not 'generator' in self.settings:
 			self.settings['generator'] = {}
 		settings = self.settings['generator']

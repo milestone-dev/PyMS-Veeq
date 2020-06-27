@@ -173,7 +173,7 @@ Forge
 Forge Overlay
 Gateway
 Cybernetics Core
-Cybrnetics Core Overlay
+Cybernetics Core Overlay
 Khaydarin Crystal Formation
 Nexus
 Nexus Overlay

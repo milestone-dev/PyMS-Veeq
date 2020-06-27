@@ -118,7 +118,7 @@ technology irradiate = 7
 technology yamato_gun = 8
 technology cloaking_field = 9
 technology personnel_cloaking = 10
-technology restoration = 24
+technology medstims = 24
 technology optical_flare = 30
 
 #Terran NGS tech
@@ -127,7 +127,7 @@ technology observance = 39
 technology sublime_shepherd = 40
 technology power_siphon = 41
 technology energy_decay = 42
-technology medstims = 43
+#technology medstims = 43
 
 # Zerg military units
 military zergling = 37

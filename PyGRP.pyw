@@ -187,7 +187,7 @@ class FramesDialog(PyMSDialog):
 		self.result.set(0)
 		PyMSDialog.cancel(self)
 
-	def dismiss(self):
+	def dismiss(self, *_):
 		PYGRP_SETTINGS.window.save_window_size('frames', self)
 		PyMSDialog.dismiss(self)
 

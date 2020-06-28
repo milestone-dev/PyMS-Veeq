@@ -519,7 +519,7 @@ class PyLO(Tk):
 		self.basegrp = None
 		self.overlaygrp = None
 		self.unitpal = PAL.Palette()
-		self.unitpal.load_file(os.path.join(BASE_DIR,'Palettes','Units.pal'))
+		self.unitpal.load_file(os.path.join(BASE_DIR,'Palettes','!gamebasic.act'))
 		self.previewing = None
 		self.overlayframe = None
 		self.dragoffset = None

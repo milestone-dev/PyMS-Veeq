@@ -1,6 +1,4 @@
 
-from AutohideScrollbar import AutohideScrollbar
-
 from Tkinter import *
 from Libs.stylized import *
 
@@ -20,7 +18,7 @@ class ScrolledListbox(Frame):
 			if horizontal == SHOW_SCROLL_ALWAYS:
 				scrollbar = Scrollbar(self, orient=HORIZONTAL, command=self.listbox.xview)
 			else:
-				scrollbar = AutohideScrollbar(self, orient=HORIZONTAL, command=self.listbox.xview)
+				scrollbar = Scrollbar(self, orient=HORIZONTAL, command=self.listbox.xview)
 			scrollbar.grid(column=0,row=1, sticky=EW)
 			self.listbox.config(xscrollcommand=scrollbar.set)
 		
@@ -28,7 +26,7 @@ class ScrolledListbox(Frame):
 			if horizontal == SHOW_SCROLL_ALWAYS:
 				scrollbar = Scrollbar(self, command=self.listbox.yview)
 			else:
-				scrollbar = AutohideScrollbar(self, command=self.listbox.yview)
+				scrollbar = Scrollbar(self, command=self.listbox.yview)
 			scrollbar.grid(column=1,row=0, sticky=NS)
 			self.listbox.config(yscrollcommand=scrollbar.set)
 

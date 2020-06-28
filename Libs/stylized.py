@@ -226,29 +226,32 @@ class Scrollbar(ttk.Scrollbar):
         self._kwargs = {}
 
     def place(self, **kwargs):
-        self._hide = self.place_forget
-        self._show = self.place
+        self._hide = ttk.Scrollbar.place_forget
+        self._show = ttk.Scrollbar.place
         self._kwargs = kwargs
         ttk.Scrollbar.place(self, **kwargs)
 
     def pack(self, **kwargs):
-        self._hide = self.pack_forget
-        self._show = self.pack
+        self._hide = ttk.Scrollbar.pack_forget
+        self._show = ttk.Scrollbar.pack
         self._kwargs = kwargs
         ttk.Scrollbar.pack(self, **kwargs)
 
+    def pack_nohide(self, **kwargs):
+        ttk.Scrollbar.pack(self, **kwargs)
+
     def grid(self, **kwargs):
-        self._hide = self.grid_remove
-        self._show = self.grid
+        self._hide = ttk.Scrollbar.grid_remove
+        self._show = ttk.Scrollbar.grid
         self._kwargs = kwargs
         ttk.Scrollbar.grid(self, **kwargs)
 
     def set(self, lo, hi):
         if float(lo) <= 0.0 and float(hi) >= 1.0:
             if self._hide:
-                self._hide()
+                self._hide(self)
         elif self._show:
-            self._show(**self._kwargs)
+            self._show(self, **self._kwargs)
         ttk.Scrollbar.set(self, lo, hi)
 
 

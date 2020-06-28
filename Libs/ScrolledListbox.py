@@ -14,21 +14,13 @@ class ScrolledListbox(Frame):
 		self.listbox = Listbox(self, **kwargs)
 		self.listbox.grid(column=0,row=0, sticky=NSEW)
 
-		if horizontal != SHOW_SCROLL_NEVER:
-			if horizontal == SHOW_SCROLL_ALWAYS:
-				scrollbar = Scrollbar(self, orient=HORIZONTAL, command=self.listbox.xview)
-			else:
-				scrollbar = Scrollbar(self, orient=HORIZONTAL, command=self.listbox.xview)
-			scrollbar.grid(column=0,row=1, sticky=EW)
-			self.listbox.config(xscrollcommand=scrollbar.set)
-		
-		if vertical != SHOW_SCROLL_NEVER:
-			if horizontal == SHOW_SCROLL_ALWAYS:
-				scrollbar = Scrollbar(self, command=self.listbox.yview)
-			else:
-				scrollbar = Scrollbar(self, command=self.listbox.yview)
-			scrollbar.grid(column=1,row=0, sticky=NS)
-			self.listbox.config(yscrollcommand=scrollbar.set)
+		scrollbar = Scrollbar(self, orient=HORIZONTAL, command=self.listbox.xview)
+		scrollbar.grid(column=0, row=1, sticky=EW)
+		self.listbox.config(xscrollcommand=scrollbar.set)
+
+		scrollbar = Scrollbar(self, command=self.listbox.yview)
+		scrollbar.grid(column=1, row=0, sticky=NS)
+		self.listbox.config(yscrollcommand=scrollbar.set)
 
 		self.grid_columnconfigure(0, weight=1)
 		self.grid_rowconfigure(0, weight=1)

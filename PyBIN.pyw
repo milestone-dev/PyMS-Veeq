@@ -11,6 +11,7 @@ try:
 	from PIL import ImageTk
 except:
 	import ImageTk
+from Libs.stylized import *
 
 from thread import start_new_thread
 import optparse, os, webbrowser, sys, time

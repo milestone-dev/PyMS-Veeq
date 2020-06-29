@@ -6,4 +6,6 @@ Libs/Temp/
 Libs/Logs/
 **.pyc
 **.bak
+**.*_bak
+**_bak.*
 *.*-*

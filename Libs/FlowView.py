@@ -1,4 +1,6 @@
 
+from AutohideScrollbar import AutohideScrollbar
+
 from Tkinter import *
 from Libs.stylized import *
 
@@ -12,9 +14,9 @@ class FlowView(Frame):
 		self.content_view = Frame(self._content_area)
 		self.content_view_id = self._content_area.create_window((0,0), window=self.content_view, anchor=NW)
 		self._content_area.grid(sticky=NSEW)
-		xscrollbar = Scrollbar(self, orient=HORIZONTAL, command=self._content_area.xview)
+		xscrollbar = AutohideScrollbar(self, orient=HORIZONTAL, command=self._content_area.xview)
 		xscrollbar.grid(sticky=EW)
-		yscrollbar = Scrollbar(self, command=self._content_area.yview)
+		yscrollbar = AutohideScrollbar(self, command=self._content_area.yview)
 		yscrollbar.grid(sticky=NS, row=0, column=1)
 		def scrolled(l,h,bar):
 			bar.set(l,h)

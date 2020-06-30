@@ -3458,7 +3458,7 @@ class PyAI(Tk):
             return
         s = 2+sum(self.ai.aisizes.values())
         if s > 65535:
-            ErrorDialog(PyMSError('Adding',"There is not enough room in your aiscript.bin to add a new script"))
+            ErrorDialog(self, PyMSError('Adding',"There is not enough room in your aiscript.bin to add a new script"))
             return
         e = EditScriptDialog(self, title='Adding New AI Script')
         id = e.id.get()

@@ -335,7 +335,7 @@ upgrade dark_archon_mana = 49
 # Protoss NGS upgrades
 upgrade signify_malice = 55
 upgrade prismatic_shield = 46
-upgrade vortex_blades = 56
+upgrade blade_vortex = 56
 upgrade relocators = 57
 upgrade khaydarin_drive = 59
 
@@ -432,7 +432,7 @@ technology unused_43 = 43
 #upgrade_ext animus_coolant = 81
 #upgrade_ext radiation_shockwave = 82
 #upgrade_ext fore_castle = 89
-#upgrade_ext shaman_mana = 102
+#upgrade_ext ext102 = 102
 #upgrade_ext adrenaline_packs = 103
 #upgrade_ext passenger_insurance = 106
 #upgrade_ext somatic_implants = 114

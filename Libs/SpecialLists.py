@@ -383,7 +383,7 @@ class ReportList(Frame):
 		self.columns = []
 		self.vscroll = Scrollbar(self)
 		self.vscroll.config(command=self.yview)
-		self.vscroll.pack_nohide(side=RIGHT, fill=Y)
+		self.vscroll.pack(side=RIGHT, fill=Y)
 		p = self
 		for n,title in enumerate(columns):
 			end = n+1 == len(columns)

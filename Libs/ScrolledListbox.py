@@ -65,8 +65,8 @@ class ScrolledListbox(Frame):
 				index = 0
 				if offset == END:
 					index = self.size()-2
-				elif offset not in [0,END] and self.curselection():
-					index = max(min(self.size()-1, int(self.curselection()[0]) + offset),0)
+				elif offset not in [0,END] and self.listbox.curselection():
+					index = max(min(self.size()-1, int(self.listbox.curselection()[0]) + offset),0)
 				self.select_clear(0,END)
 				self.select_set(index)
 				self.see(index)

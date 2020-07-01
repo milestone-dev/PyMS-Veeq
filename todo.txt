@@ -10,6 +10,9 @@ PyMPQ:
 PyAI:
 - Add inline block support
 
+PyICE:
+- Add AICE support
+
 PyGRP:
 - Fix artifacts that happen after saving
 

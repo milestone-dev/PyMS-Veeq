@@ -85,3 +85,6 @@ class ScrolledListbox(Frame):
 			]
 			for b in bind:
 				bind_to.bind(*b, add=True)
+
+	def curselection(self):
+		return self.listbox.curselection()

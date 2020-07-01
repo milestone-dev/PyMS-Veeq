@@ -38,7 +38,7 @@ class ScrolledListbox(Frame):
 		# Forward listbox methods and certain other methods to the listbox
 		self.frame_bind = self.bind
 		self.bind = self.listbox.bind
-		methods = vars(Listbox).keys() + vars(XView).keys() + vars(YView).keys()
+		methods = vars(Tkinter.Listbox).keys() + vars(XView).keys() + vars(YView).keys()
 		for m in methods:
 			if m.startswith('_'):
 				continue
@@ -85,6 +85,3 @@ class ScrolledListbox(Frame):
 			]
 			for b in bind:
 				bind_to.bind(*b, add=True)
-
-	def curselection(self):
-		return self.listbox.curselection()

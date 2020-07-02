@@ -427,13 +427,17 @@ technology unused_43 = 43
 #upgrade_ext innervating_matrices = 68
 #upgrade_ext azazel_mana = 69
 #upgrade_ext umojan_batteries = 70
+#upgrade_ext ramming_speed = 71
 #upgrade_ext augustgrads_revenge = 72
+#upgrade_ext heatshield = 78
+#upgrade_ext ext79 = 79
 #upgrade_ext sequester_pods = 80
 #upgrade_ext reservations = 81
 #upgrade_ext radiation_shockwave = 82
 #upgrade_ext fore_castle = 89
 #upgrade_ext ground_zero = 102
 #upgrade_ext adrenaline_packs = 103
+#upgrade_ext peer_reviewed_destruction = 105
 #upgrade_ext passenger_insurance = 106
 #upgrade_ext somatic_implants = 114
 #upgrade_ext hotdrop = 115
@@ -441,9 +445,6 @@ technology unused_43 = 43
 # Terran Escalation extended upgrades
 #upgrade_ext escalate_cyprian = 62
 #upgrade_ext escalate_azazel = 67
-#upgrade_ext escalate_savant = 71
-#upgrade_ext escalate_paladin = 78
-#upgrade_ext escalate_sentry_turret = 79
 #upgrade_exe escalate_shaman = 107
 
 # Zerg extended upgrades

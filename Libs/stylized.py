@@ -7,15 +7,14 @@ import os.path, json
 # After importing Tkinter with  `from Tkinter import *`
 # Import using                  `from Libs.stylized import *`
 
-
-def __get_theme_file_path():
+def __get_theme_dir_path():
     __dir_path = __file__.replace("/", "\\")
     __dir_path = __dir_path[:__dir_path.rfind("\\")]
-    __dir_path = __dir_path[:__dir_path.rfind("\\")]
-    return __dir_path + "\\Settings\\theme.txt"
+    return __dir_path[:__dir_path.rfind("\\")] + "\\Settings"
 
 
-__theme_file_path = __get_theme_file_path()
+__theme_dir_path = __get_theme_dir_path()
+__theme_file_path = __theme_dir_path + "\\theme.txt"
 __default_theme = {
     "defaultBackground": "#181a1e",
     "defaultForeground": "#cccccc",
@@ -61,6 +60,8 @@ def __load_theme():
 def __save_default_theme(): # Save and enable default theme
     global __theme
     __theme = __default_theme
+    if not os.path.exists(__theme_dir_path):
+        os.mkdir(__theme_dir_path)
     with file(__theme_file_path, 'w') as f:
         json.dump(__default_theme, f, indent=4, sort_keys=True)
 

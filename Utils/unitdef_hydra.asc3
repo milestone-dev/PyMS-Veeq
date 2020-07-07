@@ -150,7 +150,7 @@ military lurker = 103
 military vorvaling = 128
 military basilisk = 129
 military gorgoleth = 56
-military k_screamer = 96
+military keskathalor = 96
 military iroleth = 222
 
 # Zerg NGS heroes
@@ -304,7 +304,7 @@ building p_beacon = 196
 
 # Protoss NGS buildings
 building principality = 158
-building warp_anchor = 161
+building vicarage = 161
 building reliquary = 175
 building robotics_authority = 182
 building argosy = 183
@@ -423,14 +423,12 @@ technology unused_43 = 43
 #upgrade_ext plasteel_servos = 63
 #upgrade_ext comsat_mana = 64
 #upgrade_ext capacitors = 65
-#upgrade_ext reverse_thrust = 66
 #upgrade_ext innervating_matrices = 68
 #upgrade_ext azazel_mana = 69
 #upgrade_ext umojan_batteries = 70
 #upgrade_ext ramming_speed = 71
 #upgrade_ext augustgrads_revenge = 72
 #upgrade_ext heatshield = 78
-#upgrade_ext ext79 = 79
 #upgrade_ext sequester_pods = 80
 #upgrade_ext reservations = 81
 #upgrade_ext radiation_shockwave = 82
@@ -445,9 +443,10 @@ technology unused_43 = 43
 # Terran Escalation extended upgrades
 #upgrade_ext escalate_cyprian = 62
 #upgrade_ext escalate_azazel = 67
-#upgrade_exe escalate_shaman = 107
+#upgrade_ext escalate_shaman = 107
 
 # Zerg extended upgrades
+#upgrade_ext ablative_wurm = 66
 #upgrade_ext tendril_amitosis = 73
 #upgrade_ext nydal_transfusion = 74
 #upgrade_ext vital_encephalon = 75
@@ -460,9 +459,14 @@ technology unused_43 = 43
 #upgrade_ext corrosive_dispersion = 93
 #upgrade_ext chasmal_colony_mana = 94
 #upgrade_ext caustic_fission = 98
-#upgrade_exe adrenal_surge = 110
+#upgrade_ext adrenal_surge = 110
+#upgrade_ext lithe_organelle = 117
+#upgrade_ext critical_mass = 118
+#upgrade_ext acrid_displacement = 119
+#upgrade_ext seismic_spines = 120
 
 # Protoss extended upgrades
+#upgrade_ext silent_strikes = 79
 #upgrade_ext expanded_hull = 83
 #upgrade_ext last_orders = 95
 #upgrade_ext temporal_batteries = 96

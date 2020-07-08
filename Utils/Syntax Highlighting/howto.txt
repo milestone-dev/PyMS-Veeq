@@ -1,1 +1,2 @@
 To install simply open notepad++ go to Language/User Defined Language/Define your language... menu and click import asc3.xml
+Then go to settings -> style configurator and untick 'global foreground color'

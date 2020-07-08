@@ -379,7 +379,7 @@ technology unused_41 = 41
 technology unused_42 = 42
 technology unused_43 = 43
 
-# Extended upgrades | read by trigger comments
+# Extended upgrades
 #upgrade_ext upgext_62 = 62
 #upgrade_ext upgext_63 = 63
 #upgrade_ext upgext_64 = 64

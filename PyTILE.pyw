@@ -2696,8 +2696,13 @@ class PyTILE(Tk):
 	def megatile_null_all(self):
 		if not self.tileset:
 			return
-		for i in range(16):
-			self.megatile_null(self.palette.selected[0], i)
+		if self.palette.multiselect:
+			for group in sorted(self.palette.selected):
+				for i in range(16):
+					self.megatile_null(group, i)
+		else:
+			for i in range(16):
+				self.megatile_null(self.palette.selected[0], i)
 		self.update_palette_null()
 
 	def megatile_null_current(self):
@@ -2906,7 +2911,7 @@ class PyTILE(Tk):
 						edited = ret or edited
 						offset += 1
 			elif self.clipboard_group_count == 1:
-				for group in sorted(self.palette.selected): 
+				for group in sorted(self.palette.selected):
 					for tile in xrange(16):
 						id = self.get_mega_id(group, tile)
 						ret = self.paste_single(id, mask)
@@ -2930,6 +2935,25 @@ class PyTILE(Tk):
 	def megatile_apply_all(self, mode=None):
 		if not self.tileset:
 			return
+
+		edited = False
+
+		## Needs tile selection in group multiselect mode to work
+		#if self.palette.multiselect:
+		#	for group in sorted(self.palette.selected):
+		#	edited = self.megatile_apply_all_specific(group) or edited
+		#else:
+		#	edited = self.megatile_apply_all_specific(self.palette.selected[0])
+
+		if self.palette.multiselect:
+			return
+		edited = self.megatile_apply_all_specific(self.palette.selected[0])
+
+		if edited:
+			self.palette.draw_tiles(force=True)
+			self.mark_edited()
+
+	def megatile_apply_all_specific(self, group, mode=None):
 		copy_mask = ~0
 		if mode == MEGA_EDIT_MODE_HEIGHT:
 			copy_mask = HEIGHT_MID | HEIGHT_HIGH
@@ -2939,9 +2963,9 @@ class PyTILE(Tk):
 			copy_mask = 8
 		elif mode == MEGA_EDIT_MODE_RAMP:
 			copy_mask = 16
-		copy_mega = self.tileset.cv5.groups[self.palette.selected[0]][13][self.palette.sub_selection]
+		copy_mega = self.tileset.cv5.groups[group][13][self.palette.sub_selection]
 		edited = False
-		for m in self.tileset.cv5.groups[self.palette.selected[0]][13]:
+		for m in self.tileset.cv5.groups[group][13]:
 			if m == copy_mega or (m == 0 and self.apply_all_exclude_nulls.get()):
 				continue
 			for n in xrange(16):
@@ -2951,9 +2975,7 @@ class PyTILE(Tk):
 				if new_flags != flags:
 					self.tileset.vf4.flags[m][n] = new_flags
 					edited = True
-		if edited:
-			self.palette.draw_tiles(force=True)
-			self.mark_edited()
+		return edited
 
 	def doodad_apply_all(self):
 		doodad_id = self.edgeright.get()

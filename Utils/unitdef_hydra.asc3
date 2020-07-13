@@ -208,6 +208,7 @@ building nydus_artery = 181
 building lurker_den = 191
 building devourer_haunt = 197
 building chasmal_colony = 201
+building vorval_pond = 204
 
 # Zerg upgrades
 upgrade z_carapace = 3
@@ -464,6 +465,7 @@ technology unused_43 = 43
 #upgrade_ext critical_mass = 118
 #upgrade_ext acrid_displacement = 119
 #upgrade_ext seismic_spines = 120
+#upgrade_ext incubators = 121
 
 # Protoss extended upgrades
 #upgrade_ext silent_strikes = 79
@@ -481,6 +483,7 @@ technology unused_43 = 43
 #upgrade_ext power_flux = 112
 #upgrade_ext khaydarin_eclipse = 113
 #upgrade_ext malediction = 116
+#upgrade_ext autovitality = 122
 
 # Protoss Relic extended upgrades
 # Weapons

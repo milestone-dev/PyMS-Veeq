@@ -1100,17 +1100,19 @@ class TilePaletteView(Frame):
 				x = (id % columns) * tile_size[0]
 				y = (id / columns) * tile_size[1]
 				self.canvas.create_rectangle(x, y, x+tile_size[0]+(1 if self.sub_select or self.tiletype == TILETYPE_GROUP else 0), y+tile_size[1], outline='#AAAAAA' if self.sub_select else '#FFFFFF', tags='selection')
-				if self.sub_select:
+				if self.sub_select and self.multiselect == False:
 					mega_size = self.get_tile_size(TILETYPE_MEGA, group=True)
 					x += mega_size[0] * self.sub_selection
 					self.canvas.create_rectangle(x, y, x+mega_size[0]+1, y+mega_size[1]+1, outline='#FFFFFF', tags='sub_selection')
 
 	class MegatileInfo():
-		def __init__(self, id, x, y, megatile_id):
+		def __init__(self, id, x, y, megatile_id, tile_tag, bind_tag):
 			self.id = id
 			self.x = x
 			self.y = y
 			self.megatile_id = megatile_id
+			self.tile_tag = tile_tag
+			self.bind_tag = bind_tag
 
 	def get_megatile_id(self, id):
 		return self.parent.tileset.cv5.groups[id / 16][13][id % 16]
@@ -1137,18 +1139,19 @@ class TilePaletteView(Frame):
 	def draw_minitile_flag(self, megatile_info, minitile_n, color='#FFFFFF'):
 		minitile_x = megatile_info.x + 8 * self.scale * (minitile_n % 4)
 		minitile_y = megatile_info.y + 8 * self.scale * (minitile_n / 4)
-		tag = 'tile%s' % megatile_info.id
+		tile_tag = megatile_info.tile_tag
+		bind_tag = megatile_info.bind_tag
 
 		style = self.parent.style.get()
 		if style == STYLE_BOXES or style == STYLE_BOXES_AND_DOTS:
 			self.canvas.create_rectangle(minitile_x + 1 * self.scale, minitile_y + 1 * self.scale,
 										 minitile_x + 7 * self.scale - 1, minitile_y + 7 * self.scale - 1,
-										 outline=color, tags=tag)
+										 outline=color, tags=(tile_tag, bind_tag))
 
 		if style == STYLE_DOTS or style == STYLE_BOXES_AND_DOTS:
 			self.canvas.create_rectangle(minitile_x + 3 * self.scale, minitile_y + 3 * self.scale,
 										 minitile_x + 5 * self.scale, minitile_y + 5 * self.scale,
-										 fill=color, outline="", tags=tag)
+										 fill=color, outline="", tags=(tile_tag, bind_tag))
 
 	def get_buildable_flag(self, megatile_info):
 		return self.parent.tileset.cv5.groups[megatile_info.id/16][1]
@@ -1164,9 +1167,10 @@ class TilePaletteView(Frame):
 
 		x = megatile_info.x
 		y = megatile_info.y
-		tag = 'tile%s' % megatile_info.id
+		tile_tag = megatile_info.tile_tag
+		bind_tag = megatile_info.bind_tag
 
-		self.canvas.create_rectangle(x, y, x+32*self.scale, y+32*self.scale, outline="", fill=color, stipple="gray12", tags=tag);
+		self.canvas.create_rectangle(x, y, x+32*self.scale, y+32*self.scale, outline="", fill=color, stipple="gray12", tags=(tile_tag, bind_tag));
 
 	def draw_flags(self, megatile_info):
 		if not hasattr(self, "parent"):
@@ -1267,9 +1271,11 @@ class TilePaletteView(Frame):
 								self.canvas.images[id] = self.gettile((id, 0), cache=(not force))
 
 							self.canvas.images[id] = self.canvas.images[id]._PhotoImage__photo.zoom(self.scale)
-							tag = 'tile%s' % id
-							self.canvas.delete(tag)
-							self.canvas.create_image(x, y, image=self.canvas.images[id], tags=tag, anchor=NW)
+							flags = self.parent != None and self.multiselect == False
+							tile_tag = 'tile%s' % id
+							bind_tag = 'tile%s%s' % (id, "f" if flags else "nf")
+							self.canvas.delete(tile_tag)
+							self.canvas.create_image(x, y, image=self.canvas.images[id], tags=(tile_tag, bind_tag), anchor=NW)
 
 							def select(id, modifier=None):
 								sub_select = None
@@ -1280,9 +1286,10 @@ class TilePaletteView(Frame):
 								self.select(id, sub_select, modifier)
 
 							if self.parent != None:
-								megatile_info = TilePaletteView.MegatileInfo(id, x, y, self.get_megatile_id(id))
+								megatile_info = TilePaletteView.MegatileInfo(id, x, y, self.get_megatile_id(id), tile_tag, bind_tag)
 								self.draw_flags(megatile_info)
 
+							if flags:
 								def make_last_click(megatile, minitile):
 									return str(megatile) + "," + str(minitile)
 
@@ -1319,31 +1326,31 @@ class TilePaletteView(Frame):
 									self.last_click_mega = megatile_info.id
 									self.parent.megatile_null_current()
 
-								self.canvas.tag_bind(tag, '<Button-1>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 0))
-								self.canvas.tag_bind(tag, '<Button-2>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 1))
-								self.canvas.tag_bind(tag, '<Button-3>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 2))
-								self.canvas.tag_bind(tag, '<Control-Button-1>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 0, True, True))
-								self.canvas.tag_bind(tag, '<Control-Button-2>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 1, True))
-								self.canvas.tag_bind(tag, '<Control-Button-3>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 2, True))
-								self.canvas.tag_bind(tag, '<B1-Motion>', lambda e, megatile_info=megatile_info: move(e, megatile_info, 0))
-								self.canvas.tag_bind(tag, '<B2-Motion>', lambda e, megatile_info=megatile_info: move(e, megatile_info, 1))
-								self.canvas.tag_bind(tag, '<B3-Motion>', lambda e, megatile_info=megatile_info: move(e, megatile_info, 2))
-								self.canvas.tag_bind(tag, '<ButtonRelease-1>', release)
-								self.canvas.tag_bind(tag, '<ButtonRelease-2>', release)
-								self.canvas.tag_bind(tag, '<ButtonRelease-3>', release)
+								self.canvas.tag_bind(bind_tag, '<Button-1>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 0))
+								self.canvas.tag_bind(bind_tag, '<Button-2>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 1))
+								self.canvas.tag_bind(bind_tag, '<Button-3>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 2))
+								self.canvas.tag_bind(bind_tag, '<Control-Button-1>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 0, True, True))
+								self.canvas.tag_bind(bind_tag, '<Control-Button-2>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 1, True))
+								self.canvas.tag_bind(bind_tag, '<Control-Button-3>', lambda e, megatile_info=megatile_info: click(e, megatile_info, 2, True))
+								self.canvas.tag_bind(bind_tag, '<B1-Motion>', lambda e, megatile_info=megatile_info: move(e, megatile_info, 0))
+								self.canvas.tag_bind(bind_tag, '<B2-Motion>', lambda e, megatile_info=megatile_info: move(e, megatile_info, 1))
+								self.canvas.tag_bind(bind_tag, '<B3-Motion>', lambda e, megatile_info=megatile_info: move(e, megatile_info, 2))
+								self.canvas.tag_bind(bind_tag, '<ButtonRelease-1>', release)
+								self.canvas.tag_bind(bind_tag, '<ButtonRelease-2>', release)
+								self.canvas.tag_bind(bind_tag, '<ButtonRelease-3>', release)
 
-								self.canvas.tag_bind(tag, '<Alt-Button-1>',
+								self.canvas.tag_bind(bind_tag, '<Alt-Button-1>',
 													 lambda e, megatile_info=megatile_info: click_alt(e, megatile_info))
 
 							else:
-								self.canvas.tag_bind(tag, '<Button-1>', lambda e, id=id: select(id))
-								self.canvas.tag_bind(tag, '<Button-2>', lambda e, id=id: select(id))
-								self.canvas.tag_bind(tag, '<Button-3>', lambda e, id=id: select(id))
-								self.canvas.tag_bind(tag, '<Control-Button-1>',  lambda e, id=id: select(id, 'cntrl'))
+								self.canvas.tag_bind(bind_tag, '<Button-1>', lambda e, id=id: select(id))
+								self.canvas.tag_bind(bind_tag, '<Button-2>', lambda e, id=id: select(id))
+								self.canvas.tag_bind(bind_tag, '<Button-3>', lambda e, id=id: select(id))
+								self.canvas.tag_bind(bind_tag, '<Control-Button-1>',  lambda e, id=id: select(id, 'cntrl'))
 
-							self.canvas.tag_bind(tag, '<Shift-Button-1>', lambda e, id=id: select(id, 'shift'))
+							self.canvas.tag_bind(bind_tag, '<Shift-Button-1>', lambda e, id=id: select(id, 'shift'))
 							if hasattr(self.delegate, 'tile_palette_double_clicked'):
-								self.canvas.tag_bind(tag, '<Double-Button-1>', lambda e,id=id / (16 if self.tiletype == TILETYPE_GROUP else 1): self.delegate.tile_palette_double_clicked(id))
+								self.canvas.tag_bind(bind_tag, '<Double-Button-1>', lambda e,id=id / (16 if self.tiletype == TILETYPE_GROUP else 1): self.delegate.tile_palette_double_clicked(id))
 
 			self.visible_range = visible_range
 			self.draw_selections()
@@ -2448,21 +2455,34 @@ class PyTILE(Tk):
 			self.palette.setScale(scale)
 			self.palette.canvas.yview_moveto(scroll)
 
+		def update_group_select():
+			group_select = self.group_select.get()
+			if group_select != self.palette.multiselect:
+				self.palette.multiselect = group_select
+				self.palette.sub_selection = 0
+				self.palette.selected = []
+				updateFlags()
 
-		Label(settings_group, text='Zoom:').grid(column=1, row=4, sticky=N+W)
+		self.group_select = BooleanVar()
+		self.group_select.set(PYTILE_SETTINGS['group_select'].get('group_select', False))
+		group_select = Checkbutton(settings_group, text="Group Multi Selection", variable=self.group_select, command=lambda: update_group_select())
+		group_select.grid(column=1,row=4,sticky=N+W)
+		update_group_select()
+
+
+		Label(settings_group, text='Zoom:').grid(column=1, row=5, sticky=N+W)
 		self.zoom = IntegerVar(0, [1, 3], callback=lambda scale: setZoom(scale))
 		self.zoom.set(PYTILE_SETTINGS['tileset_view'].get('zoom', 1))
 		zoom = Entry(settings_group, textvariable=self.zoom, font=couriernew, width=17)
-		zoom.grid(column=1,row=5,sticky=N+W)
+		zoom.grid(column=1,row=6,sticky=N+W)
 		setZoom(self.zoom.get())
 
-		Label(settings_group, text='Style:').grid(column=1, row=6, sticky=N+W)
+		Label(settings_group, text='Style:').grid(column=1, row=7, sticky=N+W)
 		self.style = IntegerVar(0, [0, 2], callback=updateFlags)
 		self.style.set(PYTILE_SETTINGS['tileset_view'].get('style', STYLE_BOXES))
 		styles = ["Boxes", "Dots", "Dots and Boxes"]
 		style = DropDown(settings_group, self.style, styles, width=15)
-		style.grid(column=1, row=7, sticky=N+W)
-
+		style.grid(column=1, row=8, sticky=N+W)
 
 		flagGenerator = LabelFrame(self.flow_view.content_view, text='Flag Generator')
 
@@ -2487,7 +2507,7 @@ class PyTILE(Tk):
 
 		self.disable.append(Button(flagGenerator, text='Generate for Current Tile (Ctrl+G)', state=DISABLED, command=self.generate_height_current))
 		self.disable[-1].grid(column=1, row=4, sticky=N+W, padx=3, pady=3, columnspan=2)
-		self.disable.append(Button(flagGenerator, text='Generate for Current Group (Ctrl+Shift+G)', state=DISABLED, command=self.generate_height_current_group))
+		self.disable.append(Button(flagGenerator, text='Generate for Current Group(s) (Ctrl+Shift+G)', state=DISABLED, command=self.generate_height_current_group))
 		self.disable[-1].grid(column=1, row=5, sticky=N+W, padx=3, pady=3, columnspan=2)
 		self.bind("<Control-g>", self.generate_height_current)
 		self.bind("<Control-Shift-G>", self.generate_height_current_group)
@@ -2738,15 +2758,26 @@ class PyTILE(Tk):
 		if not self.tileset:
 			return
 
-		current_group = self.palette.selected[0]
 		edited = False
-		for n in xrange(16):
-			if self.generate_height(current_group, n):
+		if self.palette.multiselect:
+			for i in self.palette.selected:
+				if (self.generate_height_group(i)):
+					edited = True
+		else:
+			if (self.generate_height_group(self.palette.selected[0])):
 				edited = True
+
 		if edited:
 			self.palette.draw_tiles(force=True)
 			self.mega_editor.draw()
 			self.mark_edited()
+
+	def generate_height_group(self, current_group):
+		edited = False
+		for n in xrange(16):
+			if self.generate_height(current_group, n):
+				edited = True
+		return edited
 
 	def get_mask(self):
 		height = HEIGHT_MID | HEIGHT_HIGH if self.copy_mega_height.get() else 0
@@ -2778,20 +2809,33 @@ class PyTILE(Tk):
 	def mirror(self, vertically=False):
 		if not self.tileset:
 			return
+		edited = False
 
-		group = self.palette.selected[0]
-		tile = self.palette.sub_selection
-		id = self.get_mega_id(group, tile)
+		if self.palette.multiselect:
+			for i in self.palette.selected:
+				for n in xrange(16):
+					tile_edited = self.mirror_tile(self.get_mega_id(i, n), vertically)
+					edited = tile_edited or edited
 
-		mask = self.get_mask()
+		else:
+			group = self.palette.selected[0]
+			tile = self.palette.sub_selection
 
+			tile_edited = self.mirror_tile(self.get_mega_id(group, tile), vertically)
+			edited = tile_edited or edited
+
+		if edited:
+			self.palette.draw_tiles(force=True)
+			self.mega_editor.draw()
+			self.mark_edited()
+
+	def mirror_tile(self, id, vertically=False):
 		if id == 0:
 			return False
-
 		edited = False
 		mega_copy = self.tileset.vf4.flags[id][:]
+		mask = self.get_mask()
 		for n in xrange(16):
-
 			x, y = self.index_to_xy(n)
 			if vertically:
 				y = self.flipped(y)
@@ -2807,45 +2851,78 @@ class PyTILE(Tk):
 
 		if edited:
 			self.tileset.vf4.flags[id] = mega_copy
-			self.palette.draw_tiles(force=True)
-			self.mega_editor.draw()
-			self.mark_edited()
+		return edited
 
 	def copy_mega(self, *_):
 		if not self.tileset:
 			return
 
-		group = self.palette.selected[0]
-		tile = self.palette.sub_selection
-		id = self.get_mega_id(group, tile)
+		if self.palette.multiselect:
+			self.clipboard_group_count = len(self.palette.selected)
+			self.clipboard_megatile_flags = []
+			for group in sorted(self.palette.selected):
+				for tile in xrange(16):
+					id = self.get_mega_id(group, tile)
+					for n in xrange(16):
+						self.clipboard_megatile_flags.append(self.tileset.vf4.flags[id][n])
+		else:
+			group = self.palette.selected[0]
+			tile = self.palette.sub_selection
+			id = self.get_mega_id(group, tile)
 
-		mask = self.get_mask()
+			self.clipboard_group_count = 1
+			self.clipboard_megatile_flags = []
+			for n in xrange(16):
+				self.clipboard_megatile_flags.append(self.tileset.vf4.flags[id][n])
 
-		self.clipboard_megatile_flags = []
+
+	def paste_single(self, id, mask, offset=0):
+		edited = False
+		new_tile_flags = self.tileset.vf4.flags[id][:]
 		for n in xrange(16):
-			self.clipboard_megatile_flags.append(self.tileset.vf4.flags[id][n])
+			flags = self.tileset.vf4.flags[id][n]
+			new_flags = self.apply_mask(flags, self.clipboard_megatile_flags[n+offset*16], mask)
+			if flags != new_flags:
+				new_tile_flags[n] = new_flags
+				edited = True
+		if edited:
+			self.tileset.vf4.flags[id] = new_tile_flags
+		return edited
 
 	def paste_mega(self, *_):
 		if not self.tileset or not hasattr(self, "clipboard_megatile_flags"):
 			return
 
-		group = self.palette.selected[0]
-		tile = self.palette.sub_selection
-		id = self.get_mega_id(group, tile)
-
 		mask = self.get_mask()
-
 		edited = False
-		new_tile_flags = self.tileset.vf4.flags[id][:]
-		for n in xrange(16):
-			flags = self.tileset.vf4.flags[id][n]
-			new_flags = self.apply_mask(flags, self.clipboard_megatile_flags[n], mask)
-			if flags != new_flags:
-				new_tile_flags[n] = new_flags
-				edited = True
+
+		if self.palette.multiselect:
+			if self.clipboard_group_count == len(self.palette.selected):
+				offset = 0
+				for group in sorted(self.palette.selected):
+					for tile in xrange(16):
+						id = self.get_mega_id(group, tile)
+						ret = self.paste_single(id, mask, offset)
+						edited = ret or edited
+						offset += 1
+			elif self.clipboard_group_count == 1:
+				for group in sorted(self.palette.selected): 
+					for tile in xrange(16):
+						id = self.get_mega_id(group, tile)
+						ret = self.paste_single(id, mask)
+						edited = ret or edited
+
+		else:
+			group = self.palette.selected[0]
+			tile = self.palette.sub_selection
+			id = self.get_mega_id(group, tile)
+
+			ret = self.paste_single(id, mask)
+			edited = ret or edited
+
+
 
 		if edited:
-			self.tileset.vf4.flags[id] = new_tile_flags
 			self.palette.draw_tiles(force=True)
 			self.mega_editor.draw()
 			self.mark_edited()
@@ -2895,7 +2972,11 @@ class PyTILE(Tk):
 
 	def update_group_label(self):
 		d = ['',' - Doodad'][self.palette.selected[0] >= 1024]
-		self.groupid['text'] = 'MegaTile Group [%s%s]' % (self.palette.selected[0],d)
+		if self.palette.multiselect:
+			sorted_selection = sorted(self.palette.selected)
+			self.groupid['text'] = 'MegaTile Group [%s-%s%s]' % (sorted_selection[0], sorted_selection[-1], d)
+		else:
+			self.groupid['text'] = 'MegaTile Group [%s%s]' % (self.palette.selected[0],d)
 
 	def megaload(self):
 		self.loading_megas = True
@@ -2933,20 +3014,29 @@ class PyTILE(Tk):
 	def group_values_changed(self, *_):
 		if not self.tileset or self.loading_megas:
 			return
-		group = self.tileset.cv5.groups[self.palette.selected[0]]
-		group[0] = self.index.get()
-		if self.palette.selected[0] >= 1024:
-			o = [self.buildable,self.flags,self.buildable2,self.groundheight,self.hasup,self.hasdown,self.edgeleft,self.unknown9,self.edgeright,self.edgeup,self.edgedown,self.unknown11]
+
+		if self.palette.multiselect:
+			for i in sorted(self.palette.selected):
+				group = self.tileset.cv5.groups[i]
+				self.change_group_value(group)
 		else:
-			o = [self.buildable,self.flags,self.buildable2,self.groundheight,self.edgeleft,self.edgeup,self.edgeright,self.edgedown,self.unknown9,self.hasup,self.unknown11,self.hasdown]
-		for n,v in enumerate(o):
-			group[n+1] = v.get()
+			group = self.tileset.cv5.groups[self.palette.selected[0]]
+			self.change_group_value(group)
 
 		if self.show_buildable.get():
 			self.palette.draw_tiles(True)
 			self.mega_editor.draw()
 
 		self.mark_edited()
+
+	def change_group_value(self, group):
+		group[0] = self.index.get()
+		if self.palette.selected[0] >= 1024:
+			o = [self.buildable, self.flags, self.buildable2, self.groundheight, self.hasup, self.hasdown, self.edgeleft, self.unknown9, self.edgeright, self.edgeup, self.edgedown, self.unknown11]
+		else:
+			o = [self.buildable, self.flags, self.buildable2, self.groundheight, self.edgeleft, self.edgeup, self.edgeright, self.edgedown, self.unknown9, self.hasup, self.unknown11, self.hasdown]
+		for n, v in enumerate(o):
+			group[n + 1] = v.get()
 
 	def choose(self, i):
 		TilePalette(self, i, [
@@ -3095,6 +3185,7 @@ class PyTILE(Tk):
 			PYTILE_SETTINGS['tileset_view'].show_minitiles = self.show_minitiles.get()
 			PYTILE_SETTINGS['tileset_view'].show_buildable = self.show_buildable.get()
 			PYTILE_SETTINGS['tileset_view'].edit_minitiles = self.edit_minitiles.get()
+			PYTILE_SETTINGS['tileset_view'].group_select = self.group_select.get()
 			PYTILE_SETTINGS['tileset_view'].style = self.style.get()
 			PYTILE_SETTINGS['tileset_view'].zoom = self.zoom.get()
 			PYTILE_SETTINGS.save()

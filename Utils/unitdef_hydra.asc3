@@ -440,6 +440,9 @@ technology unused_43 = 43
 #upgrade_ext passenger_insurance = 106
 #upgrade_ext somatic_implants = 114
 #upgrade_ext hotdrop = 115
+#upgrade_ext ion_propulsion = 123
+#upgrade_ext tempo_change = 124
+#upgrade_ext requiem_afterburners = 125
 
 # Terran Escalation extended upgrades
 #upgrade_ext escalate_cyprian = 62

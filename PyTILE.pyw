@@ -2883,9 +2883,10 @@ class PyTILE(Tk):
 	def paste_single(self, id, mask, offset=0):
 		edited = False
 		new_tile_flags = self.tileset.vf4.flags[id][:]
+		flag_count = len(self.clipboard_megatile_flags)
 		for n in xrange(16):
 			flags = self.tileset.vf4.flags[id][n]
-			new_flags = self.apply_mask(flags, self.clipboard_megatile_flags[n+offset*16], mask)
+			new_flags = self.apply_mask(flags, self.clipboard_megatile_flags[(n + offset * 16) % flag_count], mask)
 			if flags != new_flags:
 				new_tile_flags[n] = new_flags
 				edited = True
@@ -2901,20 +2902,13 @@ class PyTILE(Tk):
 		edited = False
 
 		if self.palette.multiselect:
-			if self.clipboard_group_count == len(self.palette.selected):
-				offset = 0
-				for group in sorted(self.palette.selected):
-					for tile in xrange(16):
-						id = self.get_mega_id(group, tile)
-						ret = self.paste_single(id, mask, offset)
-						edited = ret or edited
-						offset += 1
-			elif self.clipboard_group_count == 1:
-				for group in sorted(self.palette.selected):
-					for tile in xrange(16):
-						id = self.get_mega_id(group, tile)
-						ret = self.paste_single(id, mask)
-						edited = ret or edited
+			offset = 0
+			for group in sorted(self.palette.selected):
+				for tile in xrange(16):
+					id = self.get_mega_id(group, tile)
+					ret = self.paste_single(id, mask, offset)
+					edited = ret or edited
+					offset += 1
 
 		else:
 			group = self.palette.selected[0]

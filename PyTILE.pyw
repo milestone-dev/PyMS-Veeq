@@ -2459,8 +2459,7 @@ class PyTILE(Tk):
 			group_select = self.group_select.get()
 			if group_select != self.palette.multiselect:
 				self.palette.multiselect = group_select
-				self.palette.sub_selection = 0
-				self.palette.selected = []
+				self.palette.selected = [self.palette.selected[0]]
 				updateFlags()
 
 		self.group_select = BooleanVar()

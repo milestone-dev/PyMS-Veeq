@@ -2947,7 +2947,7 @@ class PyTILE(Tk):
 
 		if self.palette.multiselect:
 			return
-		edited = self.megatile_apply_all_specific(self.palette.selected[0])
+		edited = self.megatile_apply_all_specific(self.palette.selected[0], mode)
 
 		if edited:
 			self.palette.draw_tiles(force=True)

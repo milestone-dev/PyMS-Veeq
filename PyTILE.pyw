@@ -2590,14 +2590,14 @@ class PyTILE(Tk):
 			for r,(name,var) in enumerate(rows):
 				check = Checkbutton(copy_doodadgroup_group, text=name, variable=var, anchor=W, state=DISABLED)
 				check.grid(column=c,row=r, sticky=W)
-				self.disable.append(check)
+				#self.disable.append(check)
 		self.copy_doodadgroup_btn = Button(copy_doodadgroup_group, text='Copy (Ctrl+Alt+C)', state=DISABLED, command=copy_tilegroup)
 		self.bind('<Control-Alt-c>', copy_tilegroup)
 		self.copy_doodadgroup_btn.grid(column=0,row=5, sticky=E+W)
 		btn = Button(copy_doodadgroup_group, text='Paste (Ctrl+Alt+V)', state=DISABLED, command=paste_tilegroup)
 		self.bind('<Control-Alt-v>', paste_tilegroup)
 		btn.grid(column=1,row=5, sticky=E+W)
-		self.disable.append(btn)
+		#self.disable.append(btn)
 		self.doodad_editors.append(copy_doodadgroup_group)
 		self.flow_view.add_subviews(self.normal_editors, padx=2)
 
@@ -2675,7 +2675,7 @@ class PyTILE(Tk):
 			self.expanded.set('VX4 Expanded')
 		self.copy_mega_btn['state'] = [DISABLED,NORMAL][not not self.tileset and (self.copy_mega_height.get() or self.copy_mega_walkable.get() or self.copy_mega_sight.get() or self.copy_mega_ramp.get())]
 		#self.copy_tilegroup_btn['state'] = [DISABLED,NORMAL][not not self.tileset and (self.copy_tilegroup_flags.get() or self.copy_tilegroup_buildable.get() or self.copy_tilegroup_hasup.get() or self.copy_tilegroup_edges.get() or self.copy_tilegroup_unknown9.get() or self.copy_tilegroup_index.get() or self.copy_tilegroup_buildable2.get() or self.copy_tilegroup_hasdown.get() or self.copy_tilegroup_ground_height.get() or self.copy_tilegroup_unknown11.get())]
-		self.copy_doodadgroup_btn['state'] = [DISABLED,NORMAL][not not self.tileset and (self.copy_doodadgroup_doodad.get() or self.copy_doodadgroup_overlay.get() or self.copy_doodadgroup_buildable.get() or self.copy_doodadgroup_unknown1.get() or self.copy_doodadgroup_unknown6.get() or self.copy_doodadgroup_unknown8.get() or self.copy_doodadgroup_unknown12.get() or self.copy_doodadgroup_index.get() or self.copy_doodadgroup_ground_height.get() or self.copy_doodadgroup_group_string_id.get())]
+		#self.copy_doodadgroup_btn['state'] = [DISABLED,NORMAL][not not self.tileset and (self.copy_doodadgroup_doodad.get() or self.copy_doodadgroup_overlay.get() or self.copy_doodadgroup_buildable.get() or self.copy_doodadgroup_unknown1.get() or self.copy_doodadgroup_unknown6.get() or self.copy_doodadgroup_unknown8.get() or self.copy_doodadgroup_unknown12.get() or self.copy_doodadgroup_index.get() or self.copy_doodadgroup_ground_height.get() or self.copy_doodadgroup_group_string_id.get())]
 
 	def mark_edited(self, edited=True):
 		self.edited = edited

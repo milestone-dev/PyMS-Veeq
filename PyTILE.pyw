@@ -2816,11 +2816,30 @@ class PyTILE(Tk):
 		edited = False
 
 		if self.palette.multiselect:
-			for i in self.palette.selected:
-				for n in xrange(16):
-					tile_edited = self.mirror_tile(self.get_mega_id(i, n), vertically)
-					edited = tile_edited or edited
+			edited = True
 
+			nulltile_ids = []
+			original_flags = []
+			for group_id in sorted(self.palette.selected):
+				for tile_id in xrange(16):
+					megatile_id = self.get_mega_id(group_id, tile_id)
+					if megatile_id == 0:
+						nulltile_ids.append(len(original_flags))
+						original_flags.append([])
+						continue
+					self.mirror_tile(megatile_id, vertically)
+					original_flags.append(self.tileset.vf4.flags[megatile_id])
+
+			for group_n, group_id in enumerate(sorted(self.palette.selected)):
+				for tile_id in xrange(16):
+					megatile_id = self.get_mega_id(group_id, tile_id)
+					if vertically:
+						flipped_id = len(original_flags) - (group_n + 1) * 16 + tile_id
+					else: # horizontally
+						flipped_id = group_n * 16 + (15 - tile_id)
+					if flipped_id in nulltile_ids:
+						continue
+					self.tileset.vf4.flags[megatile_id] = original_flags[flipped_id]
 		else:
 			group = self.palette.selected[0]
 			tile = self.palette.sub_selection

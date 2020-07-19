@@ -443,6 +443,7 @@ technology unused_43 = 43
 #upgrade_ext ion_propulsion = 123
 #upgrade_ext tempo_change = 124
 #upgrade_ext requiem_afterburners = 125
+#upgrade_ext hammerfall_shells = 126
 
 # Terran Escalation extended upgrades
 #upgrade_ext escalate_cyprian = 62

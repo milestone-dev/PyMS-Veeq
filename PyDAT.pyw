@@ -1447,14 +1447,14 @@ class ImagesTab(DATTab):
 		self.grpentry = IntegerVar(0, [0, len(grps)-1])
 		self.grpdd = IntVar()
 		iscripts = DATA_CACHE['IscriptIDList.txt']
-		self.iscriptentry = IntegerVar(0, [0, len(iscripts)-1])
+		self.iscriptentry = IntegerVar(0, [0, 65535])#IntegerVar(0, [0, len(iscripts)-1])
 		self.iscriptdd = IntVar()
 
 		l = LabelFrame(frame, text='Image:')
 		s = Frame(l)
 		f = Frame(s)
 		Label(f, text='GRP:', width=12, anchor=E).pack(side=LEFT)
-		Entry(f, textvariable=self.grpentry, font=couriernew, width=3).pack(side=LEFT, padx=2)
+		Entry(f, textvariable=self.grpentry, font=couriernew, width=6).pack(side=LEFT, padx=2)
 		Label(f, text='=').pack(side=LEFT)
 		self.grps = DropDown(f, self.grpdd, grps, self.grpentry, width=30)
 		self.grpdds = [(self.grps,self.grpentry)]
@@ -1464,7 +1464,7 @@ class ImagesTab(DATTab):
 		f.pack(fill=X)
 		f = Frame(s)
 		Label(f, text='Iscript ID:', width=12, anchor=E).pack(side=LEFT)
-		Entry(f, textvariable=self.iscriptentry, font=couriernew, width=3).pack(side=LEFT, padx=2)
+		Entry(f, textvariable=self.iscriptentry, font=couriernew, width=6).pack(side=LEFT, padx=2)
 		Label(f, text='=').pack(side=LEFT)
 		self.iscripts = DropDown(f, self.iscriptdd, iscripts, self.iscriptentry, width=30)
 		self.iscripts.pack(side=LEFT, fill=X, expand=1, padx=2)
@@ -1610,7 +1610,7 @@ class ImagesTab(DATTab):
 			entries.append(n)
 			last = id
 		self.iscripts.setentries(entries)
-		self.iscriptentry.range[1] = len(entries)-1
+		self.iscriptentry.range[1] = 65535#len(entries)-1
 		self.iscriptentry.editvalue()
 
 		grps = ['None'] + [decompile_string(s) for s in self.toplevel.imagestbl.strings]
@@ -1644,7 +1644,7 @@ class SpritesTab(DATTab):
 		j = Frame(self)
 		frame = Frame(j)
 
-		self.imageentry = IntegerVar(0, [0,998])
+		self.imageentry = IntegerVar(0, [0,65535])#IntegerVar(0, [0,998])
 		self.imagedd = IntVar()
 		self.visible = IntVar()
 		self.unknown = IntVar()
@@ -1818,7 +1818,7 @@ class FlingyTab(DATTab):
 		j = Frame(self)
 		frame = Frame(j)
 
-		self.spriteentry = IntegerVar(0, [0,516])
+		self.spriteentry = IntegerVar(0, [0,65535])#IntegerVar(0, [0,516])
 		self.spritedd = IntVar()
 		self.topspeed = IntegerVar(0, [0,4294967294], callback=lambda n,i=0: self.updatespeed(n,i))
 		self.speed = FloatVar(1, [0,40265318.381], callback=lambda n,i=1: self.updatespeed(n,i), precision=3)
@@ -2737,7 +2737,7 @@ class GraphicsUnitsTab(DATUnitsTab):
 		self.toplevel = toplevel
 		frame = Frame(self)
 
-		self.graphicsentry = IntegerVar(0, [0,208])
+		self.graphicsentry = IntegerVar(0, [0,65535])#IntegerVar(0, [0,208])
 		self.graphicsdd = IntVar()
 		self.constructionentry = IntegerVar(0, [0,998])
 		self.constructiondd = IntVar()
@@ -3393,11 +3393,9 @@ class BasicUnitsTab(DATUnitsTab):
 		tip(f, 'Hit Points', 'UnitHP')
 		f.pack(fill=X)
 		f = Frame(s)
-		x = Frame(f)
-		Label(x, text='Shields:', width=9, anchor=E).pack(side=LEFT)
-		Entry(x, textvariable=self.shields, font=couriernew, width=10).pack(side=LEFT)
-		tip(x, 'Shields', 'UnitSP')
-		x.pack(side=LEFT)
+		Label(f, text='Shields:', width=9, anchor=E).pack(side=LEFT)
+		Entry(f, textvariable=self.shields, font=couriernew, width=10).pack(side=LEFT)
+		tip(f, 'Shields', 'UnitSP')
 		x = Frame(f)
 		makeCheckbox(x, text='Enabled', variable=self.shieldsenabled, hint='UnitShieldEnable', dattab=self).pack(side=LEFT)
 		x.pack(side=LEFT, fill=X)

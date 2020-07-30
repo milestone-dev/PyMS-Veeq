@@ -240,10 +240,10 @@ def type_imageid(stage, bin, data=None):
 		return (str(data),'%s (%s)' % (DAT.DATA_CACHE['Images.txt'][data], TBL.decompile_string(bin.imagestbl.strings[bin.imagesdat.get_value(data,'GRPFile')-1][:-1])))
 	try:
 		v = int(data)
-		if 0 > v or v > DAT.ImagesDAT.count:
+		if 0 > v or v > 65535:
 			raise
 	except:
-		raise PyMSError('Parameter',"Invalid ImageID value '%s', it must be a number in the range 0 to %s" % (data,DAT.ImagesDAT.count))
+		raise PyMSError('Parameter',"Invalid ImageID value '%s', it must be a number in the range 0 to 65535" % data)
 	return v
 
 def type_spriteid(stage, bin, data=None):
@@ -254,10 +254,10 @@ def type_spriteid(stage, bin, data=None):
 		return (str(data),'%s (%s)' % (DAT.DATA_CACHE['Sprites.txt'][data], TBL.decompile_string(bin.imagestbl.strings[bin.imagesdat.get_value(bin.spritesdat.get_value(data,'ImageFile'),'GRPFile')-1][:-1])))
 	try:
 		v = int(data)
-		if 0 > v or v > DAT.SpritesDAT.count:
+		if 0 > v or v > 65535:
 			raise
 	except:
-		raise PyMSError('Parameter',"Invalid SpriteID value '%s', it must be a number in the range 0 to %s" % (data,DAT.SpritesDAT.count))
+		raise PyMSError('Parameter',"Invalid SpriteID value '%s', it must be a number in the range 0 to 65535" % data)
 	return v
 
 def type_flingy(stage, bin, data=None):
@@ -268,10 +268,10 @@ def type_flingy(stage, bin, data=None):
 		return (str(data),'%s (%s)' % (DAT.DATA_CACHE['Flingy.txt'][data], TBL.decompile_string(bin.imagestbl.strings[bin.imagesdat.get_value(bin.spritesdat.get_value(bin.flingydat.get_value(data,'Sprite'),'ImageFile'),'GRPFile')-1][:-1])))
 	try:
 		v = int(data)
-		if 0 > v or v > DAT.FlingyDAT.count:
+		if 0 > v or v > 65535:
 			raise
 	except:
-		raise PyMSError('Parameter',"Invalid FlingyID value '%s', it must be a number in the range 0 to %s" % (data,DAT.FlingyDAT.count))
+		raise PyMSError('Parameter',"Invalid FlingyID value '%s', it must be a number in the range 0 to 65535" % data)
 	return v
 
 def type_overlayid(stage, bin, data=None):
@@ -282,10 +282,10 @@ def type_overlayid(stage, bin, data=None):
 		return (str(data),'')
 	try:
 		v = int(data)
-		if 0 > v or v > 255:
+		if 0 > v or v > 65535:
 			raise
 	except:
-		raise PyMSError('Parameter',"Invalid OverlayID value '%s', it must be a number in the range 0 to 255" % data)
+		raise PyMSError('Parameter',"Invalid OverlayID value '%s', it must be a number in the range 0 to 65535" % data)
 	return v # Restrictions?
 	# /"Overlay 1" renamed to "Attack"
 	# /"Overlay 2" renamed to "HP Damage"
@@ -315,10 +315,10 @@ def type_soundid(stage, bin, data=None):
 		return (str(data), TBL.decompile_string(bin.sfxdatatbl.strings[bin.soundsdat.get_value(data,'SoundFile')-1][:-1]))
 	try:
 		v = int(data)
-		if 0 > v or v > DAT.SoundsDAT.count:
+		if 0 > v or v > 65535:
 			raise
 	except:
-		raise PyMSError('Parameter',"Invalid SoundID value '%s', it must be a number in the range 0 to %s" % (data,DAT.SoundsDAT.count))
+		raise PyMSError('Parameter',"Invalid SoundID value '%s', it must be a number in the range 0 to 65535" % data)
 	return v
 
 def type_sounds(stage, bin, data=None):

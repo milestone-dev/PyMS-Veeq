@@ -2501,7 +2501,6 @@ class PyTILE(Tk):
 		presets = LabelFrame(flagGenerator, text="")
 		Button(presets, text='Preset 1', command=lambda: preset(0)).pack(side=LEFT)
 		Button(presets, text='Preset 2', command=lambda: preset(1)).pack(side=LEFT)
-		Button(presets, text='Preset 3', command=lambda: preset(2)).pack(side=LEFT)
 		presets.grid(column=2, row=1, sticky=N+W, padx=3, pady=3)
 
 		self.disable.append(Button(flagGenerator, text='Generate for Current Tile (Ctrl+G)', state=DISABLED, command=self.generate_height_current))
@@ -2518,8 +2517,14 @@ class PyTILE(Tk):
 		self.bind("<Control-y>", lambda e: self.mirror(False))
 		self.bind("<Control-u>", lambda e: self.mirror(True))
 
+
+		utility = LabelFrame(self.flow_view.content_view, text='Flag Utility')
+		Button(utility, text='Shift Height Up', command=lambda: self.shift_height_current(True)).grid(column=0,row=0, sticky=E+W)
+		Button(utility, text='Shift Height Down', command=lambda: self.shift_height_current(False)).grid(column=0,row=1, sticky=E+W)
+
 		self.normal_editors.append(settings_group)
 		self.normal_editors.append(flagGenerator)
+		self.normal_editors.append(utility)
 
 		self.doodad_editors = []
 
@@ -2607,6 +2612,7 @@ class PyTILE(Tk):
 
 		self.doodad_editors.append(settings_group)
 		self.doodad_editors.append(flagGenerator)
+		self.doodad_editors.append(utility)
 
 
 		#Statusbar
@@ -2809,6 +2815,36 @@ class PyTILE(Tk):
 			return 1
 		if i == 1:
 			return 2
+
+
+	def shift_height_current(self, up):
+		edited = False
+		if self.palette.multiselect:
+			for n in xrange(16):
+				edited = self.shift_height(self.palette.selected[0], n, up) or edited
+		else:
+			edited = self.shift_height(self.palette.selected[0], self.palette.sub_selection, up)
+
+		if edited:
+			self.palette.draw_tiles(force=True)
+			self.mega_editor.draw()
+			self.mark_edited()
+
+	def shift_height(self, group, n, up):
+		edited = False
+		id = self.get_mega_id(group, n)
+
+		for n in xrange(16):
+			flags = self.tileset.vf4.flags[id][n]
+			if up:
+				new_flags = min(flags + 2, 4)
+			else:
+				new_flags = max(flags - 2, 0)
+			if new_flags != flags:
+				self.tileset.vf4.flags[id][n] = new_flags
+				edited = True
+
+		return edited
 
 	def mirror(self, vertically=False):
 		if not self.tileset:

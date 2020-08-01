@@ -2820,8 +2820,9 @@ class PyTILE(Tk):
 	def shift_height_current(self, up):
 		edited = False
 		if self.palette.multiselect:
-			for n in xrange(16):
-				edited = self.shift_height(self.palette.selected[0], n, up) or edited
+			for group in sorted(self.palette.selected):
+				for n in xrange(16):
+					edited = self.shift_height(group, n, up) or edited
 		else:
 			edited = self.shift_height(self.palette.selected[0], self.palette.sub_selection, up)
 

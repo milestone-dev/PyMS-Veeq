@@ -343,7 +343,7 @@ class MegaEditorView(Frame):
 		if not self.delegate.tileset or self.megatile_id == None:
 			return
 		for n,m in enumerate(self.delegate.tileset.vx4.graphics[self.megatile_id]):
-			self.canvas.images.append(self.delegate.gettile(m))
+			self.canvas.images.append(self.delegate.get_tile(m))
 			self.canvas.create_image(2 + 24 * (n % 4), 2 + 24 * (n / 4), anchor=NW, image=self.canvas.images[-1], tags='tile')
 
 	def draw(self):
@@ -387,7 +387,7 @@ class MegaEditor(PyMSDialog):
 	def __init__(self, parent, id):
 		self.id = id
 		self.tileset = parent.tileset
-		self.gettile = parent.gettile
+		self.gettile = parent.get_tile
 		self.edited = False
 		PyMSDialog.__init__(self, parent, 'MegaTile Editor [%s]' % id)
 
@@ -422,7 +422,7 @@ class Placeability(PyMSDialog):
 		self.canvass = []
 		self.groups = []
 		self.tileset = parent.tileset
-		self.gettile = parent.gettile
+		self.gettile = parent.get_tile
 		self.selecting = None
 		self.width = 0
 		PyMSDialog.__init__(self, parent, 'Doodad Placeability [%s]' % id, resizable=(False,False))
@@ -596,7 +596,7 @@ class GraphicsImporter(PyMSDialog):
 		self.tiletype = tiletype
 		self.ids = ids
 		self.tileset = parent.tileset
-		self.gettile = parent.gettile
+		self.gettile = parent.get_tile
 		title = 'Import '
 		if tiletype == TILETYPE_GROUP:
 			title += 'MegaTile Group'
@@ -1430,7 +1430,7 @@ class TilePalette(PyMSDialog):
 				self.start_selected.append(select)
 		self.delegate = delegate or parent
 		self.tileset = parent.tileset
-		self.gettile = parent.gettile
+		self.gettile = parent.get_tile
 		self.editing = editing
 		self.edited = False
 		PyMSDialog.__init__(self, parent, self.get_title(), resizable=(False, True), set_min_size=(True,True))
@@ -2463,7 +2463,7 @@ class PyTILE(Tk):
 				updateFlags()
 
 		self.group_select = BooleanVar()
-		self.group_select.set(PYTILE_SETTINGS['group_select'].get('group_select', False))
+		self.group_select.set(PYTILE_SETTINGS['tileset_view'].get('group_select', False))
 		group_select = Checkbutton(settings_group, text="Group Multi Selection", variable=self.group_select, command=lambda: update_group_select())
 		group_select.grid(column=1,row=4,sticky=N+W)
 		update_group_select()
@@ -2489,7 +2489,7 @@ class PyTILE(Tk):
 		self.traversable = IntegerVar(0, [0,2])
 		self.nontraversable = IntegerVar(1, [0,2])
 
-		Label(flagGenerator, text='Walkability -> Height').grid(column=1,row=1,sticky=N+W, padx=3, pady=3)
+		Label(flagGenerator, text='Walkability <-> Height').grid(column=1,row=1,sticky=N+W, padx=3, pady=3)
 		Label(flagGenerator, text='Traversable').grid(column=1,row=2,sticky=N+W, padx=3, pady=3)
 		DropDown(flagGenerator, self.traversable, heights, width=15).grid(column=1, row=3, sticky=N+W, padx=3, pady=3)
 		Label(flagGenerator, text='Non-Traversable').grid(column=2,row=2,sticky=N+W, padx=3, pady=3)
@@ -2503,12 +2503,12 @@ class PyTILE(Tk):
 		Button(presets, text='Preset 2', command=lambda: preset(1)).pack(side=LEFT)
 		presets.grid(column=2, row=1, sticky=N+W, padx=3, pady=3)
 
-		self.disable.append(Button(flagGenerator, text='Generate for Current Tile (Ctrl+G)', state=DISABLED, command=self.generate_height_current))
+		self.disable.append(Button(flagGenerator, text='Generate Height from Walkability (Ctrl+G)', state=DISABLED, command=self.generate_height_current))
 		self.disable[-1].grid(column=1, row=4, sticky=N+W, padx=3, pady=3, columnspan=2)
-		self.disable.append(Button(flagGenerator, text='Generate for Current Group(s) (Ctrl+Shift+G)', state=DISABLED, command=self.generate_height_current_group))
+		self.disable.append(Button(flagGenerator, text='Generate Walkability from Height (Ctrl+Shift+G)', state=DISABLED, command=self.generate_walkability_current))
 		self.disable[-1].grid(column=1, row=5, sticky=N+W, padx=3, pady=3, columnspan=2)
 		self.bind("<Control-g>", self.generate_height_current)
-		self.bind("<Control-Shift-G>", self.generate_height_current_group)
+		self.bind("<Control-Shift-G>", self.generate_walkability_current)
 
 		self.disable.append(Button(copy_mega_group, text='Mirror Horizontally (Ctrl+Y)', state=DISABLED, command=lambda: self.mirror(False)))
 		self.disable[-1].grid(column=1, row=2, sticky=N + W, padx=3, pady=3, columnspan=2)
@@ -2639,7 +2639,7 @@ class PyTILE(Tk):
 		return self.tileset
 
 	def tile_palette_get_tile(self):
-		return self.gettile
+		return self.get_tile
 
 	def tile_palette_binding_widget(self):
 		return self
@@ -2687,7 +2687,7 @@ class PyTILE(Tk):
 		self.edited = edited
 		self.editstatus['state'] = [DISABLED,NORMAL][edited]
 
-	def gettile(self, id, cache=False):
+	def get_tile(self, id, cache=False):
 		to_photo = [Tilesets.megatile_to_photo,Tilesets.minitile_to_photo][isinstance(id,tuple) or isinstance(id,list)]
 		if cache:
 			if not id in TILE_CACHE:
@@ -2734,9 +2734,9 @@ class PyTILE(Tk):
 			return HEIGHT_HIGH
 		return HEIGHT_LOW
 
-	def generate_height(self, group, n):
+	def generate_height(self, group, n, reversed=False):
 		id = self.get_mega_id(group, n)
-		if id == 0:
+		if id == 0 and self.palette.multiselect:
 			return False
 
 		nontraversable = self.int_to_height(self.nontraversable.get())
@@ -2745,49 +2745,54 @@ class PyTILE(Tk):
 		edited = False
 		for n in xrange(16):
 			flags = self.tileset.vf4.flags[id][n]
-			new_flags = flags & ~(HEIGHT_MID | HEIGHT_HIGH)
-			new_flags |= [nontraversable, traversable][flags & 1]
+			if reversed:
+				new_flags = flags & ~1
+				new_flags |= [0, 1][flags & traversable != 0]
+			else:
+				new_flags = flags & ~(HEIGHT_MID | HEIGHT_HIGH)
+				new_flags |= [nontraversable, traversable][flags & 1]
 			if new_flags != flags:
 				self.tileset.vf4.flags[id][n] = new_flags
 				edited = True
+		return edited
 
+	def generate_height_group(self, current_group, reversed=False):
+		edited = False
+		for n in xrange(16):
+			edited = self.generate_height(current_group, n, reversed) or edited
 		return edited
 
 	def generate_height_current(self, *_):
 		if not self.tileset:
 			return
 
-		current_group = self.palette.selected[0]
-		current_tile = self.palette.sub_selection
-		if self.generate_height(current_group, current_tile):
-			self.palette.draw_tiles(force=True)
-			self.mega_editor.draw()
-			self.mark_edited()
-
-	def generate_height_current_group(self, *_):
-		if not self.tileset:
-			return
-
 		edited = False
 		if self.palette.multiselect:
 			for i in self.palette.selected:
-				if (self.generate_height_group(i)):
-					edited = True
+				edited = self.generate_height_group(i) or edited
 		else:
-			if (self.generate_height_group(self.palette.selected[0])):
-				edited = True
+			edited = self.generate_height(self.palette.selected[0], self.palette.sub_selection)
 
 		if edited:
 			self.palette.draw_tiles(force=True)
 			self.mega_editor.draw()
 			self.mark_edited()
 
-	def generate_height_group(self, current_group):
+	def generate_walkability_current(self, *_):
+		if not self.tileset:
+			return
+
 		edited = False
-		for n in xrange(16):
-			if self.generate_height(current_group, n):
-				edited = True
-		return edited
+		if self.palette.multiselect:
+			for i in self.palette.selected:
+				edited = self.generate_height_group(i, True) or edited
+		else:
+			edited = self.generate_height(self.palette.selected[0], self.palette.sub_selection, True)
+
+		if edited:
+			self.palette.draw_tiles(force=True)
+			self.mega_editor.draw()
+			self.mark_edited()
 
 	def get_mask(self):
 		height = HEIGHT_MID | HEIGHT_HIGH if self.copy_mega_height.get() else 0
@@ -2816,8 +2821,9 @@ class PyTILE(Tk):
 		if i == 1:
 			return 2
 
-
 	def shift_height_current(self, up):
+		if not self.tileset:
+			return
 		edited = False
 		if self.palette.multiselect:
 			for group in sorted(self.palette.selected):
@@ -2834,6 +2840,8 @@ class PyTILE(Tk):
 	def shift_height(self, group, n, up):
 		edited = False
 		id = self.get_mega_id(group, n)
+		if id == 0 and self.palette.multiselect:
+			return False
 
 		for n in xrange(16):
 			flags = self.tileset.vf4.flags[id][n]

@@ -387,7 +387,7 @@ class MegaEditor(PyMSDialog):
 	def __init__(self, parent, id):
 		self.id = id
 		self.tileset = parent.tileset
-		self.gettile = parent.get_tile
+		self.get_tile = parent.get_tile
 		self.edited = False
 		PyMSDialog.__init__(self, parent, 'MegaTile Editor [%s]' % id)
 
@@ -422,7 +422,7 @@ class Placeability(PyMSDialog):
 		self.canvass = []
 		self.groups = []
 		self.tileset = parent.tileset
-		self.gettile = parent.get_tile
+		self.get_tile = parent.get_tile
 		self.selecting = None
 		self.width = 0
 		PyMSDialog.__init__(self, parent, 'Doodad Placeability [%s]' % id, resizable=(False,False))
@@ -596,7 +596,7 @@ class GraphicsImporter(PyMSDialog):
 		self.tiletype = tiletype
 		self.ids = ids
 		self.tileset = parent.tileset
-		self.gettile = parent.get_tile
+		self.get_tile = parent.get_tile
 		title = 'Import '
 		if tiletype == TILETYPE_GROUP:
 			title += 'MegaTile Group'
@@ -1023,7 +1023,7 @@ class TilePaletteView(Frame):
 		self.sub_select = not self.multiselect and sub_select
 
 		self.visible_range = None
-		self.gettile = self.delegate.tile_palette_get_tile()
+		self.get_tile = self.delegate.tile_palette_get_tile()
 
 		tile_size = self.get_tile_size()
 		self.originalWidth = 2 + tile_size[0] * 16
@@ -1264,11 +1264,11 @@ class TilePaletteView(Frame):
 							if self.tiletype == TILETYPE_GROUP:
 								group = int(id / 16.0)
 								megatile = tileset.cv5.groups[group][13][id % 16]
-								self.canvas.images[id] = self.gettile(megatile, cache=(not force))
+								self.canvas.images[id] = self.get_tile(megatile, cache=(not force))
 							elif self.tiletype == TILETYPE_MEGA:
-								self.canvas.images[id] = self.gettile(id, cache=(not force))
+								self.canvas.images[id] = self.get_tile(id, cache=(not force))
 							elif self.tiletype == TILETYPE_MINI:
-								self.canvas.images[id] = self.gettile((id, 0), cache=(not force))
+								self.canvas.images[id] = self.get_tile((id, 0), cache=(not force))
 
 							self.canvas.images[id] = self.canvas.images[id]._PhotoImage__photo.zoom(self.scale)
 							flags = self.parent != None and self.multiselect == False
@@ -1430,7 +1430,7 @@ class TilePalette(PyMSDialog):
 				self.start_selected.append(select)
 		self.delegate = delegate or parent
 		self.tileset = parent.tileset
-		self.gettile = parent.get_tile
+		self.get_tile = parent.get_tile
 		self.editing = editing
 		self.edited = False
 		PyMSDialog.__init__(self, parent, self.get_title(), resizable=(False, True), set_min_size=(True,True))
@@ -1537,7 +1537,7 @@ class TilePalette(PyMSDialog):
 		return self.tileset
 
 	def tile_palette_get_tile(self):
-		return self.gettile
+		return self.get_tile
 
 	def tile_palette_binding_widget(self):
 		return self
@@ -2521,6 +2521,8 @@ class PyTILE(Tk):
 		utility = LabelFrame(self.flow_view.content_view, text='Flag Utility')
 		Button(utility, text='Shift Height Up', command=lambda: self.shift_height_current(True)).grid(column=0,row=0, sticky=E+W)
 		Button(utility, text='Shift Height Down', command=lambda: self.shift_height_current(False)).grid(column=0,row=1, sticky=E+W)
+		#self.bind("<Shift-Up>", self.shift_height_current(True))
+		#self.bind("<Shift-Down>", self.shift_height_current(False))
 
 		self.normal_editors.append(settings_group)
 		self.normal_editors.append(flagGenerator)

@@ -287,14 +287,14 @@ class Tileset:
 			found = False
 			if tiletype != TILETYPE_MINI or not len(ids):
 				flipped_hash = hash(tuple(tuple(reversed(r)) for r in image))
-				existing_ids = self.vr4.lookup.get(image_hash,[]) + self.vr4.lookup.get(flipped_hash,[])
+				existing_ids = [self.vr4.lookup.get(image_hash,[]), self.vr4.lookup.get(flipped_hash,[])]
 				if len(existing_ids) and (minitiles_reuse_duplicates_old or minitiles_reuse_null_with_id in existing_ids):
 					normal_found = image_hash in self.vr4.lookup
 					found = True
 					del new_images[i]
 					image_details.append((existing_ids[0],int(not normal_found)))
 				if not found:
-					existing_ids = mini_lookup.get(image_hash,[]) + mini_lookup.get(flipped_hash,[])
+					existing_ids = [mini_lookup.get(image_hash,[]), mini_lookup.get(flipped_hash,[])]
 					if len(existing_ids) and (minitiles_reuse_duplicates_new or minitiles_reuse_null_with_id in existing_ids):
 						normal_found = image_hash in mini_lookup
 						found = True

@@ -2847,10 +2847,13 @@ class PyTILE(Tk):
 
 		for n in xrange(16):
 			flags = self.tileset.vf4.flags[id][n]
+			# 6 = low (0) + mid (2) + high (4)
+			new_flags = flags & ~6
+			height_flag = flags & 6
 			if up:
-				new_flags = min(flags + 2, 4)
+				new_flags = new_flags | min(height_flag + 2, 4)
 			else:
-				new_flags = max(flags - 2, 0)
+				new_flags = new_flags | max(height_flag - 2, 0)
 			if new_flags != flags:
 				self.tileset.vf4.flags[id][n] = new_flags
 				edited = True

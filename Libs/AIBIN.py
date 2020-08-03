@@ -172,6 +172,8 @@ class AIBIN:
         'send_transmission',
         'new_layout',
         'build_new',
+        'attack_custom',
+        'set_special_mineral',
 	]
 
 	script_aliases = { # those will expand with script conversion to proper syntax

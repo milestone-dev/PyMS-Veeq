@@ -2759,6 +2759,7 @@ class PyICE(Tk):
 			scrollbar.pack(side=RIGHT, fill=Y)
 			lb.pack(side=LEFT, fill=BOTH, expand=1)
 			listframe.pack(fill=BOTH, expand=1)
+			Button(f, text='Select All', command=lambda l=lb: self.select(l)).pack(fill=X)
 			Button(f, text='Unselect All', command=lambda l=lb: self.unselect(l)).pack(fill=X)
 			f.pack(side=LEFT, fill=BOTH, padx=2, expand=1)
 		listframes.pack(fill=BOTH, pady=2, expand=1)
@@ -2919,6 +2920,10 @@ class PyICE(Tk):
 				if not id in ids:
 					ids.append(id)
 		return ids
+
+	def select(self, l):
+		l.select_set(0, END)
+		self.lbclick()
 
 	def unselect(self, l):
 		l.select_clear(0, END)

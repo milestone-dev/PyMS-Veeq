@@ -16,7 +16,7 @@ import optparse, os, re, webbrowser, sys
 LONG_VERSION = 'v%s' % VERSIONS['PyGRP']
 PYGRP_SETTINGS = Settings('PyGRP', '1')
 
-def grptobmp(path, pal, uncompressed, onebmp, grp, bmp='', frames=None, mute=False):
+def grptobmp(path, pal, uncompressed, onebmp, grp, bmp='', frames=None, mute=False, frames_per_row=17):
 	if isstr(grp):
 		inp = GRP.GRP(pal.palette, uncompressed)
 		if not mute:
@@ -37,7 +37,7 @@ def grptobmp(path, pal, uncompressed, onebmp, grp, bmp='', frames=None, mute=Fal
 	for f,frame in enumerate(inp.images):
 		if f in frames:
 			if onebmp == 1:
-				if not n % 17:
+				if not n % frames_per_row:
 					out.image.extend([list(y) for y in frame])
 				else:
 					for y,d in enumerate(frame):
@@ -54,9 +54,9 @@ def grptobmp(path, pal, uncompressed, onebmp, grp, bmp='', frames=None, mute=Fal
 					print " - '%s' written succesfully" % name
 			n += 1
 	if onebmp:
-		if onebmp == 1 and len(frames) % 17 and len(frames) / 17:
+		if onebmp == 1 and len(frames) % frames_per_row and len(frames) / frames_per_row:
 			for y in range(inp.height):
-				out.image[-y-1].extend([inp.transindex] * inp.width * (17 - len(frames) % 17))
+				out.image[-y-1].extend([inp.transindex] * inp.width * (frames_per_row - len(frames) % frames_per_row))
 		out.height = len(out.image)
 		out.width = len(out.image[0])
 		name = '%s%sbmp' % (bmpname, os.extsep)
@@ -403,6 +403,8 @@ class PyGRP(Tk):
 		self.bmp_style.set(BMP_STYLES_LOOKUP.get(PYGRP_SETTINGS.get('bmpstyle', BMP_STYLES[0][0]), 0))
 		self.uncompressed = IntVar()
 		self.uncompressed.set(PYGRP_SETTINGS.get('uncompressed', 0))
+		self.frames_per_row = IntVar()
+		self.frames_per_row.set(PYGRP_SETTINGS.get('frames_per_row', 17))
 
 		#Options
 		opts = Frame(rightframe)
@@ -435,6 +437,9 @@ BMP's must be imported with the same style they were exported as.""")
 		dd.grid(row=4, column=0, sticky=EW, padx=(3,0))
 		Checkbutton(opts, text='Save Uncompressed', variable=self.uncompressed).grid(row=4, column=1, sticky=W)
 		opts.pack(pady=(0,3))
+
+		Label(opts, text='Frames per row: ').grid(row=5, column=0, sticky=W)
+		Entry(opts, textvariable=self.frames_per_row, font=couriernew, width=4).grid(row=5, column=1, sticky=W)
 
 		leftframe.pack(side=LEFT, padx=1, pady=1, expand=1, fill=BOTH)
 		rightframe.pack(side=RIGHT, padx=1, pady=1)
@@ -772,7 +777,7 @@ BMP's must be imported with the same style they were exported as.""")
 			name = os.extsep.join(os.path.basename(file).replace(' ','').split(os.extsep)[:-1])
 			self.update_idletasks()
 			try:
-				grptobmp(os.path.dirname(file), self.palettes[self.pal], self.uncompressed.get(), self.bmp_style.get(), self.grp, name, indexs, True)
+				grptobmp(os.path.dirname(file), self.palettes[self.pal], self.uncompressed.get(), self.bmp_style.get(), self.grp, name, indexs, True, self.frames_per_row.get())
 			except PyMSError, e:
 				ErrorDialog(self, e)
 				return

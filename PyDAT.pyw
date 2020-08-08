@@ -2941,11 +2941,11 @@ class GraphicsUnitsTab(DATUnitsTab):
 			('AddonVertical',self.verticalw),
 		]
 		addon_preview = True
-		for l,w in restricted:
-			frmt = self.parent_tab.dat.format[self.parent_tab.dat.labels.index(l)]
-			is_addon = id >= frmt[0][0] and id <= frmt[0][1]
-			w['state'] = NORMAL if is_addon else DISABLED
-			addon_preview &= is_addon
+		#for l,w in restricted:
+		#	frmt = self.parent_tab.dat.format[self.parent_tab.dat.labels.index(l)]
+		#	is_addon = id >= frmt[0][0] and id <= frmt[0][1]
+		#	w['state'] = NORMAL if is_addon else DISABLED
+		#	addon_preview &= is_addon
 		self.show_addon_placement_checkbox['state'] = NORMAL if addon_preview else DISABLED
 		self.addon_parent_id_entry['state'] = NORMAL if addon_preview else DISABLED
 		self.drawpreview()

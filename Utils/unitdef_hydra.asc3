@@ -24,29 +24,28 @@ military firebat = 32
 military medic = 34
 @spellcaster(medic)
 military valkyrie = 58
-military h_firebat = 10
-military h_norad = 29
 
-# Terran units
+# Terran NGS units
 military cyprian = 92
 military shaman = 15
 @spellcaster(shaman)
-military paladin = 186
+military southpaw = 19
+military centaur = 28
 military wyvern = 91
-military savant = 187
 military azazel = 98
+military paladin = 186
+military savant = 187
 
 # Terran heroes
+military h_firebat = 10
+military h_norad = 29
 military h_dugalle = 102
 
 # Terran NGS heroes
 military raynor_marine = 20
-military raynor_vulture = 19
 military raynor_wyvern = 27
-military raynor_battlecruiser = 28
 military kerrigan_ghost = 16
 military kerrigan_goliath = 17
-military kerrigan_wraith = 21
 military magistrate_ghost = 100
 military magistrate_siege_tank = 23
 military h_siege_mode = 25
@@ -241,6 +240,9 @@ technology consume = 16
 technology parasite = 18
 technology lurker_aspect = 32
 
+# Zerg NGS tech
+technology essence_drain = 35
+
 # Protoss military units
 military corsair = 60
 military dark_templar = 61
@@ -264,9 +266,10 @@ military h_carrier = 82
 military h_raszagal = 98
 
 # Protoss NGS units
+military star_sovereign = 21
 military legionnaire = 74
 military hierophant = 76
-military starcaller = 80
+military aurora = 80
 military clarion = 81
 military warp_relay = 90
 military bulwark = 93
@@ -408,7 +411,6 @@ upgrade unused_60 = 60
 # Unused tech
 technology unused_26 = 26
 technology unused_33 = 33
-technology unused_35 = 35
 technology unused_36 = 36
 technology unused_37 = 37
 technology unused_38 = 38
@@ -444,6 +446,8 @@ technology unused_43 = 43
 #upgrade_ext tempo_change = 124
 #upgrade_ext requiem_afterburners = 125
 #upgrade_ext hammerfall_shells = 126
+#upgrade_ext fragmentary_payload = 127
+#upgrade_ext knockout_drivers = 128
 
 # Terran Escalation extended upgrades
 #upgrade_ext escalate_cyprian = 62

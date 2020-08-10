@@ -80,8 +80,8 @@ def bmptogrp(path, pal, uncompressed, frames, bmp, grp='', issize=None, ret=Fals
 			else:
 				out.width = inp.width / min(frames,17)
 				out.height = inp.height / int(ceil(frames / 17.0))
-			if out.width > 256 or out.height > 256:
-				raise PyMSError('Load', "Invalid dimensions in the BMP '%s' (Frames have a maximum size of 256x256, got %sx%s)" % (fullfile,out.width,out.height))
+			#if out.width > 256 or out.height > 256:
+			#	raise PyMSError('Load', "Invalid dimensions in the BMP '%s' (Frames have a maximum size of 256x256, got %sx%s)" % (fullfile,out.width,out.height))
 			if issize and out.width != issize[0] and out.height != issize[1]:
 				raise PyMSError('Load',"Invalid dimensions in the BMP '%s' (Expected %sx%s, got %sx%s)" % (fullfile,issize[0],issize[1],out.width,out.height))
 			for n in range(frames):

@@ -5,6 +5,7 @@ from Libs.stylized import *
 from tkMessageBox import askquestion,OK
 import tkFileDialog
 from textwrap import wrap
+import copy
 import os,re,webbrowser,sys,traceback,urllib,errno,tempfile,codecs,copy,platform
 win_reg = True
 try:
@@ -38,14 +39,6 @@ def startup(toplevel):
 	toplevel.call('wm', 'attributes', '.', '-topmost', True)
 	toplevel.after_idle(toplevel.call, 'wm', 'attributes', '.', '-topmost', False)
 	toplevel.focus_force()
-	try:
-		from Cocoa import NSRunningApplication, NSApplicationActivateIgnoringOtherApps
-
-		app = NSRunningApplication.runningApplicationWithProcessIdentifier_(os.getpid())
-		app.activateWithOptions_(NSApplicationActivateIgnoringOtherApps)
-	except:
-		pass
-
 	stylized_ttk_init()
 	toplevel.mainloop()
 
@@ -127,13 +120,7 @@ def flags(value, length):
 	return ''.join(reversed([str(value/(2**n)%2) for n in range(length)]))
 
 def ccopy(lst):
-	r = []
-	for item in lst:
-		if isinstance(item, list):
-			r.append(ccopy(item))
-		else:
-			r.append(item)
-	return r
+	return copy.deepcopy(lst)
 
 def fit(label, text, width=80, end=False, indent=0):
 	r = label
@@ -296,8 +283,8 @@ class PyMSDialog(Toplevel):
 			self.grab_wait()
 
 	def grab_wait(self):
-			self.grab_set()
-			self.wait_window(self)
+		self.grab_set()
+		self.wait_window(self)
 
 	def widgetize(self):
 		pass
@@ -652,8 +639,7 @@ class DropDown(Frame):
 		selected = self.variable.get()
 		self.entries = list(entries)
 		self.listbox.delete(0,END)
-		for entry in entries:
-			self.listbox.insert(END, entry)
+		self.listbox.insert(END, entries)
 		if selected >= self.listbox.size():
 			selected = self.listbox.size()-1
 		self.listbox.see(selected)
@@ -758,8 +744,7 @@ class DropDownChooser(Toplevel):
 		self.wm_overrideredirect(1)
 		scrollbar = Scrollbar(self)
 		self.listbox = Listbox(self, selectmode=SINGLE, height=min(10,len(list)), borderwidth=0, font=couriernew, highlightthickness=0, yscrollcommand=scrollbar.set, activestyle=DOTBOX)
-		for e in list:
-			self.listbox.insert(END,e)
+		self.listbox.insert(END,list)
 		if self.result > -1:
 			self.listbox.select_set(self.result)
 			self.listbox.see(self.result)

@@ -17,7 +17,7 @@ from Libs.stylized import *
 from thread import start_new_thread
 from shutil import copy
 from math import floor,ceil,sqrt
-import optparse, os, re, sys
+import optparse, os, re, sys, copy
 
 LONG_VERSION = 'v%s' % VERSIONS['PyDAT']
 PYDAT_SETTINGS = Settings('PyDAT', '1')
@@ -455,7 +455,7 @@ class DATTab(NotebookTab):
 	def open(self, file, save=True):
 		if not save or not self.unsaved():
 			if isstr(file):
-				entries = ccopy(self.dat.entries)
+				entries = copy.deepcopy(self.dat.entries)
 				try:
 					self.dat.load_file(file)
 				except PyMSError, e:
@@ -483,7 +483,7 @@ class DATTab(NotebookTab):
 			file = PYDAT_SETTINGS.lastpath.txt.select_file('import', self, 'Import TXT', '*.txt', [('Text Files','*.txt'),('All Files','*')])
 		if not file:
 			return
-		entries = ccopy(self.dat.entries)
+		entries = copy.deepcopy(self.dat.entries)
 		try:
 			ids = self.dat.interpret(file)
 		except PyMSError, e:
@@ -3994,7 +3994,7 @@ class PyDAT(Tk):
 				n = c.datname
 				self.dats[n] = v
 				self.defaults[n] = c(t)
-				self.defaults[n].entries = ccopy(v.entries)
+				self.defaults[n].entries = copy.deepcopy(v.entries)
 			for page in self.pages:
 				page.files_updated()
 			self.dattabs.active.activate()

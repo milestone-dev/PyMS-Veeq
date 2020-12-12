@@ -88,53 +88,57 @@ def stylized_ttk_init():
 def stylized_widget_configure(widget, is_button_with_image=False):
     config = widget.config()
 
+    widgetConfig = {}
+
     if config.has_key("bg"):
-        widget.config(bg=stylized_theme_default_background)
+        widgetConfig.update({"bg":stylized_theme_default_background})
     if config.has_key("fg"):
-        widget.config(fg=stylized_theme_default_foreground)
+        widgetConfig.update({"fg":stylized_theme_default_foreground})
     if config.has_key("activebackground"):
-        widget.config(activebackground=stylized_theme_active_background)
+        widgetConfig.update({"activebackground":stylized_theme_active_background})
     if config.has_key("activeforeground"):
-        widget.config(activeforeground=stylized_theme_active_foreground)
+        widgetConfig.update({"activeforeground":stylized_theme_active_foreground})
     if config.has_key("disabledbackground"):
-        widget.config(disabledbackground=stylized_theme_disabled_background)
+        widgetConfig.update({"disabledbackground":stylized_theme_disabled_background})
     if config.has_key("disabledforeground"):
-        widget.config(disabledforeground=stylized_theme_disabled_foreground)
+        widgetConfig.update({"disabledforeground":stylized_theme_disabled_foreground})
     if config.has_key("selectbackground"):
-        widget.config(selectbackground=stylized_theme_selected_text_background)
+        widgetConfig.update({"selectbackground":stylized_theme_selected_text_background})
 
     if config.has_key("highlightthickness"):
-        widget.config(highlightthickness=0)
+        widgetConfig.update({"highlightthickness":0})
     if config.has_key("borderwidth"):
         if widget.cget("borderwidth") > 0:
-            widget.config(borderwidth=1)
+            widgetConfig.update({"borderwidth":1})
 
     if config.has_key("relief"):
         if "" != widget.cget("relief") != Tkinter.FLAT != "":
-            widget.config(relief=Tkinter.GROOVE)
+            widgetConfig.update({"relief":Tkinter.GROOVE})
     if config.has_key("offrelief"):
         if "" != widget.cget("offrelief") != Tkinter.FLAT != "":
-            widget.config(offrelief=Tkinter.GROOVE)
+            widgetConfig.update({"offrelief":Tkinter.GROOVE})
     if config.has_key("overrelief"):
         if "" != widget.cget("overrelief") != Tkinter.FLAT:
-            widget.config(overrelief=Tkinter.GROOVE)
+            widgetConfig.update({"overrelief":Tkinter.GROOVE})
 
     if config.has_key("padx"):
-        widget.config(padx=3, pady=2)
+        widgetConfig.update({"padx":3, "pady":2})
 
     wClass = widget.__class__
     if issubclass(wClass, Button) or issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
         if issubclass(wClass, Checkbutton) or issubclass(wClass, Radiobutton):
-            widget.config(selectcolor=stylized_theme_active_background)
+            widgetConfig.update({"selectcolor":stylized_theme_active_background})
             if widget.cget("indicatoron") == 0:
-                widget.config(foreground=stylized_theme_enabled_foreground, background=stylized_theme_enabled_background)
+                widgetConfig.update({"foreground":stylized_theme_enabled_foreground, "background":stylized_theme_enabled_background})
         elif issubclass(wClass, Button):
             if is_button_with_image:
-                widget.config(overrelief=Tkinter.SUNKEN, background=stylized_theme_enabled_background)
+                widgetConfig.update({"overrelief":Tkinter.SUNKEN, "background":stylized_theme_enabled_background})
             elif widget.cget("relief") != Tkinter.FLAT and widget.cget("borderwidth") > 0:
-                widget.config(foreground=stylized_theme_enabled_foreground, background=stylized_theme_enabled_background)
+                widgetConfig.update({"foreground":stylized_theme_enabled_foreground, "background":stylized_theme_enabled_background})
     elif issubclass(wClass, Entry) or issubclass(wClass, Listbox) or issubclass(wClass, Text):
-        widget.config(foreground=stylized_theme_enabled_foreground, background=stylized_theme_enabled_background)
+        widgetConfig.update({"foreground":stylized_theme_enabled_foreground, "background":stylized_theme_enabled_background})
+
+    widget.config(widgetConfig)
 
 class Tk(Tkinter.Tk):
     def __init__(self, screenName=None, baseName=None, className='Tk', useTk=1, sync=0, use=None):

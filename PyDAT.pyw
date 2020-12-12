@@ -3847,24 +3847,6 @@ class PyDAT(Tk):
 		self.status = StringVar()
 		self.dattabs = Notebook(self.hor_pane)
 		self.pages = []
-		tabs = (
-			('Units', UnitsTab),
-			('Weapons', WeaponsTab),
-			('Flingy', FlingyTab),
-			('Sprites', SpritesTab),
-			('Images', ImagesTab),
-			('Upgrades', UpgradesTab),
-			('Techdata', TechnologyTab),
-			('Sfxdata', SoundsTab),
-			('Portdata', PortraitsTab),
-			('Mapdata', MapsTab),
-			('Orders', OrdersTab),
-		)
-		for tab in tabs:
-			page = tab[1](self.dattabs, self)
-			page.page_title = tab[0]
-			self.pages.append(page)
-			self.dattabs.add_tab(page, tab[0])
 		# self.dattabs.bind('<<TabDeactivated>>', self.tab_deactivated)
 		self.dattabs.bind('<<TabActivated>>', self.tab_activated)
 		self.hor_pane.add(self.dattabs.notebook, sticky=NSEW)
@@ -3886,10 +3868,6 @@ class PyDAT(Tk):
 		if not len(self.mpqhandler.mpqs) and self.mpqhandler.add_defaults():
 			PYDAT_SETTINGS.settings.mpqs = self.mpqhandler.mpqs
 
-		e = self.open_files()
-		if e:
-			self.mpqtbl(err=e)
-
 		PYDAT_SETTINGS.windows.load_window_size('main', self)
 		PYDAT_SETTINGS.load_pane_size('list_size', self.hor_pane, 300)
 
@@ -3904,7 +3882,37 @@ class PyDAT(Tk):
 			else:
 				ErrorDialog(self, PyMSError('Load',"'%s' is not a valid StarCraft *.dat file, could possibly be corrupt" % guifile))
 
+		self.deferred_init()
 		start_new_thread(check_update, (self, 'PyDAT'))
+
+	def deferred_init(self):
+		self.after(50, self.deferred_add_tabs)
+		self.after(100, self.deferred_open_files);
+
+	def deferred_open_files(self):
+		e = self.open_files()
+		if e:
+			self.mpqtbl(err=e)
+
+	def deferred_add_tabs(self):
+		tabs = (
+			('Units', UnitsTab),
+			('Weapons', WeaponsTab),
+			('Flingy', FlingyTab),
+			('Sprites', SpritesTab),
+			('Images', ImagesTab),
+			('Upgrades', UpgradesTab),
+			('Techdata', TechnologyTab),
+			('Sfxdata', SoundsTab),
+			('Portdata', PortraitsTab),
+			('Mapdata', MapsTab),
+			('Orders', OrdersTab),
+		)
+		for tab in tabs:
+			page = tab[1](self.dattabs, self)
+			page.page_title = tab[0]
+			self.pages.append(page)
+			self.dattabs.add_tab(page, tab[0])
 
 	def tab_activated(self, event=None):
 		self.action_states()
